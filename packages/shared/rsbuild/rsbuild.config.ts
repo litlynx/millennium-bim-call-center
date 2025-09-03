@@ -6,10 +6,12 @@ import {
 } from '@config/rsbuild-config';
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 import { defineConfig } from '@rsbuild/core';
+import { pluginReact } from '@rsbuild/plugin-react';
 import { dependencies } from '../package.json';
 
 export default defineConfig({
   plugins: [
+    pluginReact(),
     pluginModuleFederation(
       createMFConfig(Apps.shared, {
         shared: getSharedModulesConfig(dependencies)
