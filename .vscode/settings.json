@@ -135,5 +135,6 @@
     "**/*.d.ts.map": true,
     "**/*.tsbuildinfo": true
   },
-  "biome.requireConfiguration": true
+  "biome.requireConfiguration": true,
+  "cSpell.words": ["rsbuild"]
 }

@@ -11,6 +11,34 @@
       "env": ["HOST_BASE_URL", "API_BASE_URL"],
       "outputs": ["dist/**", "build/**", "types/**", ".wp_federation/**"]
     },
+    "rsbuild:dev": {
+      "dependsOn": ["^rsbuild:dev"],
+      "cache": false,
+      "persistent": true
+    },
+    "rsbuild:build": {
+      "dependsOn": ["^rsbuild:build"],
+      "env": ["HOST_BASE_URL", "API_BASE_URL"],
+      "outputs": ["dist/**", "build/**"]
+    },
+    "rsbuild:preview": {
+      "dependsOn": ["^rsbuild:preview"],
+      "persistent": true
+    },
+    "rspack:dev": {
+      "dependsOn": ["^rspack:dev"],
+      "cache": false,
+      "persistent": true
+    },
+    "rspack:build": {
+      "dependsOn": ["^rspack:build"],
+      "env": ["HOST_BASE_URL", "API_BASE_URL"],
+      "outputs": ["dist/**", "build/**"]
+    },
+    "rspack:analyze": {
+      "dependsOn": ["^rspack:analyze"],
+      "persistent": true
+    },
     "build:local": {
       "dependsOn": ["^build"],
       "env": ["HOST_BASE_URL", "API_BASE_URL"],
