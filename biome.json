@@ -2,7 +2,17 @@
   "$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
   "root": true,
   "files": {
-    "includes": ["**/*.{ts,tsx,js,jsx,json,jsonc}"]
+    "includes": [
+      "**",
+      "**/*.{ts,tsx,js,jsx}",
+      "!node_modules",
+      "!dist",
+      "!build",
+      "!coverage",
+      "!.wp_federation",
+      "!packages/shared/src/components/ui",
+      "!packages/shared/src/assets/icons"
+    ]
   },
   "formatter": {
     "enabled": true,
