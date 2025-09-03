@@ -1,0 +1,24 @@
+{
+  "name": "@config/rspack-config",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@rspack/core": "latest",
+    "@rspack/cli": "latest",
+    "@rspack/dev-server": "latest",
+    "@module-federation/enhanced": "latest",
+    "@module-federation/dts-plugin": "latest",
+    "html-webpack-plugin": "^5.6.3",
+    "copy-webpack-plugin": "^12.0.2",
+    "webpack-bundle-analyzer": "^4.10.2",
+    "@types/node": "^22.10.2",
+    "postcss": "^8.4.49",
+    "postcss-loader": "^8.1.1",
+    "style-loader": "^4.0.0",
+    "css-loader": "^7.1.2",
+    "tsconfig-paths-webpack-plugin": "^4.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
