@@ -1,0 +1,39 @@
+# Bun configuration for the federated modules monorepo
+
+[install]
+# Bun workspaces configuration
+# Automatically installs dependencies for all workspace packages
+auto = true
+
+# Keep package-lock.json for compatibility with existing CI/CD
+# Set to false to use only bun.lockb
+frozen = false
+
+# Cache directory
+cache = ".bun-cache"
+
+# Registry configuration
+registry = "https://registry.npmjs.org/"
+
+[install.scopes]
+# Scoped package configurations if needed
+# "@config" = "https://registry.npmjs.org/"
+
+[test]
+# Test runner configuration (Bun can run Jest tests)
+# Coverage settings
+coverage = true
+
+# Test file patterns
+preload = ["./test-setup.ts"]
+
+[build]
+# Build configuration for TypeScript/JSX
+target = "browser"
+format = "esm"
+
+# Source map generation
+sourcemap = "external"
+
+# Minification in production
+minify = true

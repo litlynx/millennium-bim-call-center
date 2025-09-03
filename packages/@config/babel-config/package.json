@@ -1,0 +1,11 @@
+{
+  "name": "@config/babel-config",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@emotion/babel-plugin": "^11.11.0"
+  }
+}

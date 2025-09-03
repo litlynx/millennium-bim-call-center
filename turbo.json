@@ -1,0 +1,79 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "concurrency": "20",
+  "tasks": {
+    "analyze": {
+      "dependsOn": ["^analyze"],
+      "persistent": true
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "env": ["HOST_BASE_URL", "API_BASE_URL"],
+      "outputs": ["dist/**", "build/**", "types/**", ".wp_federation/**"]
+    },
+    "build:local": {
+      "dependsOn": ["^build"],
+      "env": ["HOST_BASE_URL", "API_BASE_URL"],
+      "outputs": ["dist/**", "build/**", "types/**", ".wp_federation/**"]
+    },
+    "types:generate": {
+      "outputs": ["types/**", ".wp_federation/**"]
+    },
+    "types:clean": {
+      "outputs": []
+    },
+    "types:build": {
+      "dependsOn": ["types:clean"],
+      "outputs": ["types/**", ".wp_federation/**"]
+    },
+    "serve:local": {
+      "persistent": true
+    },
+    "start": { "persistent": true },
+    "lint": {
+      "dependsOn": ["^lint"],
+      "passThroughEnv": ["CI"]
+    },
+    "lint:fix": {
+      "dependsOn": ["^lint:fix"],
+      "passThroughEnv": ["CI"]
+    },
+    "format": {},
+    "biome:lint": {
+      "dependsOn": ["^biome:lint"],
+      "passThroughEnv": ["CI"]
+    },
+    "biome:format": {
+      "dependsOn": ["^biome:format"]
+    },
+    "biome:check": {
+      "dependsOn": ["^biome:check"],
+      "passThroughEnv": ["CI"]
+    },
+    "biome:check:apply": {
+      "dependsOn": ["^biome:check:apply"]
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    },
+    "test:ci": {
+      "dependsOn": ["^test:ci"],
+      "outputs": ["coverage/**"]
+    },
+    "test:watch": {
+      "persistent": true
+    },
+    "e2e": {
+      "env": ["CI"],
+      "outputs": ["playwright-report/**", "test-results/**"]
+    },
+    "e2e:show-report": {
+      "persistent": true
+    },
+    "dev": {
+      "dependsOn": ["^dev"],
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

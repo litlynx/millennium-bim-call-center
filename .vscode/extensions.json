@@ -1,0 +1,21 @@
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "dbaeumer.vscode-eslint",
+    "biomejs.biome",
+    "yoavbls.pretty-ts-errors",
+    "mikestead.dotenv",
+    "Orta.vscode-jest",
+    "vercel.turbo-vscode",
+    "ms-playwright.playwright",
+    "dsznajder.es7-react-js-snippets",
+    "streetsidesoftware.code-spell-checker",
+    "ms-azure-devops.azure-pipelines",
+    "christian-kohler.path-intellisense",
+    "christian-kohler.npm-intellisense",
+    "firsttris.vscode-jest-runner",
+    "editorconfig.editorconfig",
+    "wix.vscode-import-cost",
+    "usernamehw.errorlens"
+  ]
+}
