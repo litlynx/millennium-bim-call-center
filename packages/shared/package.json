@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "rsbuild dev --config rsbuild/rsbuild.config.ts",
     "rsbuild:dev": "rsbuild dev --config rsbuild/rsbuild.config.ts",
+    "build": "rsbuild build --config rsbuild/rsbuild.config.ts",
     "rsbuild:build": "rsbuild build --config rsbuild/rsbuild.config.ts",
-    "rsbuild:preview": "rsbuild preview --config rsbuild/rsbuild.config.ts",
+    "preview": "rsbuild preview --config rsbuild/rsbuild.config.ts",
+    "rsbuild:preview": "RSBUILD_MODE=preview rsbuild preview --config rsbuild/rsbuild.config.ts",
     "predev": "rimraf dist",
     "prebuild": "rimraf dist",
     "types:generate": "rsbuild build --config rsbuild/rsbuild.config.ts",

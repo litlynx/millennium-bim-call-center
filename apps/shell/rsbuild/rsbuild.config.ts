@@ -5,10 +5,21 @@ import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 
 const shellConfig = getAppModuleFederationConfig(Apps.shell);
-const remotes =
-  process.env.NODE_ENV === 'production'
-    ? shellConfig.remotes?.prod || {}
-    : shellConfig.remotes?.dev || {};
+
+// Determine which remote configuration to use
+// Use RSBUILD_MODE environment variable to explicitly set the mode
+// or fall back to NODE_ENV detection
+let remotes: Record<string, string> = {};
+
+const mode = process.env.RSBUILD_MODE || (process.env.NODE_ENV === 'production' ? 'prod' : 'dev');
+
+if (mode === 'prod') {
+  remotes = shellConfig.remotes?.prod || {};
+} else if (mode === 'preview') {
+  remotes = shellConfig.remotes?.preview || {};
+} else {
+  remotes = shellConfig.remotes?.dev || {};
+}
 
 export default defineConfig({
   source: {

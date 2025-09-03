@@ -93,6 +93,9 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
       dev: {
         shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/mf-manifest.json`
       },
+      preview: {
+        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/mf-manifest.json`
+      },
       prod: {
         shared: `shared@${hostBaseUrl}packages/shared/dist/mf-manifest.json`
       }

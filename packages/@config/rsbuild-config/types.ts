@@ -9,6 +9,7 @@ export type AppModuleFederationConfig = {
   baseConfig: ModuleFederationPluginOptions;
   remotes?: {
     dev: Record<string, string>;
+    preview: Record<string, string>;
     prod: Record<string, string>;
   };
 };

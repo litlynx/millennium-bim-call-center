@@ -18,11 +18,12 @@
     },
     "rsbuild:build": {
       "dependsOn": ["^rsbuild:build"],
-      "env": ["HOST_BASE_URL", "API_BASE_URL"],
+      "env": ["HOST_BASE_URL", "API_BASE_URL", "RSBUILD_MODE"],
       "outputs": ["dist/**", "build/**"]
     },
     "rsbuild:preview": {
-      "dependsOn": ["^rsbuild:preview"],
+      "dependsOn": ["rsbuild:build"],
+      "env": ["RSBUILD_MODE"],
       "persistent": true
     },
     "build:local": {

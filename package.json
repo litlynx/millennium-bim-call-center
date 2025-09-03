@@ -13,7 +13,7 @@
     "analyze": "turbo run analyze",
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "preview": "turbo run rsbuild:preview",
+    "preview": "cross-env RSBUILD_MODE=preview turbo run rsbuild:preview",
     "build:local": "cross-env HOST_BASE_URL=\"http://localhost:3333/\" turbo run build",
     "serve:local:remotes": "serve . -l 3333 -s --cors",
     "serve:local:main": "serve apps/shell/dist -l 8080 -s --cors",
