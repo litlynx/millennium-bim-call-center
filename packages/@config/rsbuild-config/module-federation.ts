@@ -86,7 +86,8 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
     analyzerPort: mapPorts[Apps.shell].analyzerPort,
     baseConfig: createModuleFederationConfig({
       name: 'shell',
-      remotes: {}
+      remotes: {},
+      dts: false
     }),
     remotes: {
       dev: {
@@ -112,7 +113,8 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
       shared: {
         react: { singleton: true },
         'react-dom': { singleton: true }
-      }
+      },
+      dts: false
     })
   }
 };

@@ -4,6 +4,7 @@
   "main": "./src/index.ts",
   "types": "./types/src/index.d.ts",
   "scripts": {
+    "dev": "rsbuild dev --config rsbuild/rsbuild.config.ts",
     "rsbuild:dev": "rsbuild dev --config rsbuild/rsbuild.config.ts",
     "rsbuild:build": "rsbuild build --config rsbuild/rsbuild.config.ts",
     "rsbuild:preview": "rsbuild preview --config rsbuild/rsbuild.config.ts",

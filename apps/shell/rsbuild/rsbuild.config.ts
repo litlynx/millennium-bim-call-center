@@ -1,7 +1,14 @@
 import path from 'node:path';
+import { Apps, createMFConfig, getAppModuleFederationConfig } from '@config/rsbuild-config';
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
+
+const shellConfig = getAppModuleFederationConfig(Apps.shell);
+const remotes =
+  process.env.NODE_ENV === 'production'
+    ? shellConfig.remotes?.prod || {}
+    : shellConfig.remotes?.dev || {};
 
 export default defineConfig({
   source: {
@@ -16,16 +23,11 @@ export default defineConfig({
   },
   plugins: [
     pluginReact(),
-    pluginModuleFederation({
-      name: 'shell',
-      remotes: {
-        shared: 'shared@http://localhost:3001/mf-manifest.json'
-      },
-      shared: {
-        react: { singleton: true },
-        'react-dom': { singleton: true }
-      }
-    })
+    pluginModuleFederation(
+      createMFConfig(Apps.shell, {
+        remotes
+      })
+    )
   ],
   server: {
     port: 3000
