@@ -1,0 +1,27 @@
+{
+  "include": ["**/*", "package.json"],
+  "exclude": ["build", "dist", "coverage", "node_modules", ".wp_federation", "types"],
+  "extends": "@config/tsconfig",
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "baseUrl": ".",
+    "outDir": "./types",
+    "declarationDir": "./types",
+    "emitDeclarationOnly": true,
+    "strict": true,
+    "strictFunctionTypes": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@config/*": ["./src/config/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@types/*": ["./src/types/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@ui/*": ["./src/components/ui/*"]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build main (prod)",
+      "type": "shell",
+      "command": "bun run --filter=apps/main build",
+      "isBackground": false,
+      "group": "build"
+    }
+  ]
+}

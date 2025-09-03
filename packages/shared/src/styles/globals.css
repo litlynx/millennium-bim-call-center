@@ -1,0 +1,55 @@
+/* Global CSS entry used by shadcn/ui configuration */
+/* stylelint-disable at-rule-no-unknown */
+/** biome-ignore-all lint/suspicious/noUnknownAtRules: Post-css wrong error */
+@import "tw-animate-css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles */
+
+@layer base {
+  html,
+  body {
+    font-family:
+      Montserrat, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol";
+    @apply antialiased;
+  }
+
+  body {
+    @apply text-base text-zinc-700;
+
+    h1 {
+      @apply text-3xl;
+    }
+    h2 {
+      @apply text-2xl;
+    }
+    h3 {
+      @apply text-[22px];
+    }
+    h4 {
+      @apply text-[20px];
+    }
+    h5 {
+      @apply text-lg;
+    }
+    p {
+      @apply text-base;
+    }
+  }
+}
+
+@layer utilities {
+  .scroll-custom {
+    scrollbar-width: thin;
+    scrollbar-color: #adadae #e9e9ed;
+    padding: 0 18px 0 8px;
+  }
+
+  .scroll-custom-color {
+    scrollbar-width: thin;
+  }
+}

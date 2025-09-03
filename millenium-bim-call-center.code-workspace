@@ -1,0 +1,123 @@
+{
+  "folders": [
+    { "name": "(Root)", "path": "." },
+    { "name": "Shell (Host)", "path": "apps/shell" },
+    { "name": "Shared Components", "path": "packages/shared" },
+    { "name": "ModuleFederation", "path": "packages/@config/webpack-config/" },
+    { "name": "Config (Webpack/TS/etc)", "path": "packages/@config" }
+  ],
+  "settings": {
+    "workbench.startupEditor": "readme",
+
+    // Apply consistent search exclusions across the whole monorepo
+    "search.useIgnoreFiles": true,
+    "search.useGlobalIgnoreFiles": true,
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/node_modules/**": true,
+      "**/dist": true,
+      "**/dist/**": true,
+      "**/build": true,
+      "**/build/**": true,
+      "**/.turbo": true,
+      "**/.turbo/**": true,
+      "**/coverage": true,
+      "**/coverage/**": true,
+      "**/.wp_federation": true,
+      "**/.wp_federation/**": true,
+      "**/playwright-report": true,
+      "**/playwright-report/**": true,
+      "**/test-results": true,
+      "**/test-results/**": true,
+      "**/.next": true,
+      "**/.next/**": true,
+      "**/out": true,
+      "**/out/**": true,
+      "**/.cache": true,
+      "**/.cache/**": true,
+      "**/tmp": true,
+      "**/tmp/**": true,
+      "**/temp": true,
+      "**/temp/**": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "**/.env.local": true,
+      "**/.env.*.local": true,
+      "**/pnpm-lock.yaml": true,
+      "**/package-lock.json": true,
+      "**/yarn.lock": true,
+      "**/bun.lockb": true,
+      "**/.bun-cache": true,
+      "**/.bun-cache/**": true
+    },
+
+    // Reduce file watcher overhead in large workspaces
+    "files.watcherExclude": {
+      "**/node_modules/**": true,
+      "**/dist/**": true,
+      "**/build/**": true,
+      "**/.turbo/**": true,
+      "**/coverage/**": true,
+      "**/.wp_federation/**": true,
+      "**/playwright-report/**": true,
+      "**/test-results/**": true,
+      "**/.next/**": true,
+      "**/out/**": true,
+      "**/.cache/**": true,
+      "**/tmp/**": true,
+      "**/temp/**": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true
+    },
+
+    // Hide from Explorer across the workspace
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/node_modules/**": true,
+      "**/dist": true,
+      "**/dist/**": true,
+      "**/build": true,
+      "**/build/**": true,
+      "**/.turbo": true,
+      "**/.turbo/**": true,
+      "**/coverage": true,
+      "**/coverage/**": true,
+      "**/.wp_federation": true,
+      "**/.wp_federation/**": true,
+      "**/playwright-report": true,
+      "**/playwright-report/**": true,
+      "**/test-results": true,
+      "**/test-results/**": true,
+      "**/.next": true,
+      "**/.next/**": true,
+      "**/out": true,
+      "**/out/**": true,
+      "**/.cache": true,
+      "**/.cache/**": true,
+      "**/tmp": true,
+      "**/tmp/**": true,
+      "**/temp": true,
+      "**/temp/**": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "bradlc.vscode-tailwindcss",
+      "biomejs.biome",
+      "yoavbls.pretty-ts-errors",
+      "mikestead.dotenv",
+      "Orta.vscode-jest",
+      "vercel.turbo-vscode",
+      "ms-playwright.playwright",
+      "dsznajder.es7-react-js-snippets",
+      "streetsidesoftware.code-spell-checker",
+      "ms-azure-devops.azure-pipelines",
+      "christian-kohler.path-intellisense",
+      "christian-kohler.npm-intellisense",
+      "firsttris.vscode-jest-runner",
+      "editorconfig.editorconfig",
+      "wix.vscode-import-cost",
+      "usernamehw.errorlens"
+    ]
+  }
+}

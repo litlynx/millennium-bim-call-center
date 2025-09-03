@@ -1,0 +1,52 @@
+#!/usr/bin/env sh
+
+# Detect operating system and handle Windows environments
+is_windows() {
+  case "$OSTYPE" in
+    msys*|mingw*|cygwin*|win32*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+# Check if we're on Windows
+if is_windows || [[ -n "$WINDIR" ]] || [[ -n "$SYSTEMROOT" ]]; then
+  # Windows environment - simple execution with error handling
+  echo "Running on Windows environment"
+
+  # Check if bun is available
+  if ! command -v bun >/dev/null 2>&1; then
+    echo "Error: bun not found. Please ensure bun is installed and in your PATH."
+    echo "You can install it with: curl -fsSL https://bun.sh/install | bash"
+    exit 1
+  fi
+
+  # Run lint-staged
+  bunx lint-staged
+else
+  # macOS/Linux environment - full setup
+  echo "Running on Unix-like environment (macOS/Linux)"
+
+  # Load nvm (adjust if you don't use it)
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+  [ -f .nvmrc ] && nvm use >/dev/null 2>&1
+
+  # Ensure Bun is in PATH
+  if ! command -v bun >/dev/null 2>&1; then
+    # Try common Bun installation paths
+    if [ -f "$HOME/.bun/bin/bun" ]; then
+      export PATH="$HOME/.bun/bin:$PATH"
+    elif [ -f "/usr/local/bin/bun" ]; then
+      export PATH="/usr/local/bin:$PATH"
+    fi
+  fi
+
+  # Fallback if still no bun
+  if ! command -v bun >/dev/null 2>&1; then
+    echo "bun not found; aborting pre-commit (ensure bun is installed)"
+    echo "Install bun with: curl -fsSL https://bun.sh/install | bash"
+    exit 1
+  fi
+
+  bunx lint-staged
+fi
