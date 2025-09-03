@@ -2,6 +2,10 @@ import { createModuleFederationConfig } from '@module-federation/rsbuild-plugin'
 import { Apps } from './enums';
 import type { AppModuleFederationConfig, AppsModuleFederationConfig } from './types';
 
+const hostBaseUrl = process.env.HOST_BASE_URL || '';
+
+/**
+
 const hostBaseUrl = process.env.HOST_BASE_URL || '/';
 
 /**
@@ -93,11 +97,19 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
       dev: {
         shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/mf-manifest.json`
       },
-      preview: {
-        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/mf-manifest.json`
-      },
       prod: {
-        shared: `shared@${hostBaseUrl}packages/shared/dist/mf-manifest.json`
+        shared: (() => {
+          // If HOST_BASE_URL is set and includes localhost (preview mode)
+          if (hostBaseUrl && hostBaseUrl.includes('localhost')) {
+            return `shared@${hostBaseUrl}mf-manifest.json`;
+          }
+          // If HOST_BASE_URL is set for production deployment
+          if (hostBaseUrl && !hostBaseUrl.includes('localhost')) {
+            return `shared@${hostBaseUrl}/shared/mf-manifest.json`;
+          }
+          // Default production setup (localhost serving)
+          return `shared@http://localhost:3001/mf-manifest.json`;
+        })()
       }
     }
   },

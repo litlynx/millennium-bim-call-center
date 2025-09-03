@@ -11,16 +11,24 @@ import { dependencies } from '../package.json';
 
 const sharedConfig = getAppModuleFederationConfig(Apps.shared);
 
-// Determine the public path based on the mode
-const mode = process.env.RSBUILD_MODE || (process.env.NODE_ENV === 'production' ? 'prod' : 'dev');
+// Simple two-mode system: development vs production
+const isDevelopment = process.env.NODE_ENV !== 'production';
+const hostBaseUrl = process.env.HOST_BASE_URL || '';
+const isProduction = process.env.NODE_ENV === 'production';
 let publicPath = '/';
 
-if (mode === 'preview' || mode === 'dev') {
-  // In preview and dev modes, use absolute URL so shell can load assets correctly
+if (isDevelopment) {
+  // In development mode, use absolute URL so shell can load assets correctly
   publicPath = `http://localhost:${sharedConfig.devPort}/`;
+} else if (hostBaseUrl.includes('localhost')) {
+  // In preview mode (production build with localhost), use absolute URL
+  publicPath = hostBaseUrl;
+} else if (isProduction && !hostBaseUrl) {
+  // In actual production without explicit host, use absolute URL for shared package
+  publicPath = `http://localhost:3001/`;
 } else {
-  // In production, use relative path
-  publicPath = '/';
+  // Default fallback
+  publicPath = hostBaseUrl || '/';
 }
 
 export default defineConfig({
@@ -33,12 +41,8 @@ export default defineConfig({
       ...createMFConfig(Apps.shared, {
         shared: getSharedModulesConfig(dependencies)
       }),
-      ...(mode === 'preview' || mode === 'dev'
-        ? {
-            publicPath: publicPath,
-            manifest: true
-          }
-        : {})
+      publicPath: publicPath,
+      manifest: true
     })
   ],
   server: {

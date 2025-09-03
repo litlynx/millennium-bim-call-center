@@ -6,19 +6,14 @@ import { pluginReact } from '@rsbuild/plugin-react';
 
 const shellConfig = getAppModuleFederationConfig(Apps.shell);
 
-// Determine which remote configuration to use
-// Use RSBUILD_MODE environment variable to explicitly set the mode
-// or fall back to NODE_ENV detection
+// Simple two-mode system: development vs production
+const isDevelopment = process.env.NODE_ENV !== 'production';
 let remotes: Record<string, string> = {};
 
-const mode = process.env.RSBUILD_MODE || (process.env.NODE_ENV === 'production' ? 'prod' : 'dev');
-
-if (mode === 'prod') {
-  remotes = shellConfig.remotes?.prod || {};
-} else if (mode === 'preview') {
-  remotes = shellConfig.remotes?.preview || {};
-} else {
+if (isDevelopment) {
   remotes = shellConfig.remotes?.dev || {};
+} else {
+  remotes = shellConfig.remotes?.prod || {};
 }
 
 export default defineConfig({
