@@ -17,6 +17,9 @@ const getDevCommonConfig = ({ port }: { port: number }): RspackConfiguration =>
       historyApiFallback: true,
       hot: true
     },
+    watchOptions: {
+      ignored: ['**/node_modules/**', '**/@mf-types/**']
+    },
     plugins: []
   });
 

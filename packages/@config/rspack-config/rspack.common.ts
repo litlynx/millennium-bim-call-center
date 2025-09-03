@@ -1,6 +1,6 @@
 import * as path from 'node:path';
 import type { Configuration as RspackConfiguration } from '@rspack/core';
-import CopyPlugin from 'copy-webpack-plugin';
+import { ProvidePlugin } from '@rspack/core';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 // Note: We will keep tsconfig paths via alias in the consuming projects to avoid plugin incompat issues.
@@ -19,8 +19,18 @@ const getCommonConfig = (): RspackConfiguration => ({
     rules: [
       {
         test: /\.tsx?$/,
-        // Use built-in SWC for TS/TSX for speed. If Babel-only features are needed, we'll add babel-loader later.
-        type: 'javascript/auto'
+        use: [
+          {
+            loader: 'builtin:swc-loader',
+            options: {
+              jsc: {
+                parser: { syntax: 'typescript', tsx: true },
+                transform: { react: { runtime: 'automatic' } },
+                target: 'es2022'
+              }
+            }
+          }
+        ]
       },
       {
         test: /\.module\.css$/,
@@ -67,12 +77,13 @@ const getCommonConfig = (): RspackConfiguration => ({
     ]
   },
   plugins: [
+    new ProvidePlugin({ React: 'react' }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
       publicPath: '/',
       favicon: './public/favicon.png'
-    }),
-    new CopyPlugin({ patterns: [] })
+    })
+    // new CopyPlugin({ patterns: [] })
   ]
 });
 

@@ -5,6 +5,9 @@
   "types": "./src/Shell.tsx",
   "scripts": {
     "analyze": "webpack --config webpack/webpack.prod.ts --env analyze",
+    "rspack:dev": "rspack serve --open --config rspack/rspack.dev.ts",
+    "rspack:build": "rspack build --config rspack/rspack.prod.ts",
+    "rspack:analyze": "rspack build --config rspack/rspack.prod.ts --env analyze",
     "predev": "rimraf dist",
     "dev": "webpack serve --open --config webpack/webpack.dev.ts",
     "prebuild": "rimraf dist",
@@ -28,6 +31,9 @@
     "react-router": "^7.8.1"
   },
   "devDependencies": {
+    "@rspack/cli": "latest",
+    "@module-federation/enhanced": "latest",
+    "@module-federation/dts-plugin": "latest",
     "@babel/core": "^7.26.0",
     "@config/babel-config": "workspace:*",
     "@config/jest-config": "workspace:*",

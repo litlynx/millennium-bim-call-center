@@ -5,6 +5,9 @@
   "types": "./types/src/index.d.ts",
   "scripts": {
     "analyze": "webpack --config webpack/webpack.prod.ts --env analyze",
+    "rspack:dev": "rspack serve --config rspack/rspack.dev.ts",
+    "rspack:build": "rspack build --config rspack/rspack.prod.ts",
+    "rspack:analyze": "rspack build --config rspack/rspack.prod.ts --env analyze",
     "predev": "rimraf dist",
     "dev": "webpack serve --config webpack/webpack.dev.ts",
     "prebuild": "rimraf dist",
@@ -50,6 +53,9 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@rspack/cli": "latest",
+    "@module-federation/enhanced": "latest",
+    "@module-federation/dts-plugin": "latest",
     "@babel/core": "^7.26.0",
     "@config/babel-config": "workspace:*",
     "@config/jest-config": "workspace:*",
