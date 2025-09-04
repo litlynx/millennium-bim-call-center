@@ -11,6 +11,7 @@
     "emitDeclarationOnly": true,
     "strict": true,
     "strictFunctionTypes": true,
+    "types": ["jest", "node"],
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
