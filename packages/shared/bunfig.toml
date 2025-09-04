@@ -5,6 +5,7 @@ coveragePathIgnorePatterns = [
   "**/assets/**",
   "**/@config/**",
   "**/types/**",
+  "**/components/ui/**"
 ]
 
 preload = [

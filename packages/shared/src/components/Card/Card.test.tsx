@@ -63,8 +63,15 @@ describe('Card', () => {
     it('renders title with correct styling classes', () => {
       render(<Card title="Test Title" />);
 
-      const titleElement = screen.getByText('Test Title').parentElement;
-      expect(titleElement).toHaveClass('flex', 'items-center', 'gap-2', 'text-xl', 'font-bold');
+      // The title text is inside the CardTitle element which has the styling classes
+      const titleText = screen.getByText('Test Title');
+      const titleElement = titleText.parentElement; // This should be the CardTitle element
+
+      expect(titleElement?.className).toContain('flex');
+      expect(titleElement?.className).toContain('items-center');
+      expect(titleElement?.className).toContain('gap-2');
+      expect(titleElement?.className).toContain('text-xl');
+      expect(titleElement?.className).toContain('font-bold');
     });
 
     it('renders both icon and title together', () => {
@@ -268,7 +275,7 @@ describe('Card', () => {
       );
 
       // Check that the structure is logical for screen readers
-      const card = screen.getByRole('generic');
+      const card = screen.getByText('Accessible Card').closest('[class*="bg-white"]');
       expect(card).toBeInTheDocument();
 
       const title = screen.getByText('Accessible Card');
@@ -283,7 +290,7 @@ describe('Card', () => {
     it('supports aria attributes', () => {
       render(<Card aria-label="Custom card label" aria-describedby="card-description" />);
 
-      const card = screen.getByRole('generic');
+      const card = screen.getByLabelText('Custom card label');
       expect(card).toHaveAttribute('aria-label', 'Custom card label');
       expect(card).toHaveAttribute('aria-describedby', 'card-description');
     });
