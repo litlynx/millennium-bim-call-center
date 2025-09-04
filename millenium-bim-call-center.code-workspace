@@ -1,11 +1,10 @@
 {
   "folders": [
     { "name": "(Root)", "path": "." },
-    { "name": "Shell (Host)", "path": "apps/shell/src" },
-    { "name": "Header Pages (remote)", "path": "apps/header-pages/src" },
-    { "name": "Shared Components", "path": "packages/shared/src" },
-    { "name": "Config (Rspack/TS/etc)", "path": "packages/@config" },
-    { "name": "e2e", "path": "e2e" }
+    { "name": "Shell (Host)", "path": "apps/shell" },
+    { "name": "Shared Components", "path": "packages/shared" },
+    { "name": "ModuleFederation", "path": "packages/@config/rsconfig-config/" },
+    { "name": "Config (Webpack/TS/etc)", "path": "packages/@config" }
   ],
   "settings": {
     "workbench.startupEditor": "readme",
