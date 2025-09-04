@@ -22,7 +22,7 @@ export interface CardProps extends CardBaseProps {
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ icon, title, description, footer, children, className, ...props }, ref) => (
-    <UICard ref={ref} className={cn(className, 'bg-white')} {...props}>
+    <UICard ref={ref} className={cn(className, 'bg-white pt-5 pb-7 px-6')} {...props}>
       {(icon || title || description) && (
         <CardHeader>
           {(icon || title) && (
@@ -35,7 +35,11 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         </CardHeader>
       )}
 
-      {children && <CardContent className="flex-1 min-h-0 overflow-auto">{children}</CardContent>}
+      {children && (
+        <CardContent className="flex-1 min-h-0 overflow-auto flex flex-col gap-4">
+          {children}
+        </CardContent>
+      )}
 
       {footer && <CardFooter>{footer}</CardFooter>}
     </UICard>
