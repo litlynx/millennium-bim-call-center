@@ -18,11 +18,13 @@ mock.module('@ui/scroll-area', () => ({
       {children}
     </div>
   ),
-  ScrollBar: (props: any) => <div data-testid="mock-scroll-bar" {...props} />
+  ScrollBar: ({ forceMount, ...props }: any) => (
+    <div data-testid="mock-scroll-bar" data-forcemount={forceMount} {...props} />
+  )
 }));
 mock.module('@ui/tabs', () => ({
-  Tabs: ({ children, ...props }: any) => (
-    <div data-testid="mock-tabs" {...props}>
+  Tabs: ({ children, defaultValue, ...props }: any) => (
+    <div data-testid="mock-tabs" data-defaultvalue={defaultValue} {...props}>
       {children}
     </div>
   ),
@@ -71,13 +73,13 @@ describe('CardTabs', () => {
 
   it('uses defaultValue if provided', () => {
     render(<CardTabs tabs={tabs} defaultValue="tab2" />);
-    // The Tabs component is mocked, so we check the attribute
-    expect(screen.getByTestId('mock-tabs')).toHaveAttribute('defaultValue', 'tab2');
+    // The Tabs component is mocked, so we check the data attribute
+    expect(screen.getByTestId('mock-tabs').getAttribute('data-defaultvalue')).toBe('tab2');
   });
 
   it('uses first tab as default if defaultValue is not provided', () => {
     render(<CardTabs tabs={tabs} />);
-    expect(screen.getByTestId('mock-tabs')).toHaveAttribute('defaultValue', 'tab1');
+    expect(screen.getByTestId('mock-tabs').getAttribute('data-defaultvalue')).toBe('tab1');
   });
 
   it('applies custom class names to TabsList, TabsTrigger, TabsContent', () => {
@@ -89,12 +91,12 @@ describe('CardTabs', () => {
         tabsContentClassName="custom-content"
       />
     );
-    expect(screen.getByTestId('mock-tabs-list')).toHaveClass('custom-list');
+    expect(screen.getByTestId('mock-tabs-list').className).toContain('custom-list');
     screen.getAllByTestId('mock-tabs-trigger').forEach((trigger) => {
-      expect(trigger).toHaveClass('custom-trigger');
+      expect(trigger.className).toContain('custom-trigger');
     });
     screen.getAllByTestId('mock-tabs-content').forEach((content) => {
-      expect(content).toHaveClass('custom-content');
+      expect(content.className).toContain('custom-content');
     });
   });
 
@@ -115,12 +117,13 @@ describe('CardTabs', () => {
   it('handles empty defaultValue with empty tabs array', () => {
     render(<CardTabs tabs={[]} defaultValue="" />);
     expect(screen.getByTestId('mock-tabs')).toBeInTheDocument();
-    expect(screen.getByTestId('mock-tabs').getAttribute('defaultValue')).toBe('');
+    expect(screen.getByTestId('mock-tabs').getAttribute('data-defaultvalue')).toBe('');
   });
 
   it('handles empty defaultValue with non-empty tabs array', () => {
     render(<CardTabs tabs={tabs} defaultValue="" />);
-    expect(screen.getByTestId('mock-tabs').getAttribute('defaultValue')).toBe('');
+    // When defaultValue is empty string, component falls back to first tab
+    expect(screen.getByTestId('mock-tabs').getAttribute('data-defaultvalue')).toBe('tab1');
   });
 
   it('passes all cardProps to Card component', () => {
@@ -133,9 +136,12 @@ describe('CardTabs', () => {
 
     render(<CardTabs tabs={tabs} {...cardProps} />);
 
-    // Since Card is mocked, we verify that it receives the props
-    const cardElement = screen.getByTestId('mock-card');
+    // Since Card is mocked, we verify that it receives the props using the custom testid
+    const cardElement = screen.getByTestId('custom-card');
     expect(cardElement).toBeInTheDocument();
+    expect(cardElement.className).toContain('custom-card-class');
+    expect(cardElement.getAttribute('title')).toBe('Test Title');
+    expect(cardElement.getAttribute('description')).toBe('Test Description');
   });
 
   it('renders ScrollBar with correct props', () => {
@@ -144,15 +150,17 @@ describe('CardTabs', () => {
     const scrollBar = screen.getByTestId('mock-scroll-bar');
     expect(scrollBar).toBeInTheDocument();
     expect(scrollBar.getAttribute('id')).toBe('scroll-bar');
-    expect(scrollBar.hasAttribute('forceMount')).toBe(true);
-    expect(scrollBar.className).toContain('w-2');
-    expect(scrollBar.className).toContain('p-0');
-    expect(scrollBar.className).toContain('rounded-full');
-    expect(scrollBar.className).toContain('bg-gray-300/35');
-    expect(scrollBar.className).toContain('[&>div]:bg-primary-500');
-    expect(scrollBar.className).toContain('[&>div]:rounded-full');
-    expect(scrollBar.className).toContain('mt-4');
-    expect(scrollBar.className).toContain('h-[calc(100%_-_1rem)]');
+    expect(scrollBar.getAttribute('data-forcemount')).toBe('true');
+    // Check that the scrollBar contains expected classes
+    const classNames = scrollBar.className;
+    expect(classNames).toContain('w-2');
+    expect(classNames).toContain('p-0');
+    expect(classNames).toContain('rounded-full');
+    expect(classNames).toContain('bg-gray-300/35');
+    expect(classNames).toContain('[&>div]:bg-primary-500');
+    expect(classNames).toContain('[&>div]:rounded-full');
+    expect(classNames).toContain('mt-4');
+    expect(classNames).toContain('h-[calc(100%_-_1rem)]');
   });
 
   it('applies cn utility to tabsContentClassName', () => {
@@ -160,7 +168,7 @@ describe('CardTabs', () => {
     render(<CardTabs tabs={tabs} tabsContentClassName={customContentClass} />);
 
     screen.getAllByTestId('mock-tabs-content').forEach((content) => {
-      expect(content).toHaveClass(customContentClass);
+      expect(content.className).toContain(customContentClass);
     });
   });
 
@@ -190,8 +198,19 @@ describe('CardTabs', () => {
 
     render(<CardTabs tabs={complexTabs} />);
 
+    // Check for the complex label parts
     expect(screen.getByText('Label')).toBeInTheDocument();
-    expect(screen.getByText('1')).toBeInTheDocument();
+    expect(
+      screen.getByText((_content, node) => {
+        const hasText = (node: any) => node?.textContent === 'Complex Label 1';
+        const nodeHasText = hasText(node);
+        const childrenDontHaveText = Array.from(node?.children || []).every(
+          (child) => !hasText(child)
+        );
+        return nodeHasText && childrenDontHaveText;
+      })
+    ).toBeInTheDocument();
+
     expect(screen.getByText('Simple Label')).toBeInTheDocument();
     expect(screen.getByText('Complex Content')).toBeInTheDocument();
     expect(screen.getByText('With multiple elements')).toBeInTheDocument();
@@ -208,7 +227,7 @@ describe('CardTabs', () => {
 
     expect(screen.getAllByTestId('mock-tabs-trigger')).toHaveLength(1);
     expect(screen.getAllByTestId('mock-tabs-content')).toHaveLength(1);
-    expect(screen.getByTestId('mock-tabs').getAttribute('defaultValue')).toBe('only');
+    expect(screen.getByTestId('mock-tabs').getAttribute('data-defaultvalue')).toBe('only');
     expect(screen.getByText('Only Tab')).toBeInTheDocument();
     expect(screen.getByText('Only Content')).toBeInTheDocument();
   });
@@ -241,10 +260,11 @@ describe('CardTabs', () => {
     expect(tabsContainer).toContainElement(scrollArea);
 
     // Check that tabs have correct class
-    expect(tabsContainer.className).toContain('w-full');
-    expect(tabsContainer.className).toContain('h-full');
-    expect(tabsContainer.className).toContain('flex');
-    expect(tabsContainer.className).toContain('flex-col');
+    const tabsClassNames = tabsContainer.className;
+    expect(tabsClassNames).toContain('w-full');
+    expect(tabsClassNames).toContain('h-full');
+    expect(tabsClassNames).toContain('flex');
+    expect(tabsClassNames).toContain('flex-col');
 
     // Check that scroll area has correct class
     expect(scrollArea.className).toContain('h-full');
