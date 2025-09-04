@@ -136,5 +136,5 @@
     "**/*.tsbuildinfo": true
   },
   "biome.requireConfiguration": true,
-  "cSpell.words": ["happydom", "registrator", "rsbuild"]
+  "cSpell.words": ["registrator", "rsbuild"]
 }

@@ -24,8 +24,19 @@ registry = "https://registry.npmjs.org/"
 # Coverage settings
 coverage = true
 
-# Test file patterns
-preload = ["./packages/@config/bun-test-config/setupTests.ts", "./packages/@config/bun-test-config/happydom.ts", "./packages/@config/bun-test-config/testing-library.ts"]
+# Exclude assets from coverage across the monorepo
+coveragePathIgnorePatterns = [
+	"**/assets/**",
+  "**/@config/**",
+  "**/types/**",
+]
+
+# Ensure DOM globals exist, then run unified setup (matchers + cleanup)
+preload = [
+	"./packages/@config/bun-test-config/happydom.ts",
+	"./packages/@config/bun-test-config/setup-tests.ts",
+	"./packages/@config/bun-test-config/testing-library.ts"
+]
 
 [build]
 # Build configuration for TypeScript/JSX

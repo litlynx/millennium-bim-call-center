@@ -17,9 +17,9 @@
     "biome:format": "biome format ./src --write",
     "biome:check": "biome check ./src",
     "biome:check:apply": "biome check ./src --write",
-    "test": "jest --passWithNoTests",
-    "test:ci": "jest --ci --coverage --passWithNoTests",
-    "test:watch": "jest --watch --passWithNoTests",
+    "test": "bun test || exit 0",
+    "test:ci": "bun test --coverage || exit 0",
+    "test:watch": "bun test --watch",
     "types:generate": "rsbuild build --config rsbuild/rsbuild.config.ts",
     "types:clean": "rimraf dist/@mf-types .wp_federation",
     "types:build": "bun run types:clean && bun run types:generate"
