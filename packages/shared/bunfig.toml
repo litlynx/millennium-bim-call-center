@@ -1,0 +1,15 @@
+[test]
+coverage = true
+
+coveragePathIgnorePatterns = [
+  "**/assets/**",
+  "**/@config/**",
+  "**/types/**",
+  "**/components/ui/**"
+]
+
+preload = [
+  "../../packages/@config/bun-test-config/happydom.ts",
+  "../../packages/@config/bun-test-config/setup-tests.ts",
+  "../../packages/@config/bun-test-config/testing-library.ts"
+]

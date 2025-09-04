@@ -24,7 +24,8 @@
     "noUnusedParameters": false,
     "lib": ["es2021", "dom", "dom.iterable"],
     "moduleResolution": "bundler",
-    "strictFunctionTypes": true
+    "strictFunctionTypes": true,
+    "types": ["bun-types"]
   },
   "ts-node": {
     "compilerOptions": {
