@@ -25,7 +25,7 @@ registry = "https://registry.npmjs.org/"
 coverage = true
 
 # Test file patterns
-preload = ["./test-setup.ts"]
+preload = ["./packages/@config/bun-test-config/setupTests.ts", "./packages/@config/bun-test-config/happydom.ts", "./packages/@config/bun-test-config/testing-library.ts"]
 
 [build]
 # Build configuration for TypeScript/JSX

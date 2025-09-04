@@ -1,5 +1,10 @@
+import { createModuleFederationConfig } from '@module-federation/rsbuild-plugin';
 import { Apps } from './enums';
 import type { AppModuleFederationConfig, AppsModuleFederationConfig } from './types';
+
+const hostBaseUrl = process.env.HOST_BASE_URL || '';
+
+/**
 
 const hostBaseUrl = process.env.HOST_BASE_URL || '/';
 
@@ -83,50 +88,62 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
   [Apps.shell]: {
     devPort: mapPorts[Apps.shell].devPort,
     analyzerPort: mapPorts[Apps.shell].analyzerPort,
-    baseConfig: {
+    baseConfig: createModuleFederationConfig({
       name: 'shell',
-      filename: 'remoteEntry.js'
-    },
+      remotes: {},
+      dts: false
+    }),
     remotes: {
       dev: {
-        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js`
+        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/mf-manifest.json`
       },
       prod: {
-        shared: `shared@${hostBaseUrl}packages/shared/dist/remoteEntry.js`
+        shared: (() => {
+          // If HOST_BASE_URL is set and includes localhost (preview mode)
+          if (hostBaseUrl && hostBaseUrl.includes('localhost')) {
+            return `shared@${hostBaseUrl}mf-manifest.json`;
+          }
+          // If HOST_BASE_URL is set for production deployment
+          if (hostBaseUrl && !hostBaseUrl.includes('localhost')) {
+            return `shared@${hostBaseUrl}/shared/mf-manifest.json`;
+          }
+          // Default production setup (localhost serving)
+          return `shared@http://localhost:3001/mf-manifest.json`;
+        })()
       }
     }
   },
   [Apps.shared]: {
     devPort: mapPorts[Apps.shared].devPort,
     analyzerPort: mapPorts[Apps.shared].analyzerPort,
-    baseConfig: {
+    baseConfig: createModuleFederationConfig({
       name: 'shared',
-      filename: 'remoteEntry.js',
       exposes: {
         './components': './src/components',
         './components/ui': './src/components/ui',
         './components/Icon': './src/components/Icon/Icon',
         './styles/Global': './src/styles/GlobalStyles',
         './lib/utils': './src/lib/utils'
-      }
-    }
+      },
+      shared: {
+        react: { singleton: true },
+        'react-dom': { singleton: true }
+      },
+      dts: false
+    })
   }
 };
 
 export const getAppModuleFederationConfig = (appName: Apps): AppModuleFederationConfig =>
   appsModuleFederationConfig[appName];
 
-export const getDtsModuleConfig = (appName: Apps) => ({
-  test: /\.tsx?$/,
-  exclude: /node_modules/,
-  use: [
-    {
-      loader: 'dts-loader',
-      options: {
-        name: getAppModuleFederationConfig(appName).baseConfig.name,
-        exposes: getAppModuleFederationConfig(appName).baseConfig.exposes,
-        typesOutputDir: '.wp_federation'
-      }
-    }
-  ]
-});
+/**
+ * Create Module Federation config for Rsbuild
+ */
+export const createMFConfig = (appName: Apps, additionalOptions = {}) => {
+  const config = getAppModuleFederationConfig(appName);
+  return {
+    ...config.baseConfig,
+    ...additionalOptions
+  };
+};
