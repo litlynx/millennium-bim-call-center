@@ -1,7 +1,7 @@
 import type * as React from 'react';
 import { Outlet } from 'react-router';
 
-interface DashboardLayoutProps {
+export interface DashboardLayoutProps {
   children?: React.ReactNode;
 }
 
