@@ -1,3 +1,5 @@
+const Vision360Page = React.lazy(() => import('headerPages/App'));
+
 import * as React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import Spinner from './components';
@@ -13,6 +15,8 @@ const App: React.FC = () => {
         <Routes>
           {/* Dashboard routes with DashboardLayout */}
           <Route path="/" element={<DashboardLayout />}>
+            {/* Mount Vision360 micro-frontend with nested sub-routes */}
+            <Route path="vision360/*" element={<Vision360Page />} />
             <Route index element={<RootPage />} />
           </Route>
 

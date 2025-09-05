@@ -4,10 +4,16 @@
  */
 
 declare module 'shared/components' {
-  import type { ComponentType, ReactNode } from 'react';
+  import type { ComponentType, ReactNode, MouseEventHandler } from 'react';
 
   // Common UI components
-  export const Button: ComponentType<unknown>;
+  export interface ButtonProps {
+    variant?: 'solid' | 'outline';
+    children: ReactNode;
+    onClick?: MouseEventHandler<HTMLButtonElement>;
+    className?: string;
+  }
+  export const Button: ComponentType<ButtonProps>;
   export const Input: ComponentType<unknown>;
   export const Textarea: ComponentType<unknown>;
   export const InputWithLabel: ComponentType<unknown>;
@@ -59,8 +65,14 @@ declare module 'shared/components' {
 
 // Individual component declarations for backward compatibility
 declare module 'shared/components/Button' {
-  import type { ComponentType } from 'react';
-  const ButtonComponent: ComponentType<unknown>;
+  import type { ComponentType, ReactNode, MouseEventHandler } from 'react';
+  export interface ButtonProps {
+    variant?: 'solid' | 'outline';
+    children: ReactNode;
+    onClick?: MouseEventHandler<HTMLButtonElement>;
+    className?: string;
+  }
+  const ButtonComponent: ComponentType<ButtonProps>;
   export default ButtonComponent;
 }
 
