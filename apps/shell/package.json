@@ -4,11 +4,11 @@
   "main": "./src/Shell.tsx",
   "types": "./src/Shell.tsx",
   "scripts": {
-    "analyze": "webpack --config webpack/webpack.prod.ts --env analyze",
+    "analyze": "rspack --config rspack/rspack.prod.ts --env analyze",
     "predev": "rimraf dist",
-    "dev": "webpack serve --open --config webpack/webpack.dev.ts",
+    "dev": "rspack serve --config rspack/rspack.dev.ts",
     "prebuild": "rimraf dist",
-    "build": "webpack --config webpack/webpack.prod.ts",
+    "build": "rspack --config rspack/rspack.prod.ts",
     "biome:lint": "biome lint ./src",
     "biome:format": "biome format ./src --write",
     "biome:check": "biome check ./src",
@@ -16,9 +16,11 @@
     "test": "jest",
     "test:ci": "jest --ci --coverage",
     "test:watch": "jest --watch",
-    "types:generate": "webpack --config webpack/webpack.prod.ts --env typesOnly",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "types:generate": "rspack --config rspack/rspack.prod.ts --env typesOnly",
     "types:clean": "rimraf .wp_federation",
-    "types:build": "bun run types:clean && bun run types:generate"
+    "types:build": "bun run types:clean && bun run types:generate",
+    "serve:prod": "serve -s dist -l ${SHELL_PREVIEW_PORT:-8080}"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.8",
@@ -33,6 +35,8 @@
     "@config/jest-config": "workspace:*",
     "@config/tsconfig": "workspace:*",
     "@config/webpack-config": "workspace:*",
+    "@rspack/cli": "^1.5.2",
+    "@rspack/core": "^1.5.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@types/jest": "^29.5.14",
@@ -49,8 +53,6 @@
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
-    "webpack": "^5.97.1",
-    "webpack-cli": "^5.1.4",
     "webpack-merge": "^6.0.1"
   }
 }

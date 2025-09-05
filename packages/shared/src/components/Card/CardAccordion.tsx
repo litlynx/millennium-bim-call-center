@@ -1,6 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 
-interface CardAccordionProps {
+export interface CardAccordionProps {
   header: React.ReactNode;
   children: React.ReactNode;
 }
