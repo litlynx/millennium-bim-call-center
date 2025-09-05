@@ -1,5 +1,10 @@
+import { createModuleFederationConfig } from '@module-federation/rsbuild-plugin';
 import { Apps } from './enums';
 import type { AppModuleFederationConfig, AppsModuleFederationConfig } from './types';
+
+const hostBaseUrl = process.env.HOST_BASE_URL || '';
+
+/**
 
 const hostBaseUrl = process.env.HOST_BASE_URL || '/';
 
@@ -83,10 +88,11 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
   [Apps.shell]: {
     devPort: mapPorts[Apps.shell].devPort,
     analyzerPort: mapPorts[Apps.shell].analyzerPort,
-    baseConfig: {
+    baseConfig: createModuleFederationConfig({
       name: 'shell',
-      filename: 'remoteEntry.js'
-    },
+      remotes: {},
+      dts: false
+    }),
     remotes: {
       dev: {
         shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js`,
@@ -104,9 +110,8 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
   [Apps.shared]: {
     devPort: mapPorts[Apps.shared].devPort,
     analyzerPort: mapPorts[Apps.shared].analyzerPort,
-    baseConfig: {
+    baseConfig: createModuleFederationConfig({
       name: 'shared',
-      filename: 'remoteEntry.js',
       exposes: {
         './components': './src/components',
         './components/ui': './src/components/ui',
@@ -140,17 +145,13 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
 export const getAppModuleFederationConfig = (appName: Apps): AppModuleFederationConfig =>
   appsModuleFederationConfig[appName];
 
-export const getDtsModuleConfig = (appName: Apps) => ({
-  test: /\.tsx?$/,
-  exclude: /node_modules/,
-  use: [
-    {
-      loader: 'dts-loader',
-      options: {
-        name: getAppModuleFederationConfig(appName).baseConfig.name,
-        exposes: getAppModuleFederationConfig(appName).baseConfig.exposes,
-        typesOutputDir: '.wp_federation'
-      }
-    }
-  ]
-});
+/**
+ * Create Module Federation config for Rsbuild
+ */
+export const createMFConfig = (appName: Apps, additionalOptions = {}) => {
+  const config = getAppModuleFederationConfig(appName);
+  return {
+    ...config.baseConfig,
+    ...additionalOptions
+  };
+};
