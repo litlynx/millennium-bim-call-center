@@ -1,12 +1,15 @@
-import { createModuleFederationConfig } from '@module-federation/rsbuild-plugin';
 import { Apps } from './enums';
 import type { AppModuleFederationConfig, AppsModuleFederationConfig } from './types';
 
-const hostBaseUrl = process.env.HOST_BASE_URL || '';
-
-/**
-
 const hostBaseUrl = process.env.HOST_BASE_URL || '/';
+// Allow overriding prod remote base URLs per app when previewing locally on different ports
+// e.g. SHARED_HOST_BASE_URL=http://localhost:8081/ HEADER_PAGES_HOST_BASE_URL=http://localhost:8082/
+const sharedHostBaseUrl = (
+  process.env.SHARED_HOST_BASE_URL || `${hostBaseUrl}packages/shared/dist/`
+).replace(/(?<!:)\/\/$/, '/');
+const headerPagesHostBaseUrl = (
+  process.env.HEADER_PAGES_HOST_BASE_URL || `${hostBaseUrl}apps/header-pages/dist/`
+).replace(/(?<!:)\/\/$/, '/');
 
 /**
  * Configuration for port ranges and base ports
@@ -88,11 +91,10 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
   [Apps.shell]: {
     devPort: mapPorts[Apps.shell].devPort,
     analyzerPort: mapPorts[Apps.shell].analyzerPort,
-    baseConfig: createModuleFederationConfig({
+    baseConfig: {
       name: 'shell',
-      remotes: {},
-      dts: false
-    }),
+      filename: 'remoteEntry.js'
+    },
     remotes: {
       dev: {
         shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js`,
@@ -100,18 +102,19 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
         headerPages: `headerPages@http://localhost:${mapPorts[Apps['header-pages']].devPort}/remoteEntry.js`
       },
       prod: {
-        shared: `shared@${hostBaseUrl}packages/shared/dist/remoteEntry.js`,
+        shared: `shared@${sharedHostBaseUrl}remoteEntry.js`,
         // Assuming production assets are served from apps/header-pages/dist
         // Adjust this path if your deploy layout differs
-        headerPages: `headerPages@${hostBaseUrl}apps/header-pages/dist/remoteEntry.js`
+        headerPages: `headerPages@${headerPagesHostBaseUrl}remoteEntry.js`
       }
     }
   },
   [Apps.shared]: {
     devPort: mapPorts[Apps.shared].devPort,
     analyzerPort: mapPorts[Apps.shared].analyzerPort,
-    baseConfig: createModuleFederationConfig({
+    baseConfig: {
       name: 'shared',
+      filename: 'remoteEntry.js',
       exposes: {
         './components': './src/components',
         './components/ui': './src/components/ui',
@@ -136,7 +139,7 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
         shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js`
       },
       prod: {
-        shared: `shared@${hostBaseUrl}packages/shared/dist/remoteEntry.js`
+        shared: `shared@${sharedHostBaseUrl}remoteEntry.js`
       }
     }
   }
@@ -145,13 +148,17 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
 export const getAppModuleFederationConfig = (appName: Apps): AppModuleFederationConfig =>
   appsModuleFederationConfig[appName];
 
-/**
- * Create Module Federation config for Rsbuild
- */
-export const createMFConfig = (appName: Apps, additionalOptions = {}) => {
-  const config = getAppModuleFederationConfig(appName);
-  return {
-    ...config.baseConfig,
-    ...additionalOptions
-  };
-};
+export const getDtsModuleConfig = (appName: Apps) => ({
+  test: /\.tsx?$/,
+  exclude: /node_modules/,
+  use: [
+    {
+      loader: 'dts-loader',
+      options: {
+        name: getAppModuleFederationConfig(appName).baseConfig.name,
+        exposes: getAppModuleFederationConfig(appName).baseConfig.exposes,
+        typesOutputDir: '.wp_federation'
+      }
+    }
+  ]
+});
