@@ -12,6 +12,7 @@
     "types:generate": "rspack --config rspack/rspack.prod.ts --env typesOnly",
     "types:clean": "rimraf types .wp_federation",
     "types:build": "bun run types:clean && bun run types:generate",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "biome:lint": "biome lint ./src",
     "biome:format": "biome format ./src --write",
     "biome:check": "biome check ./src",

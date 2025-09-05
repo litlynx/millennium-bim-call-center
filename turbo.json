@@ -80,6 +80,10 @@
     "e2e:show-report": {
       "persistent": true
     },
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
+      "outputs": []
+    },
     "dev": {
       "dependsOn": ["^dev"],
       "cache": false,

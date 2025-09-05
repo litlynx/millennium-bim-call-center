@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop, feature/** ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.2.20
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Generate MF types
+        run: bun run types:build
+      - name: Type check
+        run: bun run typecheck
+      - name: Lint (Biome)
+        run: bun run biome:check
+      - name: Unit tests
+        run: bun run test:ci
+      - name: Upload coverage
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: '**/coverage/**'
