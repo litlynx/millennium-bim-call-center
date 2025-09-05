@@ -24,10 +24,3 @@ declare module '*.css?raw' {
   const content: string;
   export default content;
 }
-
-// Remote module declarations
-declare module 'headerPages/App' {
-  import type { ComponentType } from 'react';
-  const RemoteApp: ComponentType<unknown>;
-  export default RemoteApp;
-}
