@@ -1,12 +1,12 @@
-import { Apps } from '@config/webpack-config/enums';
+import * as path from 'node:path';
+import { Apps } from '@config/rspack-config/enums';
 import {
   getAppModuleFederationConfig,
   getDtsModuleConfig
-} from '@config/webpack-config/module-federation';
-import type { CommonModuleFederationConfig } from '@config/webpack-config/types';
-import { getSharedModulesConfig } from '@config/webpack-config/utils';
-import CopyPlugin from 'copy-webpack-plugin';
-import type * as webpack from 'webpack';
+} from '@config/rspack-config/module-federation';
+import type { CommonModuleFederationConfig } from '@config/rspack-config/types';
+import { getSharedModulesConfig } from '@config/rspack-config/utils';
+import * as rspack from '@rspack/core';
 import { dependencies } from '../package.json';
 
 export const getCommonModuleFederationConfig = (): CommonModuleFederationConfig => ({
@@ -20,12 +20,17 @@ export const getCommonModuleFederationConfig = (): CommonModuleFederationConfig 
   }
 });
 
-const getCommonConfig = (): webpack.Configuration => ({
+const getCommonConfig = (): rspack.Configuration => ({
+  resolve: {
+    tsConfig: {
+      configFile: path.resolve(__dirname, '../tsconfig.json')
+    }
+  },
   module: {
     rules: [getDtsModuleConfig(Apps['header-pages'])]
   },
   plugins: [
-    new CopyPlugin({
+    new rspack.CopyRspackPlugin({
       patterns: [{ from: './public/manifest.json', to: './manifest.json' }]
     })
   ]
