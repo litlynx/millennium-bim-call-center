@@ -6,6 +6,7 @@
     "baseUrl": ".",
     "paths": {
       "shared/*": [
+        "../../packages/shared/.wp_federation/shared/dts/src/*",
         "../../packages/shared/.wp_federation/shared/*",
         "../../packages/shared/types/src/*"
       ],

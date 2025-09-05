@@ -1,5 +1,4 @@
-// Import shared component declarations
-/// <reference path="../../../packages/@config/webpack-config/shared-components.d.ts" />
+// Federated module types are resolved via tsconfig paths to generated .wp_federation dts
 
 // to be able to import jpg/jpeg/png files
 declare module '*.jpg';
