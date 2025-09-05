@@ -1,29 +1,19 @@
 /* eslint-env node */
+const path = require('node:path');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    // Shared package content only
-    './src/**/*.{js,ts,jsx,tsx}',
-    './packages/*/src/**/*.{js,ts,jsx,tsx,mdx}',
-    './apps/*/src/**/*.{js,ts,jsx,tsx,mdx}',
-
-    // Specific app source files (avoid scanning dist and node_modules)
-    '../../apps/header/src/**/*.{js,ts,jsx,tsx}',
-    '../../apps/main/src/**/*.{js,ts,jsx,tsx}',
-    '../../apps/footer/src/**/*.{js,ts,jsx,tsx}',
-    '../../apps/vision360/src/**/*.{js,ts,jsx,tsx}',
-    '../../apps/personalData/src/**/*.{js,ts,jsx,tsx}',
-    '../../apps/records/src/**/*.{js,ts,jsx,tsx}',
-    '../../apps/sales/src/**/*.{js,ts,jsx,tsx}',
-    '../../apps/assetsProducts/src/**/*.{js,ts,jsx,tsx}',
-    '../../apps/channelsAndServices/src/**/*.{js,ts,jsx,tsx}',
-    '../../apps/historyInteractions/src/**/*.{js,ts,jsx,tsx}',
-
-    // Public HTML files
-    '../../apps/*/public/index.html',
-    './public/index.html'
+    // Shared package content
+    path.join(__dirname, './src/**/*.{js,ts,jsx,tsx,mdx}'),
+    // All packages (for shared components used across workspace)
+    path.join(__dirname, '../../packages/**/src/**/*.{js,ts,jsx,tsx,mdx}'),
+    // All apps in this monorepo
+    path.join(__dirname, '../../apps/**/src/**/*.{js,ts,jsx,tsx,mdx}'),
+    // Public HTML templates
+    path.join(__dirname, '../../apps/**/public/index.html'),
+    path.join(__dirname, './public/index.html')
   ],
-  darkMode: ['class', 'class'],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
@@ -32,9 +22,9 @@ module.exports = {
           'Helvetica',
           'Arial',
           'sans-serif',
-          'Apple Color Emoji"',
-          'Segoe UI Emoji"',
-          'Segoe UI Symbol"'
+          'Apple Color Emoji',
+          'Segoe UI Emoji',
+          'Segoe UI Symbol'
         ]
       },
       colors: {
