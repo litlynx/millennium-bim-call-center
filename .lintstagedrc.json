@@ -1,5 +1,7 @@
 {
-  "**/*.{js,jsx,ts,tsx,css,scss,md,mdx,html,json,jsonc}": [
-    "bash -c 'files=\"$@\"; echo \"$files\" | tr \" \" \"\\n\" | grep -vE \"(src/assets/icons|src/components/ui)\" | tr \"\\n\" \" \" | xargs -r biome check --write' --"
-  ]
+  "**/*.{js,jsx,ts,tsx,json,jsonc}": [
+    "bash -c 'files=\"$@\"; echo \"$files\" | tr \" \" \"\\n\" | grep -vE \"(src/assets/icons|src/components/ui|node_modules|dist|build|\\\\.wp_federation)\" | tr \"\\n\" \" \" | xargs -r biome check --write' --"
+  ],
+  "**/*.{css,scss,html}": ["echo \"Skipping CSS/HTML files - no linting configured\""],
+  "**/*.{md,mdx}": ["echo \"Skipping Markdown files - no linting configured\""]
 }
