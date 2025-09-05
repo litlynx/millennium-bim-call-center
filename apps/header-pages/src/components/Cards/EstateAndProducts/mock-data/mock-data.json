@@ -1,0 +1,52 @@
+{
+  "estateAndProducts": {
+    "assets": {
+      "title": "Activos",
+      "total": {
+        "amount": "17.999,24",
+        "currency": "MZN"
+      },
+      "items": [
+        {
+          "name": "DDA-764682235",
+          "amount": "10.272,24",
+          "currency": "MZN"
+        },
+        {
+          "name": "DDA-01293845456",
+          "amount": "5.272,24",
+          "currency": "MZN"
+        },
+        {
+          "name": "DP- Millennium IZI",
+          "amount": "0,00",
+          "currency": "MZN"
+        }
+      ]
+    },
+    "liabilities": {
+      "title": "Passivos",
+      "total": {
+        "amount": "17.999,24",
+        "currency": "MZN"
+      },
+      "items": [
+        {
+          "name": "Empréstimo Habitação",
+          "amount": "12.450,00",
+          "currency": "MZN"
+        },
+        {
+          "name": "Cartão de Crédito",
+          "amount": "3.249,24",
+          "currency": "MZN"
+        },
+        {
+          "name": "Empréstimo Pessoal",
+          "amount": "2.300,00",
+          "currency": "MZN"
+        }
+      ]
+    }
+  }
+}
