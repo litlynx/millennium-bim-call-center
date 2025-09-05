@@ -1,25 +1,14 @@
 {
-  "include": [
-    "./**/*",
-    "**/*",
-    "package.json",
-    "../__mocks__",
-    "../../packages/shared/src/__mocks__/shared",
-    "../../packages/shared/src/__mocks__/react-router.ts",
-    "../../packages/@config/bun-test-config/__mocks__/shared-modules.ts"
-  ],
-  "exclude": ["build", "dist", "coverage", "node_modules", "rspack/**/*"],
+  "include": ["./**/*", "**/*", "package.json"],
+  "exclude": ["build", "dist", "coverage", "node_modules"],
   "extends": "@config/tsconfig",
   "compilerOptions": {
-    "types": ["bun-types", "jest", "node", "@testing-library/jest-dom"],
     "baseUrl": ".",
     "paths": {
       "shared/*": [
-        "../../packages/shared/.wp_federation/shared/dts/src/*",
         "../../packages/shared/.wp_federation/shared/*",
         "../../packages/shared/types/src/*"
-      ],
-      "headerPages/*": [".wp_federation/headerPages/*"]
+      ]
     }
   }
 }

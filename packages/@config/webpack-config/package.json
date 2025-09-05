@@ -1,0 +1,24 @@
+{
+  "name": "@config/webpack-config",
+  "version": "1.0.0",
+  "dependencies": {
+    "@types/node": "^22.10.2",
+    "@types/webpack": "^5.28.5",
+    "@types/webpack-bundle-analyzer": "^4.7.0",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
+    "postcss": "^8.4.49",
+    "postcss-loader": "^8.1.1",
+    "style-loader": "^4.0.0",
+    "terser-webpack-plugin": "^5.3.11",
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
+    "webpack": "^5.97.1",
+    "webpack-bundle-analyzer": "^4.10.2",
+    "webpack-dev-server": "^5.1.0",
+    "webpack-merge": "^6.0.1",
+    "workbox-webpack-plugin": "^7.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

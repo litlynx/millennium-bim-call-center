@@ -1,4 +1,5 @@
-import { QueryClientProvider } from '@tanstack/react-query';
+const Vision360Page = React.lazy(() => import('headerPages/App'));
+
 import * as React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { client } from 'shared/queries';
@@ -18,40 +19,22 @@ import RootPage from './pages/Root/Root';
 const App: React.FC = () => {
   return (
     <React.Suspense fallback={<Spinner />}>
-      <QueryClientProvider client={client}>
-        <BrowserRouter>
-          <Routes>
-            {/* Dashboard routes with DashboardLayout */}
-            <Route path="/" element={<DashboardLayout />}>
-              <Route
-                path="/*"
-                element={
-                  <LazyErrorBoundary
-                    componentName="HeaderPages"
-                    enableIntelligentRecovery={true}
-                    onError={(error, errorInfo) => {
-                      console.error('HeaderPages component error:', error, errorInfo);
-                      // You can add error reporting service here (e.g., Sentry)
-                    }}
-                    onReset={() => {
-                      // Optional: Add any cleanup logic when user clicks "Try again"
-                      console.log('Resetting HeaderPages component');
-                    }}
-                  >
-                    <HeaderPages />
-                  </LazyErrorBoundary>
-                }
-              />
-              <Route index element={<RootPage />} />
-            </Route>
+      <BrowserRouter>
+        <Routes>
+          {/* Dashboard routes with DashboardLayout */}
+          <Route path="/" element={<DashboardLayout />}>
+            {/* Mount Vision360 micro-frontend with nested sub-routes */}
+            <Route path="vision360/*" element={<Vision360Page />} />
+            <Route index element={<RootPage />} />
+          </Route>
 
             {/* Catch-all route */}
             <Route path="*" element={<DashboardLayout />} />
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>
-    </React.Suspense>
-  );
+  </React.Suspense>
+  )
 };
 
 export default App;

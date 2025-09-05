@@ -24,4 +24,9 @@ declare module '*.css?raw' {
   export default content;
 }
 
-// Remote module declarations are provided by .wp_federation generated types via tsconfig paths
+// Remote module declarations
+declare module 'headerPages/App' {
+  import type { ComponentType } from 'react';
+  const RemoteApp: ComponentType<unknown>;
+  export default RemoteApp;
+}

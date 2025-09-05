@@ -3,7 +3,7 @@
     { "name": "(Root)", "path": "." },
     { "name": "Shell (Host)", "path": "apps/shell" },
     { "name": "Shared Components", "path": "packages/shared" },
-    { "name": "ModuleFederation", "path": "packages/@config/rsconfig-config/" },
+    { "name": "ModuleFederation", "path": "packages/@config/webpack-config/" },
     { "name": "Config (Webpack/TS/etc)", "path": "packages/@config" }
   ],
   "settings": {
