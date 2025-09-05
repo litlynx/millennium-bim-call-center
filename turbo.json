@@ -8,12 +8,22 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "env": ["HOST_BASE_URL", "API_BASE_URL"],
+      "env": [
+        "HOST_BASE_URL",
+        "API_BASE_URL",
+        "SHARED_HOST_BASE_URL",
+        "HEADER_PAGES_HOST_BASE_URL"
+      ],
       "outputs": ["dist/**", "build/**", "types/**", ".wp_federation/**"]
     },
     "build:local": {
       "dependsOn": ["^build"],
-      "env": ["HOST_BASE_URL", "API_BASE_URL"],
+      "env": [
+        "HOST_BASE_URL",
+        "API_BASE_URL",
+        "SHARED_HOST_BASE_URL",
+        "HEADER_PAGES_HOST_BASE_URL"
+      ],
       "outputs": ["dist/**", "build/**", "types/**", ".wp_federation/**"]
     },
     "types:generate": {
