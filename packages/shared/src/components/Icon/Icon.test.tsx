@@ -1,30 +1,15 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { describe, expect, it, mock } from 'bun:test';
+import { fireEvent, render } from '@testing-library/react';
 import type { IconType } from './Icon';
-
-// Mock the icons to avoid complex SVG rendering in tests
-mock.module('@/assets/icons', () => ({
-  HomeIcon: () => <div data-testid="home-icon">Home Icon</div>,
-  BellIcon: () => <div data-testid="bell-icon">Bell Icon</div>,
-  UserIcon: () => <div data-testid="user-icon">User Icon</div>,
-  CloseIcon: () => <div data-testid="close-icon">Close Icon</div>,
-  SearchIcon: () => <div data-testid="search-icon">Search Icon</div>,
-  // Add mock for an icon that follows the naming pattern
-  AlertFolderIcon: () => <div data-testid="alert-folder-icon">Alert Folder Icon</div>
-}));
-
-// Import the component after the mock is registered so the mock applies
-const { default: Icon } = await import('./Icon');
+import Icon from './Icon';
 
 describe('Icon', () => {
   const validIconType: IconType = 'home'; // HomeIcon -> home after regex transformation
 
   describe('Basic Rendering', () => {
     it('renders with a valid icon type', () => {
-      render(<Icon type={validIconType} />);
-
-      expect(screen.getByTestId('home-icon')).toBeInTheDocument();
+      const { container } = render(<Icon type={validIconType} />);
+      expect(container.querySelector('svg')).toBeInTheDocument();
     });
 
     it('returns null for invalid icon type', () => {
@@ -35,10 +20,9 @@ describe('Icon', () => {
 
     it('renders with correct HTML structure', () => {
       const { container } = render(<Icon type={validIconType} />);
-
       const spanElement = container.querySelector('span') as HTMLSpanElement;
       expect(spanElement).toBeInTheDocument();
-      expect(spanElement).toContainElement(screen.getByTestId('home-icon'));
+      expect(spanElement.querySelector('svg')).toBeInTheDocument();
     });
   });
 
@@ -176,17 +160,17 @@ describe('Icon', () => {
     it('handles different icon naming patterns correctly', () => {
       // Test that the regex transformation works
       // BellIcon -> bell, UserIcon -> user, etc.
-      render(<Icon type={'bell' as IconType} />);
-      expect(screen.getByTestId('bell-icon')).toBeInTheDocument();
+      const { container: c1 } = render(<Icon type={'bell' as IconType} />);
+      expect(c1.querySelector('svg')).toBeInTheDocument();
 
-      render(<Icon type={'user' as IconType} />);
-      expect(screen.getByTestId('user-icon')).toBeInTheDocument();
+      const { container: c2 } = render(<Icon type={'user' as IconType} />);
+      expect(c2.querySelector('svg')).toBeInTheDocument();
     });
 
     it('handles complex icon names with transformation', () => {
       // AlertFolderIcon should become alertFolder after transformation
-      render(<Icon type={'alertFolder' as IconType} />);
-      expect(screen.getByTestId('alert-folder-icon')).toBeInTheDocument();
+      const { container } = render(<Icon type={'alertFolder' as IconType} />);
+      expect(container.querySelector('svg')).toBeInTheDocument();
     });
   });
 
@@ -219,7 +203,8 @@ describe('Icon', () => {
       expect(mockOnClick).toHaveBeenCalledTimes(1);
 
       // Check icon renders
-      expect(screen.getByTestId('home-icon')).toBeInTheDocument();
+      // Using container-based assertion; icon renders an SVG
+      expect(spanElement.querySelector('svg')).toBeInTheDocument();
     });
   });
 

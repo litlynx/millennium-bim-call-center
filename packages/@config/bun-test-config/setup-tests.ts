@@ -3,7 +3,8 @@
 // - In Bun: happy-dom is registered via bunfig.toml preload. This file still
 //   runs and sets up cleanup for Testing Library.
 
-import '@testing-library/jest-dom';
+// Use Vitest-compatible matchers so Bun doesn't rely on Jest's expect utils
+import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
 
 // Register cleanup after each test for both Jest and Bun without importing

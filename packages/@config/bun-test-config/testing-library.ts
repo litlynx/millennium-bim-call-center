@@ -1,7 +1,11 @@
 /// <reference types="bun-types/test-globals" />
+
 import { afterEach, expect } from 'bun:test';
 import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers';
-import * as matchers from '@testing-library/jest-dom/matchers';
+// Use the Vitest-compatible matcher bundle for Bun/Vitest environments.
+// This avoids relying on Jest's expect utils in @testing-library/jest-dom.
+// See: https://testing-library.com/docs/ecosystem-jest-dom/#vitest
+import * as matchers from '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
 
 declare module 'bun:test' {

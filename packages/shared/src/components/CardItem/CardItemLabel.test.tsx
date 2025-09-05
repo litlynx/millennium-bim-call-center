@@ -1,6 +1,5 @@
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { describe, expect, it } from 'bun:test';
+import { render, screen } from '@testing-library/react';
 import CardItemLabel from './CardItemLabel';
 
 describe('CardItemLabel', () => {

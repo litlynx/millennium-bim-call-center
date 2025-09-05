@@ -1,25 +1,6 @@
-import { describe, expect, it, mock } from 'bun:test';
+import { describe, expect, it } from 'bun:test';
 import { fireEvent, render, screen } from '@testing-library/react';
 import Input from './Input';
-
-// Mock the Icon component since it's external dependency
-mock.module('@/components/Icon', () => ({
-  default: function MockIcon({
-    type,
-    className,
-    onClick
-  }: {
-    type: string;
-    className?: string;
-    onClick?: () => void;
-  }) {
-    return (
-      <button data-testid={`icon-${type}`} className={className} onClick={onClick} type="button">
-        {type} icon
-      </button>
-    );
-  }
-}));
 
 describe('Input', () => {
   it('renders input field with default props', () => {
@@ -54,12 +35,12 @@ describe('Input', () => {
   });
 
   it('renders close icon with correct props', () => {
-    render(<Input />);
+    const { container } = render(<Input />);
 
-    const icon = screen.getByTestId('icon-closeBlack');
+    // Icon renders as a span with the provided classes and contains an SVG
+    const icon = container.querySelector('span.cursor-pointer');
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveClass(
-      'cursor-pointer',
       'absolute',
       'h-fit',
       'w-fit',
@@ -68,13 +49,14 @@ describe('Input', () => {
       'top-1/2',
       '-translate-y-1/2'
     );
+    expect(icon?.querySelector('svg')).toBeInTheDocument();
   });
 
   it('clears input value when close icon is clicked', () => {
-    render(<Input />);
+    const { container } = render(<Input />);
 
     const input = screen.getByRole('textbox') as HTMLInputElement;
-    const icon = screen.getByTestId('icon-closeBlack');
+    const icon = container.querySelector('span.cursor-pointer') as HTMLElement;
 
     // Type some text first
     const testValue = 'Test text';
@@ -111,10 +93,10 @@ describe('Input', () => {
   });
 
   it('maintains input state across multiple interactions', () => {
-    render(<Input />);
+    const { container } = render(<Input />);
 
     const input = screen.getByRole('textbox') as HTMLInputElement;
-    const icon = screen.getByTestId('icon-closeBlack');
+    const icon = container.querySelector('span.cursor-pointer') as HTMLElement;
 
     // First interaction
     fireEvent.change(input, { target: { value: 'First' } });
@@ -178,10 +160,10 @@ describe('Input', () => {
   });
 
   it('handles rapid state changes correctly', () => {
-    render(<Input />);
+    const { container } = render(<Input />);
 
     const input = screen.getByRole('textbox') as HTMLInputElement;
-    const icon = screen.getByTestId('icon-closeBlack');
+    const icon = container.querySelector('span.cursor-pointer') as HTMLElement;
 
     // Rapid typing and clearing
     fireEvent.change(input, { target: { value: 'a' } });

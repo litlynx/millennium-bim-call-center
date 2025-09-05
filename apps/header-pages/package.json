@@ -32,7 +32,7 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@config/babel-config": "workspace:*",
-    "@config/jest-config": "workspace:*",
+    "@config/bun-test-config": "workspace:*",
     "@config/tsconfig": "workspace:*",
     "@config/rspack-config": "workspace:*",
     "@rspack/cli": "^1.5.2",
