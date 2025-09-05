@@ -1,49 +1,15 @@
 import { Apps } from './enums';
 import type { AppModuleFederationConfig, AppsModuleFederationConfig } from './types';
 
-// Unique id per build/run for cache-busting (can be overridden via env for debugging)
-const DEV_BUILD_ID = process.env.DEV_BUILD_ID || String(Date.now());
-
-// Ensure a base URL ends with a single trailing slash
-const ensureTrailingSlash = (url: string) => (url.endsWith('/') ? url : `${url}/`);
-
-// If pointing to localhost, add a cache-busting query to avoid stale remoteEntry caching during preview/prod-serve
-const withLocalhostCacheBust = (fullUrl: string) => {
-  const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\\d+)?\//.test(fullUrl);
-  if (!isLocalhost) return fullUrl;
-  const sep = fullUrl.includes('?') ? '&' : '?';
-  return `${fullUrl}${sep}cb=${DEV_BUILD_ID}`;
-};
-
 const hostBaseUrl = process.env.HOST_BASE_URL || '/';
-// Helper to resolve a remote base URL in this priority:
-// 1) Explicit per-remote env (SHARED_HOST_BASE_URL / HEADER_PAGES_HOST_BASE_URL)
-// 2) Absolute HOST_BASE_URL + path
-// 3) Local preview fallback to http://localhost:<port>/ when HOST_BASE_URL is relative (e.g. '/')
-const resolveRemoteBaseUrl = (
-  explicitEnvBase: string | undefined,
-  pathUnderHost: string,
-  localhostPort: number
-) => {
-  if (explicitEnvBase) return ensureTrailingSlash(explicitEnvBase);
-  const isAbsoluteHost = /^https?:\/\//.test(hostBaseUrl);
-  if (isAbsoluteHost) return ensureTrailingSlash(`${hostBaseUrl}${pathUnderHost}`);
-  // Fallback for local preview: always use explicit localhost ports so static servers don’t rewrite to index.html
-  return ensureTrailingSlash(`http://localhost:${localhostPort}/`);
-};
-
 // Allow overriding prod remote base URLs per app when previewing locally on different ports
 // e.g. SHARED_HOST_BASE_URL=http://localhost:8081/ HEADER_PAGES_HOST_BASE_URL=http://localhost:8082/
-const sharedHostBaseUrl = resolveRemoteBaseUrl(
-  process.env.SHARED_HOST_BASE_URL,
-  'packages/shared/dist/',
-  parseInt(process.env.SHARED_PREVIEW_PORT || '8081', 10)
-);
-const headerPagesHostBaseUrl = resolveRemoteBaseUrl(
-  process.env.HEADER_PAGES_HOST_BASE_URL,
-  'apps/header-pages/dist/',
-  parseInt(process.env.HEADER_PAGES_PREVIEW_PORT || '8082', 10)
-);
+const sharedHostBaseUrl = (
+  process.env.SHARED_HOST_BASE_URL || `${hostBaseUrl}packages/shared/dist/`
+).replace(/(?<!:)\/\/$/, '/');
+const headerPagesHostBaseUrl = (
+  process.env.HEADER_PAGES_HOST_BASE_URL || `${hostBaseUrl}apps/header-pages/dist/`
+).replace(/(?<!:)\/\/$/, '/');
 
 /**
  * Configuration for port ranges and base ports
@@ -86,11 +52,11 @@ const generatePortMappings = () => {
   // Get numeric enum values (the actual enum keys we use)
   const appEntries = Object.values(Apps).filter((value) => typeof value === 'number') as Apps[];
 
-  appEntries.forEach((enumValue) => {
+  appEntries.forEach((enumValue, index) => {
     // Get the string name of the enum
     const appName = Apps[enumValue];
-    const calculatedDevPort = PORT_CONFIG.DEV_BASE_PORT + enumValue;
-    const calculatedAnalyzerPort = PORT_CONFIG.ANALYZER_BASE_PORT + enumValue;
+    const calculatedDevPort = PORT_CONFIG.DEV_BASE_PORT + index;
+    const calculatedAnalyzerPort = PORT_CONFIG.ANALYZER_BASE_PORT + index;
 
     portMappings[enumValue] = {
       devPort: getPortFromEnv(appName, 'dev', calculatedDevPort),
@@ -131,22 +97,15 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
     },
     remotes: {
       dev: {
-        // Add cache-busting query so Firefox doesn't serve a cached remoteEntry in dev
-        shared: `shared@http://localhost:${
-          mapPorts[Apps.shared].devPort
-        }/remoteEntry.js?cb=${DEV_BUILD_ID}`,
+        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js`,
         // Exposes from apps/header-pages
-        headerPages: `headerPages@http://localhost:${
-          mapPorts[Apps['header-pages']].devPort
-        }/remoteEntry.js?cb=${DEV_BUILD_ID}`
+        headerPages: `headerPages@http://localhost:${mapPorts[Apps['header-pages']].devPort}/remoteEntry.js`
       },
       prod: {
-        // In preview/local prod-serve, add cache-busting to avoid stale remoteEntry caches
-        shared: `shared@${withLocalhostCacheBust(`${sharedHostBaseUrl}remoteEntry.js`)}`,
-        // Assuming production assets are served from apps/header-pages/dist; adjust if deploy layout differs
-        headerPages: `headerPages@${withLocalhostCacheBust(
-          `${headerPagesHostBaseUrl}remoteEntry.js`
-        )}`
+        shared: `shared@${sharedHostBaseUrl}remoteEntry.js`,
+        // Assuming production assets are served from apps/header-pages/dist
+        // Adjust this path if your deploy layout differs
+        headerPages: `headerPages@${headerPagesHostBaseUrl}remoteEntry.js`
       }
     }
   },
@@ -161,8 +120,7 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
         './components/ui': './src/components/ui',
         './components/Icon': './src/components/Icon/Icon',
         './styles/Global': './src/styles/GlobalStyles',
-        './lib/utils': './src/lib/utils',
-        './queries': './src/queries'
+        './lib/utils': './src/lib/utils'
       }
     }
   },
@@ -173,20 +131,15 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
       name: 'headerPages',
       filename: 'remoteEntry.js',
       exposes: {
-        './App': './src/App',
-        './ChannelAndServicesPage': './src/ChannelsAndServices/pages/ChannelAndServicesPage',
-        './Vision360Page': './src/Vision360/pages/Vision360Page'
+        './App': './src/App'
       }
     },
     remotes: {
       dev: {
-        // Add cache-busting query so Firefox doesn't serve a cached remoteEntry in dev
-        shared: `shared@http://localhost:${
-          mapPorts[Apps.shared].devPort
-        }/remoteEntry.js?cb=${DEV_BUILD_ID}`
+        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js`
       },
       prod: {
-        shared: `shared@${withLocalhostCacheBust(`${sharedHostBaseUrl}remoteEntry.js`)}`
+        shared: `shared@${sharedHostBaseUrl}remoteEntry.js`
       }
     }
   }

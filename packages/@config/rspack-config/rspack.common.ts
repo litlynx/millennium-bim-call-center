@@ -1,7 +1,6 @@
-import * as path from 'node:path';
-import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
 import * as rspack from '@rspack/core';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import * as path from 'node:path';
 import InjectGoogleFontsPlugin from './plugins/google-fonts-plugin';
 
 const getCommonConfig = (): rspack.Configuration => {
@@ -131,13 +130,8 @@ const getCommonConfig = (): rspack.Configuration => {
         publicPath: '/',
         favicon: './public/favicon.png'
       }),
-      new InjectGoogleFontsPlugin(),
-      // Only register the plugin when RSDOCTOR is true, as the plugin will increase the build time.
-      process.env.RSDOCTOR &&
-        new RsdoctorRspackPlugin({
-          // plugin options
-        })
-    ].filter(Boolean)
+      new InjectGoogleFontsPlugin()
+    ]
   };
 };
 

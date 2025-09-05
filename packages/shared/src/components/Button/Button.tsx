@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import type * as React from 'react';
 
-interface ButtonProps {
+export interface ButtonProps {
   variant?: 'solid' | 'outline';
   children: React.ReactNode;
   onClick?: () => void;

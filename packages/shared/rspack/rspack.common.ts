@@ -1,14 +1,12 @@
-/* Shared packages rspack config */
-
-import * as path from 'node:path';
 import { Apps } from '@config/rspack-config/enums';
 import {
-  getAppModuleFederationConfig,
-  getDtsModuleConfig
+    getAppModuleFederationConfig,
+    getDtsModuleConfig
 } from '@config/rspack-config/module-federation';
 import type { CompleteModuleFederationConfig } from '@config/rspack-config/types';
 import { getSharedModulesConfig } from '@config/rspack-config/utils';
 import * as rspack from '@rspack/core';
+import * as path from 'node:path';
 import { dependencies } from '../package.json';
 
 const getCommonConfig = (): rspack.Configuration => ({
@@ -23,26 +21,7 @@ const getCommonConfig = (): rspack.Configuration => ({
   plugins: [
     new rspack.container.ModuleFederationPlugin({
       ...getAppModuleFederationConfig(Apps.shared).baseConfig,
-      shared: {
-        ...getSharedModulesConfig(dependencies),
-        // Share core React libs without eagerly bundling them into the initial chunk
-        // This keeps the vendors bundle smaller while still allowing the host to provide them.
-        react: {
-          singleton: true,
-          requiredVersion: dependencies.react,
-          eager: false
-        },
-        'react-dom': {
-          singleton: true,
-          requiredVersion: dependencies['react-dom'],
-          eager: false
-        },
-        'react-dom/client': {
-          singleton: true,
-          requiredVersion: dependencies['react-dom'],
-          eager: false
-        }
-      }
+      shared: getSharedModulesConfig(dependencies)
     } as CompleteModuleFederationConfig)
   ]
 });
