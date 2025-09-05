@@ -89,10 +89,15 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
     },
     remotes: {
       dev: {
-        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js`
+        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js`,
+        // Exposes from apps/header-pages
+        headerPages: `headerPages@http://localhost:${mapPorts[Apps['header-pages']].devPort}/remoteEntry.js`
       },
       prod: {
-        shared: `shared@${hostBaseUrl}packages/shared/dist/remoteEntry.js`
+        shared: `shared@${hostBaseUrl}packages/shared/dist/remoteEntry.js`,
+        // Assuming production assets are served from apps/header-pages/dist
+        // Adjust this path if your deploy layout differs
+        headerPages: `headerPages@${hostBaseUrl}apps/header-pages/dist/remoteEntry.js`
       }
     }
   },
@@ -108,6 +113,25 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
         './components/Icon': './src/components/Icon/Icon',
         './styles/Global': './src/styles/GlobalStyles',
         './lib/utils': './src/lib/utils'
+      }
+    }
+  },
+  [Apps['header-pages']]: {
+    devPort: mapPorts[Apps['header-pages']].devPort,
+    analyzerPort: mapPorts[Apps['header-pages']].analyzerPort,
+    baseConfig: {
+      name: 'headerPages',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './App': './src/App'
+      }
+    },
+    remotes: {
+      dev: {
+        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js`
+      },
+      prod: {
+        shared: `shared@${hostBaseUrl}packages/shared/dist/remoteEntry.js`
       }
     }
   }
