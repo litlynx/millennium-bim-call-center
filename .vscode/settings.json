@@ -3,7 +3,9 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "explicit",
-    "source.organizeImports.biome": "explicit"
+    "source.organizeImports.biome": "explicit",
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
   },
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome"
@@ -136,5 +138,7 @@
     "**/*.tsbuildinfo": true
   },
   "biome.requireConfiguration": true,
-  "cSpell.words": ["registrator", "rsbuild"]
+  "editor.codeActionsOnSaveTimeout": 10000,
+  "eslint.enable": false,
+  "cSpell.words": ["rspack"]
 }

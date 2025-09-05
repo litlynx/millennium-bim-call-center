@@ -1,6 +1,14 @@
 {
   "include": ["**/*", "package.json"],
-  "exclude": ["build", "dist", "coverage", "node_modules", ".wp_federation", "types"],
+  "exclude": [
+    "build",
+    "dist",
+    "coverage",
+    "node_modules",
+    ".wp_federation",
+    "types",
+    "rspack/**/*"
+  ],
   "extends": "@config/tsconfig",
   "compilerOptions": {
     "moduleResolution": "bundler",

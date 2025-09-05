@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/correctness/useUniqueElementIds: is is being used statically */
 import { ScrollArea, ScrollBar } from '@ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs';
-import React from 'react';
+import * as React from 'react';
 import { cn } from '@/lib/utils';
 import type { CardProps } from './Card';
 import Card from './Card';
@@ -20,7 +20,9 @@ export interface CardTabsProps extends Omit<CardProps, 'children'> {
   tabsContentClassName?: string;
 }
 
-const CardTabs = React.forwardRef<HTMLDivElement, CardTabsProps>(
+const CardTabs: React.ForwardRefExoticComponent<
+  CardTabsProps & React.RefAttributes<HTMLDivElement>
+> = React.forwardRef<HTMLDivElement, CardTabsProps>(
   (
     {
       tabs,

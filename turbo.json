@@ -8,27 +8,22 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "env": ["HOST_BASE_URL", "API_BASE_URL"],
+      "env": [
+        "HOST_BASE_URL",
+        "API_BASE_URL",
+        "SHARED_HOST_BASE_URL",
+        "HEADER_PAGES_HOST_BASE_URL"
+      ],
       "outputs": ["dist/**", "build/**", "types/**", ".wp_federation/**"]
-    },
-    "rsbuild:dev": {
-      "dependsOn": ["^rsbuild:dev"],
-      "cache": false,
-      "persistent": true
-    },
-    "rsbuild:build": {
-      "dependsOn": ["^rsbuild:build"],
-      "env": ["HOST_BASE_URL", "API_BASE_URL"],
-      "outputs": ["dist/**", "build/**"]
-    },
-    "rsbuild:preview": {
-      "dependsOn": ["rsbuild:build"],
-      "env": ["HOST_BASE_URL", "API_BASE_URL"],
-      "persistent": true
     },
     "build:local": {
       "dependsOn": ["^build"],
-      "env": ["HOST_BASE_URL", "API_BASE_URL"],
+      "env": [
+        "HOST_BASE_URL",
+        "API_BASE_URL",
+        "SHARED_HOST_BASE_URL",
+        "HEADER_PAGES_HOST_BASE_URL"
+      ],
       "outputs": ["dist/**", "build/**", "types/**", ".wp_federation/**"]
     },
     "types:generate": {
@@ -42,10 +37,6 @@
       "outputs": ["types/**", ".wp_federation/**"]
     },
     "serve:local": {
-      "persistent": true
-    },
-    "serve:prod": {
-      "dependsOn": ["build"],
       "persistent": true
     },
     "start": { "persistent": true },
@@ -88,6 +79,10 @@
     },
     "e2e:show-report": {
       "persistent": true
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
+      "outputs": []
     },
     "dev": {
       "dependsOn": ["^dev"],

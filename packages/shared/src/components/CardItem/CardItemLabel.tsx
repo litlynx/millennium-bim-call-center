@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-interface CardItemLabelProps {
+export interface CardItemLabelProps {
   title: string;
   text: string;
   className?: string;
