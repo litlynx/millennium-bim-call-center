@@ -13,6 +13,11 @@ export const getCommonModuleFederationConfig = (): CommonModuleFederationConfig 
   ...getAppModuleFederationConfig(Apps.shell).baseConfig,
   shared: {
     ...getSharedModulesConfig(dependencies),
+    // Ensure subpath is shared as well to avoid separate bundling
+    'react-dom/client': {
+      singleton: true,
+      requiredVersion: dependencies['react-dom']
+    },
     'react-router': {
       singleton: true,
       requiredVersion: dependencies['react-router']

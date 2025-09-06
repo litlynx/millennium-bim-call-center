@@ -13,6 +13,10 @@ export const getCommonModuleFederationConfig = (): CommonModuleFederationConfig 
   ...getAppModuleFederationConfig(Apps['header-pages']).baseConfig,
   shared: {
     ...getSharedModulesConfig(dependencies),
+    'react-dom/client': {
+      singleton: true,
+      requiredVersion: dependencies['react-dom']
+    },
     'react-router': {
       singleton: true,
       requiredVersion: dependencies['react-router']

@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "analyze": "turbo run analyze",
+    "rsdoctor": "turbo run rsdoctor",
     "build": "turbo run build",
     "build:local": "cross-env-shell \"HOST_BASE_URL=http://localhost:${REMOTES_PORT:-3333}/ turbo run build\"",
     "dev": "turbo run dev",

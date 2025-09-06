@@ -34,6 +34,11 @@ const getCommonConfig = (): rspack.Configuration => ({
           singleton: true,
           requiredVersion: dependencies['react-dom'],
           eager: true
+        },
+        'react-dom/client': {
+          singleton: true,
+          requiredVersion: dependencies['react-dom'],
+          eager: true
         }
       }
     } as CompleteModuleFederationConfig)

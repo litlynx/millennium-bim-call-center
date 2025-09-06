@@ -9,6 +9,21 @@ import getCommonConfig, { getCommonModuleFederationConfig } from './rspack.commo
 
 const getProdConfig = (env: Record<string, string | boolean>): rspack.Configuration => {
   return merge(getProdCommonConfig(), getCommonConfig(), {
+    optimization: {
+      // Encourage a single vendor chunk so react/react-dom aren't duplicated
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            enforce: true
+          }
+        }
+      },
+      runtimeChunk: 'single'
+    },
     plugins: [
       new rspack.container.ModuleFederationPlugin({
         ...getCommonModuleFederationConfig(),
