@@ -21,7 +21,21 @@ const getCommonConfig = (): rspack.Configuration => ({
   plugins: [
     new rspack.container.ModuleFederationPlugin({
       ...getAppModuleFederationConfig(Apps.shared).baseConfig,
-      shared: getSharedModulesConfig(dependencies)
+      shared: {
+        ...getSharedModulesConfig(dependencies),
+        // Ensure standalone access works by bundling local copies eagerly
+        // This avoids RUNTIME-006 (loadShareSync) when opening the remote directly
+        react: {
+          singleton: true,
+          requiredVersion: dependencies.react,
+          eager: true
+        },
+        'react-dom': {
+          singleton: true,
+          requiredVersion: dependencies['react-dom'],
+          eager: true
+        }
+      }
     } as CompleteModuleFederationConfig)
   ]
 });

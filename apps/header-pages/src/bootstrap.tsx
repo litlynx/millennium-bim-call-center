@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router';
 import GlobalStylesProvider from 'shared/styles/Global';
 import App from './App';
 
@@ -8,6 +9,8 @@ const root = createRoot(container);
 
 root.render(
   <GlobalStylesProvider>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </GlobalStylesProvider>
 );
