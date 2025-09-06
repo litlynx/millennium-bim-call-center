@@ -1,6 +1,9 @@
 import { Apps } from './enums';
 import type { AppModuleFederationConfig, AppsModuleFederationConfig } from './types';
 
+// Unique id per dev server run, can be overridden via env for debugging
+const DEV_BUILD_ID = process.env.DEV_BUILD_ID || String(Date.now());
+
 const hostBaseUrl = process.env.HOST_BASE_URL || '/';
 // Allow overriding prod remote base URLs per app when previewing locally on different ports
 // e.g. SHARED_HOST_BASE_URL=http://localhost:8081/ HEADER_PAGES_HOST_BASE_URL=http://localhost:8082/
@@ -97,9 +100,10 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
     },
     remotes: {
       dev: {
-        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js`,
+        // Add cache-busting query so Firefox doesn't serve a cached remoteEntry in dev
+        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js?cb=${DEV_BUILD_ID}`,
         // Exposes from apps/header-pages
-        headerPages: `headerPages@http://localhost:${mapPorts[Apps['header-pages']].devPort}/remoteEntry.js`
+        headerPages: `headerPages@http://localhost:${mapPorts[Apps['header-pages']].devPort}/remoteEntry.js?cb=${DEV_BUILD_ID}`
       },
       prod: {
         shared: `shared@${sharedHostBaseUrl}remoteEntry.js`,
@@ -136,7 +140,8 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
     },
     remotes: {
       dev: {
-        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js`
+        // Add cache-busting query so Firefox doesn't serve a cached remoteEntry in dev
+        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js?cb=${DEV_BUILD_ID}`
       },
       prod: {
         shared: `shared@${sharedHostBaseUrl}remoteEntry.js`

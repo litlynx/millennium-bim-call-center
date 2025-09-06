@@ -9,3 +9,15 @@ if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     });
   });
 }
+
+// In development, proactively unregister any existing service workers to avoid stale caches
+if (process.env.NODE_ENV !== 'production' && 'serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .getRegistrations()
+    .then((registrations) => {
+      for (const registration of registrations) {
+        registration.unregister().catch(() => {});
+      }
+    })
+    .catch(() => {});
+}
