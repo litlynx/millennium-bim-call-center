@@ -8,7 +8,7 @@ export default async (): Promise<Config> => {
       '^.+\\.(tsx|ts)?$': 'ts-jest'
     },
     setupFilesAfterEnv: [
-      '@testing-library/jest-dom/extend-expect'
+      '@testing-library/jest-dom'
       // Removed '@config/jest-config/setupTests.ts' to avoid cycles and workspace alias hacks
     ],
     moduleNameMapper: {
