@@ -26,31 +26,36 @@ interface ServiceSectionProps {
   className?: string;
 }
 
-const ServiceItem: React.FC<ServiceItemProps> = ({ item, isLast = false }) => (
-  <div
-    className={`flex justify-between items-center ${
-      !isLast ? 'border-b border-gray-200 pb-1' : ''
-    }`}
-  >
-    <span className="text-sm">
-      {item.label} {item.state && <State value={item.state} className="ml-[8px]" />}
-    </span>
-  </div>
-);
-
-const ServiceSection: React.FC<ServiceSectionProps> = ({ section, className = '' }) => (
-  <div className={`space-y-2 ${className}`}>
-    <div className="flex justify-between items-center">
-      <h4 className="font-bold">{section.title}</h4>
+const ServiceItem: React.FC<ServiceItemProps> = ({ item, isLast }) => {
+  return (
+    <div
+      className={`flex justify-between items-center ${
+        !isLast ? 'border-b border-gray-200 pb-1' : ''
+      }`}
+    >
+      <span className="text-sm">
+        {item.label} {item.state && <State value={item.state} className="ml-[8px]" />}
+      </span>
     </div>
+  );
+};
 
-    <br />
+const ServiceSection: React.FC<ServiceSectionProps> = ({ section, className }) => {
+  const cn = className ?? '';
+  return (
+    <div className={`space-y-2 ${cn}`}>
+      <div className="flex justify-between items-center">
+        <h4 className="font-bold">{section.title}</h4>
+      </div>
 
-    {section.items?.map((item, index) => (
-      <ServiceItem key={item.label} item={item} isLast={index === section.items.length - 1} />
-    ))}
-  </div>
-);
+      <br />
+
+      {section.items?.map((item, index) => (
+        <ServiceItem key={item.label} item={item} isLast={index === section.items.length - 1} />
+      ))}
+    </div>
+  );
+};
 
 export default function ChannelsAndServices() {
   const data = mockData as ChannelsAndServicesData;
@@ -73,18 +78,20 @@ export default function ChannelsAndServices() {
       className="h-full"
       onTitleClick={() => navigate('/channels-and-services?details=true')}
     >
-      {!data ? (
-        <div className="flex items-center justify-center h-32">
-          <span className="text-gray-500">Dados não disponíveis</span>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 divide-x divide-gray-200">
-          {data.digitalChannels && (
-            <ServiceSection section={data.digitalChannels} className="pr-4" />
-          )}
-          {data.services && <ServiceSection section={data.services} className="pl-4" />}
-        </div>
-      )}
+      <div className="grid grid-cols-2 divide-x divide-gray-200">
+        {data.digitalChannels && (
+          <ServiceSection
+            section={data.digitalChannels}
+            className={data.services ? 'pr-4' : undefined}
+          />
+        )}
+        {data.services && (
+          <ServiceSection
+            section={data.services}
+            className={data.digitalChannels ? 'pl-4' : undefined}
+          />
+        )}
+      </div>
     </Card>
   );
 }
