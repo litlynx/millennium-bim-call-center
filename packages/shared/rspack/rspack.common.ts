@@ -1,3 +1,5 @@
+/* Shared packages rspack config */
+
 import * as path from 'node:path';
 import { Apps } from '@config/rspack-config/enums';
 import {
@@ -23,22 +25,22 @@ const getCommonConfig = (): rspack.Configuration => ({
       ...getAppModuleFederationConfig(Apps.shared).baseConfig,
       shared: {
         ...getSharedModulesConfig(dependencies),
-        // Ensure standalone access works by bundling local copies eagerly
-        // This avoids RUNTIME-006 (loadShareSync) when opening the remote directly
+        // Share core React libs without eagerly bundling them into the initial chunk
+        // This keeps the vendors bundle smaller while still allowing the host to provide them.
         react: {
           singleton: true,
           requiredVersion: dependencies.react,
-          eager: true
+          eager: false
         },
         'react-dom': {
           singleton: true,
           requiredVersion: dependencies['react-dom'],
-          eager: true
+          eager: false
         },
         'react-dom/client': {
           singleton: true,
           requiredVersion: dependencies['react-dom'],
-          eager: true
+          eager: false
         }
       }
     } as CompleteModuleFederationConfig)
