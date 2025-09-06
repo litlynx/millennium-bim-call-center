@@ -18,17 +18,24 @@ export interface CardProps extends CardBaseProps {
   description?: React.ReactNode;
   footer?: React.ReactNode;
   children?: React.ReactNode;
+  onTitleClick?: () => void;
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ icon, title, description, footer, children, className, ...props }, ref) => (
+  ({ icon, title, description, footer, children, className, onTitleClick, ...props }, ref) => (
     <UICard ref={ref} className={cn(className, 'bg-white')} {...props}>
       {(icon || title || description) && (
         <CardHeader>
           {(icon || title) && (
             <CardTitle className="flex items-center gap-2 text-xl font-bold">
               {icon && <>{icon}</>}
-              {title && <>{title}</>}
+              {title && onTitleClick ? (
+                <button type="submit" onClick={onTitleClick}>
+                  <h4>{title}</h4>
+                </button>
+              ) : (
+                <h4>{title}</h4>
+              )}
             </CardTitle>
           )}
           {description && <CardDescription>{description}</CardDescription>}

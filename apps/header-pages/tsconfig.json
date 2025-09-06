@@ -4,6 +4,7 @@
   "extends": "@config/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
+    "types": ["jest", "@testing-library/jest-dom"],
     "paths": {
       "shared/*": [
         "../../packages/shared/.wp_federation/shared/dts/src/*",

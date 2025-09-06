@@ -11,7 +11,7 @@ const Root: React.FC = () => {
         <title>Root title</title>
       </Helmet>
       <div>Just a root page</div>
-      <Button onClick={() => navigate('/vision360')}>Go to Vision360</Button>
+      <Button onClick={() => navigate('/vision-360')}>Go to Vision360</Button>
     </>
   );
 };

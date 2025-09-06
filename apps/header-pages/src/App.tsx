@@ -1,14 +1,18 @@
-import * as React from 'react';
+import { lazy, Suspense } from 'react';
 import { Route, Routes, useNavigate } from 'react-router';
 import { Button } from 'shared/components';
 import Spinner from './components';
-import Vision360Page from './Vision360/pages/Vision360Page';
+
+const ChannelAndServicesPages = lazy(
+  () => import('./ChannelsAndServices/pages/ChannelAndServicesPage')
+);
+const Vision360Page = lazy(() => import('./Vision360/pages/Vision360Page'));
 
 export default function App() {
   const navigate = useNavigate();
 
   return (
-    <React.Suspense fallback={<Spinner />}>
+    <Suspense fallback={<Spinner />}>
       <Routes>
         {/* Index route for /vision360 */}
         <Route index element={<Vision360Page />} />
@@ -23,16 +27,19 @@ export default function App() {
             </div>
           }
         />
+        <Route path="/channels-and-services" element={<ChannelAndServicesPages />} />
+        <Route path="/vision-360" element={<Vision360Page />} />
         <Route
-          path="*"
+          path="/*"
           element={
             <div>
-              <h1>Header Pages App</h1>
-              <p>Welcome to the Header Pages application!</p>
+              <h1>404</h1>
+              <p>Page not found</p>
+              <Button onClick={() => navigate('/')}>Go to Homepage</Button>
             </div>
           }
         />
       </Routes>
-    </React.Suspense>
+    </Suspense>
   );
 }
