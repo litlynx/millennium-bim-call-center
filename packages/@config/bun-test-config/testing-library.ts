@@ -1,25 +1,20 @@
-/// <reference types="bun-types/test-globals" />
+/*
+  Bun-only Testing Library setup. Under Jest this file is safe and does nothing.
+  When running with Bun (bun:test), we augment matchers using the vitest bundle
+  and register cleanup after each test.
+*/
+try {
+  // Dynamically require only when bun:test globals exist
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const bunTest = require('bun:test');
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { cleanup } = require('@testing-library/react');
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const matchers = require('@testing-library/jest-dom/vitest');
 
-import { afterEach, expect } from 'bun:test';
-import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers';
-// Use the Vitest-compatible matcher bundle for Bun/Vitest environments.
-// This avoids relying on Jest's expect utils in @testing-library/jest-dom.
-// See: https://testing-library.com/docs/ecosystem-jest-dom/#vitest
-import * as matchers from '@testing-library/jest-dom/vitest';
-import { cleanup } from '@testing-library/react';
-
-declare module 'bun:test' {
-  interface Matchers<T = unknown, R = unknown> extends TestingLibraryMatchers<T, R> {}
+  // Extend expect with DOM matchers in Bun
+  bunTest.expect.extend(matchers);
+  bunTest.afterEach(() => cleanup());
+} catch {
+  // Not running under Bun; no-op
 }
-
-// Type augmentation so Bun's expect sees jest-dom matchers in TS
-declare module 'bun:test' {
-  interface Matchers<T = unknown, R = unknown> extends TestingLibraryMatchers<T, R> {}
-}
-
-expect.extend(matchers);
-
-// Optional: cleans up `render` after each test
-afterEach(() => {
-  cleanup();
-});

@@ -3,6 +3,7 @@
   "exclude": ["build", "dist", "coverage", "node_modules", "rspack/**/*"],
   "extends": "@config/tsconfig",
   "compilerOptions": {
+    "types": ["bun-types", "jest", "node"],
     "baseUrl": ".",
     "paths": {
       "shared/*": [

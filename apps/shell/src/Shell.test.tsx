@@ -1,38 +1,7 @@
-import { GlobalRegistrator } from '@happy-dom/global-registrator';
-
-// Will load testing-library dynamically after DOM is ready
-let render: typeof import('@testing-library/react').render;
-let screen: typeof import('@testing-library/react').screen;
-
-import { beforeAll, describe, expect, it } from 'bun:test';
+import { describe, expect, it } from 'bun:test';
+import { render, screen } from '@testing-library/react';
 import * as React from 'react';
 import { MemoryRouter, Outlet, Route, Routes } from 'react-router';
-
-// Ensure DOM globals exist for react-router (window, history)
-GlobalRegistrator.register();
-// Guarantee a body exists
-if (typeof document !== 'undefined' && !document.body) {
-  document.body = document.createElement('body');
-  document.documentElement.appendChild(document.body);
-}
-
-// Establish a valid origin so BrowserRouter/history APIs work (defensive)
-beforeAll(() => {
-  if (typeof window !== 'undefined' && window.location.href === 'about:blank') {
-    try {
-      window.location.href = 'http://localhost/';
-    } catch {
-      // ignore
-    }
-  }
-});
-
-// Load testing library once DOM is available
-beforeAll(async () => {
-  const rtl = await import('@testing-library/react');
-  render = rtl.render;
-  screen = rtl.screen;
-});
 
 // Local stubs mirroring Shell routing tree
 const DashboardLayoutStub: React.FC = () => (
@@ -59,7 +28,7 @@ const TestApp: React.FC<{ initialPath: string }> = ({ initialPath }) => (
 
 describe('Shell routing (structure)', () => {
   it('renders DashboardLayout + Root page on "/"', async () => {
-    render(<TestApp initialPath="/" />);
+    await render(<TestApp initialPath="/" />);
     expect(await screen.findByTestId('layout')).toBeTruthy();
     expect(await screen.findByTestId('root')).toBeTruthy();
     expect(screen.queryByTestId('vision360')).toBeNull();

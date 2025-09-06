@@ -1,13 +1,12 @@
-import { dirname, resolve as pathResolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { resolve as pathResolve } from 'node:path';
 import type { Config } from 'jest';
 
 export default async (): Promise<Config> => {
   // Resolve paths relative to this package to avoid moduleNameMapper collisions
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
-  const setupTestsPath = pathResolve(__dirname, 'setup-tests.ts');
-  const testingLibraryPath = pathResolve(__dirname, 'testing-library.ts');
+  // Use CommonJS global __dirname so Jest can compile this TS config without requiring ESM module settings
+  const baseDir = typeof __dirname !== 'undefined' ? __dirname : process.cwd();
+  const setupTestsPath = pathResolve(baseDir, 'setup-tests.ts');
+  const testingLibraryPath = pathResolve(baseDir, 'testing-library.ts');
 
   return {
     roots: ['<rootDir>/src'],
