@@ -5,6 +5,7 @@
   "types": "./src/App.tsx",
   "scripts": {
     "analyze": "rspack --config rspack/rspack.prod.ts --env analyze",
+    "rsdoctor": "RSDOCTOR=true bun run build",
     "predev": "rimraf dist",
     "dev": "rspack serve --config rspack/rspack.dev.ts",
     "prebuild": "rimraf dist",

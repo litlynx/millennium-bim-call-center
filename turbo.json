@@ -6,6 +6,10 @@
       "dependsOn": ["^analyze"],
       "persistent": true
     },
+    "rsdoctor": {
+      "dependsOn": ["^rsdoctor"],
+      "persistent": true
+    },
     "build": {
       "dependsOn": ["^build"],
       "env": [
