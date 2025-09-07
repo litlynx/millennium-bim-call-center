@@ -30,6 +30,9 @@ export const getCommonModuleFederationConfig = (): CommonModuleFederationConfig 
 };
 
 const getCommonConfig = (): rspack.Configuration => ({
+  devServer: {
+    open: true
+  },
   resolve: {
     tsConfig: {
       configFile: path.resolve(__dirname, '../tsconfig.json')
