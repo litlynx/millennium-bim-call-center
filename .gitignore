@@ -5,8 +5,10 @@ node_modules
 .pnp
 .pnp.js
 
-# testing
-coverage
+# coverage
+coverage/
+.nyc_output/
+*.lcov
 
 # build
 dist

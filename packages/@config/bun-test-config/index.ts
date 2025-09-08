@@ -1,5 +1,6 @@
 import { resolve as pathResolve } from 'node:path';
 import type { Config } from 'jest';
+import istanbulConfig from '../istanbul-config';
 
 export default async (): Promise<Config> => {
   // Resolve paths relative to this package to avoid moduleNameMapper collisions
@@ -11,14 +12,15 @@ export default async (): Promise<Config> => {
   return {
     roots: ['<rootDir>/src'],
     testEnvironment: 'jsdom',
+    injectGlobals: true,
     // Collect coverage and exclude assets from it
-    collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}', '!<rootDir>/src/**/assets/**'],
-    coveragePathIgnorePatterns: ['<rootDir>/src/**/assets/'],
+    ...(await istanbulConfig()),
     transform: {
       '^.+\\.(tsx|ts)?$': [
         'ts-jest',
         {
-          useESM: true
+          useESM: true,
+          diagnostics: false
         }
       ]
     },
@@ -26,12 +28,14 @@ export default async (): Promise<Config> => {
     // Do not register happy-dom or Bun-specific hooks here.
     setupFilesAfterEnv: ['@testing-library/jest-dom', setupTestsPath, testingLibraryPath],
     moduleNameMapper: {
+      // Allow tests written for Bun's runner to work in Jest
+      '^bun:test$': '@config/bun-test-config/jest-bun-globals.js',
       // Map assets and styles
       '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
         '@config/bun-test-config/__mocks__/fileMock.js',
       '\\.(css|less)$': '@config/bun-test-config/__mocks__/styleMock.js',
       // Path mappings from tsconfig
-      '^@/(.*)$': '<rootDir>/src/$1',
+      '^@/(.*)$': '<rootDir>/../../packages/shared/src/$1',
       '^@components/(.*)$': '<rootDir>/src/components/$1',
       '^@lib/(.*)$': '<rootDir>/src/lib/$1',
       '^@styles/(.*)$': '<rootDir>/src/styles/$1',
@@ -40,7 +44,7 @@ export default async (): Promise<Config> => {
       '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
       '^@types/(.*)$': '<rootDir>/src/types/$1',
       '^@assets/(.*)$': '<rootDir>/src/assets/$1',
-      '^@ui/(.*)$': '<rootDir>/src/components/ui/$1',
+      '^@ui/(.*)$': '<rootDir>/../../packages/shared/src/components/ui/$1',
       // Resolve Module Federation remote 'shared/*' imports to the monorepo source
       '^shared/(.*)$': '<rootDir>/../../packages/shared/src/$1'
     },

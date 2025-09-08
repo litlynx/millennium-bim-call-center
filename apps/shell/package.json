@@ -16,6 +16,7 @@
     "biome:check:apply": "biome check ./src --write",
     "test": "bun test",
     "test:ci": "bun test --coverage",
+    "test:coverage": "nyc bun test && nyc report --reporter=html",
     "test:watch": "bun test --watch",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "types:generate": "rspack --config rspack/rspack.prod.ts --env typesOnly",

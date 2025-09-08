@@ -1,0 +1,57 @@
+{
+  "name": "@config/istanbul-config",
+  "version": "0.1.0",
+  "description": "Shared Istanbul (nyc) configuration for the monorepo.",
+  "private": true,
+  "license": "MIT",
+  "keywords": [
+    "istanbul",
+    "nyc",
+    "coverage",
+    "config"
+  ],
+  "peerDependencies": {
+    "nyc": "^17.1.0"
+  },
+  "nyc": {
+    "all": true,
+    "cache": true,
+    "check-coverage": true,
+    "branches": 80,
+    "functions": 80,
+    "lines": 80,
+    "statements": 80,
+    "extension": [
+      ".js",
+      ".cjs",
+      ".mjs",
+      ".ts",
+      ".tsx"
+    ],
+    "reporter": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "include": [
+      "**/src/**/*.{js,jsx,ts,tsx}"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/dist/**",
+      "**/build/**",
+      "**/coverage/**",
+      "**/*.test.*",
+      "**/*.spec.*",
+      "**/__tests__/**",
+      "**/*.config.*",
+      "**/scripts/**"
+    ],
+    "report-dir": "./coverage",
+    "temp-dir": "./.nyc_output"
+  },
+  "devDependencies": {
+    "@babel/register": "^7.28.3",
+    "@istanbuljs/nyc-config-typescript": "^1.0.2"
+  }
+}
