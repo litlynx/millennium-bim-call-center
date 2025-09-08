@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet';
-import PersonalData from 'src/components/PersonalData/PersonalData';
-import ChannelsAndServices from 'src/Vision360/components/ChannelsAndServices/ChannelsAndServices';
+import ChannelsAndServices from '../components/ChannelsAndServices/ChannelsAndServices';
+import PersonalData from '../components/PersonalData/PersonalData';
 
 export default function Vision360Page() {
   return (
