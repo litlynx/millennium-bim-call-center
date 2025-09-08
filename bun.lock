@@ -64,6 +64,7 @@
         "@rspack/core": "^1.5.2",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.1.0",
+        "@testing-library/user-event": "^14.6.1",
         "@types/jest": "^29.5.14",
         "@types/node": "^22.10.2",
         "@types/react": "^19.0.2",
@@ -3750,6 +3751,13 @@
         "optionalPeers": ["@types/react", "@types/react-dom"]
       },
       "sha512-kFSyxiEDwv1WLl2fgsq6pPBbw5aWKrsY2/noi1Id0TK0UParSF62oFQFGHXIyaG4pp2tEub/Zlel+fjjZILDsw=="
+    ],
+
+    "@testing-library/user-event": [
+      "@testing-library/user-event@14.6.1",
+      "",
+      { "peerDependencies": { "@testing-library/dom": ">=7.21.4" } },
+      "sha512-vq7fv0rnt+QTXgPxr5Hjc210p6YKq2kmdziLgnsZGgLJ9e6VAShx1pACLuRjd/AS/sr7phAR58OIIpf0LlmQNw=="
     ],
 
     "@tootallnate/once": [

@@ -19,6 +19,7 @@ export interface CardProps extends CardBaseProps {
   footer?: React.ReactNode;
   children?: React.ReactNode;
   onTitleClick?: () => void;
+<<<<<<< HEAD
   headerTestId?: string;
   titleTestId?: string;
   descriptionTestId?: string;
@@ -45,6 +46,12 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     },
     ref
   ) => (
+=======
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ icon, title, description, footer, children, className, onTitleClick, ...props }, ref) => (
+>>>>>>> 3dd8987 ([sc-32] vision 360 channels and services (#21))
     <UICard ref={ref} className={cn(className, 'bg-white')} {...props}>
       {(icon || title || description) && (
         <CardHeader data-testid={headerTestId} className="p-6 pb-0">
@@ -56,10 +63,17 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
               {icon && <>{icon}</>}
               {title && onTitleClick ? (
                 <button type="submit" onClick={onTitleClick}>
+<<<<<<< HEAD
                   <h4 className="text-left leading-tight">{title}</h4>
                 </button>
               ) : (
                 <h4 className="text-left leading-tight">{title}</h4>
+=======
+                  <h4>{title}</h4>
+                </button>
+              ) : (
+                <h4>{title}</h4>
+>>>>>>> 3dd8987 ([sc-32] vision 360 channels and services (#21))
               )}
             </CardTitle>
           )}

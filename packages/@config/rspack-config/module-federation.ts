@@ -131,7 +131,9 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
       name: 'headerPages',
       filename: 'remoteEntry.js',
       exposes: {
-        './App': './src/App'
+        './App': './src/App',
+        './ChannelAndServicesPage': './src/ChannelsAndServices/pages/ChannelAndServicesPage',
+        './Vision360Page': './src/Vision360/pages/Vision360Page'
       }
     },
     remotes: {
