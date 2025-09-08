@@ -152,7 +152,16 @@
     "serviços",
     "nodenext",
     "Registrator",
-    "rsdoctor", 
+    "rsdoctor",
     "rspack"
-  ]
+  ],
+  // Coverage Gutters: find all MFEs' coverage outputs
+  // Search any coverage folder in the workspace for lcov.info
+  "coverage-gutters.coverageBaseDir": "**/coverage",
+  "coverage-gutters.coverageFileNames": ["lcov.info"],
+  // Start watching automatically when the workspace opens
+  "coverage-gutters.watchOnActivate": true,
+  // Show coverage in the gutter; leave line coverage off for breakpoint compatibility
+  "coverage-gutters.showGutterCoverage": true,
+  "coverage-gutters.showLineCoverage": false
 }
