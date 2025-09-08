@@ -148,6 +148,8 @@
     "rspack",
     "serviços",
     "nodenext",
-    "Registrator"
+    "Registrator",
+    "rsdoctor", 
+    "rspack"
   ]
 }

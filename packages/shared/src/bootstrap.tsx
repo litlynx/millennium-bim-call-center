@@ -1,15 +1,14 @@
-import { createRoot } from 'react-dom/client';
-
+// Render a minimal placeholder without importing React so the remote can be
+// opened directly (e.g., via `serve -s dist`) without requiring shared deps.
 const container = document.getElementById('app');
 
-if (!container) {
-  throw new Error('Failed to find the root element');
+if (container) {
+  const wrapper = document.createElement('div');
+  wrapper.style.fontFamily =
+    'system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji"';
+  wrapper.style.padding = '1rem';
+  wrapper.style.color = '#374151';
+  wrapper.innerText =
+    'Shared library built successfully. This package exposes components/utilities for hosts via Module Federation.';
+  container.appendChild(wrapper);
 }
-
-const root = createRoot(container);
-root.render(
-  <div>
-    This is a package of components/utils/services/etc., not the app. This package is intended to be
-    used in other apps, not standalone
-  </div>
-);

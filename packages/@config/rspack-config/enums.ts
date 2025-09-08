@@ -7,6 +7,7 @@ export enum Apps {
 export enum SharedModule {
   react = 'react',
   'react-dom' = 'react-dom',
+  'react-dom/client' = 'react-dom/client',
   'react-router' = 'react-router',
   'react-helmet' = 'react-helmet',
   zustand = 'zustand',
