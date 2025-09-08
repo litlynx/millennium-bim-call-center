@@ -23,6 +23,7 @@ registry = "https://registry.npmjs.org/"
 # Test runner configuration (Bun can run Jest tests)
 # Coverage settings
 coverage = true
+coverageReporter = [ "text", "lcov", ]
 
 # Exclude assets from coverage across the monorepo
 coveragePathIgnorePatterns = [
