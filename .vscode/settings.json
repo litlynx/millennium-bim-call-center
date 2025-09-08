@@ -42,8 +42,11 @@
     "cva\\(([^)]*)\\)",
     "cx\\(([^)]*)\\)",
     "clsx\\(([^)]*)\\)",
-    "classnames\\(([^)]*)\\)"
+    "classnames\\(([^)]*)\\)",
+    "cn\\(([^)]*)\\)"
   ],
+  "tailwindCSS.experimental.configFile": "packages/shared/tailwind.config.js",
+  "tailwindCSS.emmetCompletions": true,
   "jest.runMode": "watch",
   "search.exclude": {
     "**/node_modules": true,

@@ -20,7 +20,7 @@ const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('flex flex-col space-y-1.5 px-[1.4375rem] py-[1.3125rem]', className)}
+      className={cn('flex flex-col space-y-1.5 pb-5', className)}
       {...props}
     />
   )
@@ -51,7 +51,7 @@ const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
     <div
       ref={ref}
       id="card-content"
-      className={cn('p-6 pt-0 has-[#scroll-bar]:pr-[0.5625rem]', className)}
+      className={cn('has-[#scroll-bar]:pr-[0.5625rem]', className)}
       {...props}
     />
   )
@@ -65,4 +65,5 @@ const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 );
 CardFooter.displayName = 'CardFooter';
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };
+
