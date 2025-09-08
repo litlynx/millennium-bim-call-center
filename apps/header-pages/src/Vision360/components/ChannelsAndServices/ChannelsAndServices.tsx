@@ -57,11 +57,16 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ section, className }) =
   );
 };
 
-export default function ChannelsAndServices() {
-  const data = mockData as ChannelsAndServicesData;
+export default function ChannelsAndServices(props: {
+  data?: Partial<ChannelsAndServicesData> | null;
+}) {
+  // Allow injecting data for tests while keeping default behavior.
+  // Undefined => use mockData; null => explicit no data
+  const resolvedData: Partial<ChannelsAndServicesData> | null =
+    props?.data === undefined ? (mockData as ChannelsAndServicesData) : props.data;
   const navigate = useNavigate();
 
-  if (!data) {
+  if (!resolvedData) {
     return (
       <Card
         icon={<Icon type="box" className="bg-green-500" />}
@@ -79,16 +84,16 @@ export default function ChannelsAndServices() {
       onTitleClick={() => navigate('/channels-and-services?details=true')}
     >
       <div className="grid grid-cols-2 divide-x divide-gray-200">
-        {data.digitalChannels && (
+        {resolvedData.digitalChannels && (
           <ServiceSection
-            section={data.digitalChannels}
-            className={data.services ? 'pr-4' : undefined}
+            section={resolvedData.digitalChannels}
+            className={resolvedData.services ? 'pr-4' : undefined}
           />
         )}
-        {data.services && (
+        {resolvedData.services && (
           <ServiceSection
-            section={data.services}
-            className={data.digitalChannels ? 'pl-4' : undefined}
+            section={resolvedData.services}
+            className={resolvedData.digitalChannels ? 'pl-4' : undefined}
           />
         )}
       </div>
