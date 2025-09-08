@@ -143,5 +143,5 @@
   "biome.requireConfiguration": true,
   "editor.codeActionsOnSaveTimeout": 10000,
   "eslint.enable": false,
-  "cSpell.words": ["rspack"]
+  "cSpell.words": ["Activo", "Bloqueado", "Canais", "disponíveis", "rspack", "serviços"]
 }
