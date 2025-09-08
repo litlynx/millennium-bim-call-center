@@ -78,7 +78,10 @@ describe('Vision360Page', () => {
   it('renders the grid layout and PersonalData card', async () => {
     const Vision360Page = await loadPage();
     render(<Vision360Page />);
-    const personalDataCard = await screen.findByRole('button', { name: /Dados Pessoais/i });
+    const cards = await screen.findAllByTestId('card');
+    const personalDataCard = cards.find((card) =>
+      within(card).queryByRole('button', { name: /Dados Pessoais/i })
+    );
     expect(personalDataCard).toBeDefined();
   });
 
