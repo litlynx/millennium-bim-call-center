@@ -17,9 +17,9 @@
     "biome:format": "biome format ./src --write",
     "biome:check": "biome check ./src",
     "biome:check:apply": "biome check ./src --write",
-    "test": "jest",
-    "test:ci": "jest --ci --coverage",
-    "test:watch": "jest --watch",
+    "test": "bun test",
+    "test:ci": "bun test --coverage",
+    "test:watch": "bun test --watch",
     "serve:prod": "serve -s dist -l ${SHARED_PREVIEW_PORT:-8081}"
   },
   "dependencies": {

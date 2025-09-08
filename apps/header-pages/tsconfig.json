@@ -3,8 +3,8 @@
   "exclude": ["build", "dist", "coverage", "node_modules", "rspack/**/*"],
   "extends": "@config/tsconfig",
   "compilerOptions": {
+    "types": ["bun-types", "jest", "node", "@testing-library/jest-dom"],
     "baseUrl": ".",
-    "types": ["jest", "@testing-library/jest-dom"],
     "paths": {
       "shared/*": [
         "../../packages/shared/.wp_federation/shared/dts/src/*",
