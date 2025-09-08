@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+/* Shell rspack config */
+
+import * as path from 'node:path';
+>>>>>>> 6f3fd25 ([sc-72] project fix first render issue (#22))
 import { Apps } from '@config/rspack-config/enums';
 import {
     getAppModuleFederationConfig,
@@ -9,18 +15,28 @@ import * as rspack from '@rspack/core';
 import * as path from 'node:path';
 import { dependencies } from '../package.json';
 
-export const getCommonModuleFederationConfig = (): CommonModuleFederationConfig => ({
-  ...getAppModuleFederationConfig(Apps.shell).baseConfig,
-  shared: {
-    ...getSharedModulesConfig(dependencies),
-    'react-router': {
-      singleton: true,
-      requiredVersion: dependencies['react-router']
+export const getCommonModuleFederationConfig = (): CommonModuleFederationConfig => {
+  return {
+    ...getAppModuleFederationConfig(Apps.shell).baseConfig,
+    shared: {
+      ...getSharedModulesConfig(dependencies),
+      // Ensure subpath is shared as well to avoid separate bundling
+      'react-dom/client': {
+        singleton: true,
+        requiredVersion: dependencies['react-dom']
+      },
+      'react-router': {
+        singleton: true,
+        requiredVersion: dependencies['react-router']
+      }
     }
-  }
-});
+  };
+};
 
 const getCommonConfig = (): rspack.Configuration => ({
+  devServer: {
+    open: true
+  },
   resolve: {
     tsConfig: {
       configFile: path.resolve(__dirname, '../tsconfig.json')

@@ -1,6 +1,9 @@
 import * as rspack from '@rspack/core';
 import { ReactRefreshRspackPlugin } from '@rspack/plugin-react-refresh';
+<<<<<<< HEAD
 import * as path from 'node:path';
+=======
+>>>>>>> 6f3fd25 ([sc-72] project fix first render issue (#22))
 import 'webpack-dev-server';
 import { merge } from 'webpack-merge';
 
@@ -17,6 +20,15 @@ const getDevCommonConfig = ({ port }: { port: number }): rspack.Configuration =>
         directory: path.join(process.cwd(), 'dist')
       },
       port: port || 3001,
+      // Ensure browsers (notably Firefox) don't cache dev assets between reloads
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        Pragma: 'no-cache',
+        Expires: '0',
+        'Surrogate-Control': 'no-store',
+        // Helpful for Module Federation across localhost ports
+        'Access-Control-Allow-Origin': '*'
+      },
       devMiddleware: {
         writeToDisk: true
       },

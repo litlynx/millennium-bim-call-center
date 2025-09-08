@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+import * as path from 'node:path';
+import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
+>>>>>>> 6f3fd25 ([sc-72] project fix first render issue (#22))
 import * as rspack from '@rspack/core';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as path from 'node:path';
@@ -130,8 +135,13 @@ const getCommonConfig = (): rspack.Configuration => {
         publicPath: '/',
         favicon: './public/favicon.png'
       }),
-      new InjectGoogleFontsPlugin()
-    ]
+      new InjectGoogleFontsPlugin(),
+      // Only register the plugin when RSDOCTOR is true, as the plugin will increase the build time.
+      process.env.RSDOCTOR &&
+        new RsdoctorRspackPlugin({
+          // plugin options
+        })
+    ].filter(Boolean)
   };
 };
 
