@@ -1,5 +1,4 @@
-// Import shared component declarations
-/// <reference path="../../../packages/@config/webpack-config/shared-components.d.ts" />
+// Federated module types are resolved via tsconfig paths to generated .wp_federation dts
 
 // to be able to import jpg/jpeg/png files
 declare module '*.jpg';
@@ -25,9 +24,4 @@ declare module '*.css?raw' {
   export default content;
 }
 
-// Remote module declarations
-declare module 'headerPages/App' {
-  import type { ComponentType } from 'react';
-  const RemoteApp: ComponentType<unknown>;
-  export default RemoteApp;
-}
+// Remote module declarations are provided by .wp_federation generated types via tsconfig paths

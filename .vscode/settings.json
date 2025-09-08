@@ -3,7 +3,9 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "explicit",
-    "source.organizeImports.biome": "explicit"
+    "source.organizeImports.biome": "explicit",
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
   },
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome"
@@ -135,5 +137,19 @@
     "**/*.d.ts.map": true,
     "**/*.tsbuildinfo": true
   },
-  "biome.requireConfiguration": true
+  "biome.requireConfiguration": true,
+  "editor.codeActionsOnSaveTimeout": 10000,
+  "eslint.enable": false,
+  "cSpell.words": [
+    "Activo",
+    "Bloqueado",
+    "Canais",
+    "disponíveis",
+    "rspack",
+    "serviços",
+    "nodenext",
+    "Registrator",
+    "rsdoctor",
+    "rspack"
+  ]
 }

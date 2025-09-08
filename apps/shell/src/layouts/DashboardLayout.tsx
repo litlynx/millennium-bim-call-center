@@ -1,7 +1,7 @@
 import type * as React from 'react';
 import { Outlet } from 'react-router';
 
-interface DashboardLayoutProps {
+export interface DashboardLayoutProps {
   children?: React.ReactNode;
 }
 
@@ -13,9 +13,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         {/* Sidebar - Fixed width, full height between header and footer, no scroll */}
 
         {/* Main content - Scrollable area */}
-        <div className="flex-1 min-h-0 overflow-auto ml-[106px] w-[calc(100%_-_106px)]">
-          {children || <Outlet />}
-        </div>
+        <div className="flex-1 min-h-0 overflow-auto w-full">{children || <Outlet />}</div>
       </div>
 
       {/* Footer - Fixed at bottom */}

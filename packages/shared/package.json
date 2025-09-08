@@ -4,21 +4,24 @@
   "main": "./src/index.ts",
   "types": "./types/src/index.d.ts",
   "scripts": {
-    "analyze": "webpack --config webpack/webpack.prod.ts --env analyze",
+    "analyze": "rspack --config rspack/rspack.prod.ts --env analyze",
+    "rsdoctor": "RSDOCTOR=true bun run build",
     "predev": "rimraf dist",
-    "dev": "webpack serve --config webpack/webpack.dev.ts",
+    "dev": "rspack serve --config rspack/rspack.dev.ts",
     "prebuild": "rimraf dist",
-    "build": "webpack --config webpack/webpack.prod.ts",
-    "types:generate": "webpack --config webpack/webpack.prod.ts --env typesOnly",
+    "build": "rspack --config rspack/rspack.prod.ts",
+    "types:generate": "rspack --config rspack/rspack.prod.ts --env typesOnly",
     "types:clean": "rimraf types .wp_federation",
     "types:build": "bun run types:clean && bun run types:generate",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "biome:lint": "biome lint ./src",
     "biome:format": "biome format ./src --write",
     "biome:check": "biome check ./src",
     "biome:check:apply": "biome check ./src --write",
-    "test": "jest",
-    "test:ci": "jest --ci --coverage",
-    "test:watch": "jest --watch"
+    "test": "bun test",
+    "test:ci": "bun test --coverage",
+    "test:watch": "bun test --watch",
+    "serve:prod": "serve -s dist -l ${SHARED_PREVIEW_PORT:-8081}"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -52,11 +55,16 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@config/babel-config": "workspace:*",
-    "@config/jest-config": "workspace:*",
+    "@config/bun-test-config": "workspace:*",
+    "@config/rspack-config": "workspace:*",
     "@config/tsconfig": "workspace:*",
     "@config/webpack-config": "workspace:*",
+    "@rsdoctor/rspack-plugin": "^1.2.3",
+    "@rspack/cli": "^1.5.2",
+    "@rspack/core": "^1.5.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
+    "@types/bun": "^1.2.21",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.2",
@@ -75,8 +83,6 @@
     "tailwindcss": "^3.4.16",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
-    "webpack": "^5.97.1",
-    "webpack-cli": "^5.1.4",
     "webpack-merge": "^6.0.1"
   }
 }

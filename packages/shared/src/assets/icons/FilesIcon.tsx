@@ -1,8 +1,8 @@
 export const FilesIcon = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
-      <g clip-path="url(#clip0_5783_2399)">
-        <g clip-path="url(#clip1_5783_2399)">
+      <g clipPath="url(#clip0_5783_2399)">
+        <g clipPath="url(#clip1_5783_2399)">
           <path d="M14.7369 15.8594H5.65234V16.7281H14.7369V15.8594Z" fill="currentColor" />
           <path d="M14.7369 12.3398H5.65234V13.2057H14.7369V12.3398Z" fill="currentColor" />
           <path d="M14.7369 8.82031H5.65234V9.68901H14.7369V8.82031Z" fill="currentColor" />

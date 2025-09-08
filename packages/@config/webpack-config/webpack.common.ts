@@ -53,7 +53,7 @@ const getCommonConfig = (): webpack.Configuration => ({
       },
       // Regular CSS files (including Tailwind)
       {
-        test: /\.css$/,
+        test: /\.css$/i,
         exclude: /\.module\.css$/,
         use: [
           'style-loader',
