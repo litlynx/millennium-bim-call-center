@@ -28,8 +28,6 @@ export default async (): Promise<Config> => {
     // Do not register happy-dom or Bun-specific hooks here.
     setupFilesAfterEnv: ['@testing-library/jest-dom', setupTestsPath, testingLibraryPath],
     moduleNameMapper: {
-      // Allow tests written for Bun's runner to work in Jest
-      '^bun:test$': '@config/bun-test-config/jest-bun-globals.js',
       // Map assets and styles
       '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
         '@config/bun-test-config/__mocks__/fileMock.js',
