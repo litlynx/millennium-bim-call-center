@@ -51,8 +51,12 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ icon, title, description, footer, children, className, onTitleClick, ...props }, ref) => (
+<<<<<<< HEAD
 >>>>>>> 3dd8987 ([sc-32] vision 360 channels and services (#21))
     <UICard ref={ref} className={cn(className, 'bg-white')} {...props}>
+=======
+    <UICard ref={ref} className={cn(className, 'bg-white p-6')} {...props}>
+>>>>>>> e296639 ([sc-27] vision 360 personal data (#19))
       {(icon || title || description) && (
         <CardHeader data-testid={headerTestId} className="p-6 pb-0">
           {(icon || title) && (
@@ -84,10 +88,14 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       )}
 
       {children && (
+<<<<<<< HEAD
         <CardContent
           className="flex-1 min-h-0 overflow-auto flex flex-col gap-4 p-6 pt-0"
           data-testid={contentTestId}
         >
+=======
+        <CardContent className="flex-1 min-h-0 overflow-auto flex flex-col gap-4">
+>>>>>>> e296639 ([sc-27] vision 360 personal data (#19))
           {children}
         </CardContent>
       )}

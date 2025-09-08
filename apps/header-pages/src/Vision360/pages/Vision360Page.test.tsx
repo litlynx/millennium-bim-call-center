@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, type Mock, mock } from 'bun:test';
+=======
+import { beforeEach, describe, expect, it, type Mock, mock } from 'bun:test';
+import { render, screen, waitFor, within } from '@testing-library/react';
+>>>>>>> e296639 ([sc-27] vision 360 personal data (#19))
 
 // Provide minimal implementations for shared modules used by ChannelsAndServices
 mock.module('shared/lib/utils', () => ({
@@ -34,7 +39,14 @@ mock.module('shared/components', () => {
     <span data-testid="icon" {...props} />
   );
 
-  return { __esModule: true, Card, Icon };
+  const CardItemLabel: React.FC<{ title: string; text: string }> = ({ title, text }) => (
+    <div data-testid="card-item">
+      <span>{title}</span>
+      <p>{text}</p>
+    </div>
+  );
+
+  return { __esModule: true, Card, Icon, CardItemLabel };
 });
 
 // Mock react-router's useNavigate to avoid requiring a Router wrapper
@@ -56,9 +68,26 @@ describe('Vision360Page', () => {
   it('renders the grid layout and ChannelsAndServices section', async () => {
     const Vision360Page = await loadPage();
     render(<Vision360Page />);
-    // Assert ChannelsAndServices content renders (title button and icon)
-    expect(await screen.findByRole('button', { name: /Canais e serviços/i })).toBeTruthy();
-    expect(screen.getByTestId('icon')).toBeTruthy();
+    const cards = await screen.findAllByTestId('card');
+    expect(cards).toHaveLength(2); // PersonalData and ChannelsAndServices
+    const channelsAndServicesCard = cards.find((card) =>
+      within(card).queryByRole('button', { name: /Canais e serviços/i })
+    );
+    // Ensure the card exists before proceeding to satisfy TypeScript without non-null assertion
+    if (!channelsAndServicesCard) {
+      throw new Error('Channels and Services card not found');
+    }
+    expect(within(channelsAndServicesCard).getByTestId('icon')).toBeDefined();
+  });
+
+  it('renders the grid layout and PersonalData card', async () => {
+    const Vision360Page = await loadPage();
+    render(<Vision360Page />);
+    const cards = await screen.findAllByTestId('card');
+    const personalDataCard = cards.find((card) =>
+      within(card).queryByRole('button', { name: /Dados Pessoais/i })
+    );
+    expect(personalDataCard).toBeDefined();
   });
 
   it('sets the document title via Helmet', async () => {

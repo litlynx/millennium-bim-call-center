@@ -17,6 +17,7 @@ const PersonalData: React.FC<PersonalDataProps> = ({ data }) => {
       title="Dados Pessoais"
       className="h-full"
       onTitleClick={() => navigate('/personal-data?details=true')}
+<<<<<<< HEAD
       data-testid="personal-data-card"
       headerTestId="personal-data-header"
       titleTestId="personal-data-title"
@@ -29,6 +30,14 @@ const PersonalData: React.FC<PersonalDataProps> = ({ data }) => {
             ))
           : null}
       </div>
+=======
+    >
+      {items
+        ? Object.entries(items).map(([label, value]) => (
+            <CardItemLabel key={label} title={label} text={value} />
+          ))
+        : null}
+>>>>>>> e296639 ([sc-27] vision 360 personal data (#19))
     </Card>
   );
 };
