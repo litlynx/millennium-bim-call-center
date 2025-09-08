@@ -18,9 +18,9 @@
     "biome:format": "biome format ./src --write",
     "biome:check": "biome check ./src",
     "biome:check:apply": "biome check ./src --write",
-    "test": "jest",
-    "test:ci": "jest --ci --coverage",
-    "test:watch": "jest --watch",
+    "test": "bun test",
+    "test:ci": "bun test --coverage",
+    "test:watch": "bun test --watch",
     "serve:prod": "serve -s dist -l ${SHARED_PREVIEW_PORT:-8081}"
   },
   "dependencies": {
@@ -55,7 +55,8 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@config/babel-config": "workspace:*",
-    "@config/jest-config": "workspace:*",
+    "@config/bun-test-config": "workspace:*",
+    "@config/rspack-config": "workspace:*",
     "@config/tsconfig": "workspace:*",
     "@config/webpack-config": "workspace:*",
     "@rsdoctor/rspack-plugin": "^1.2.3",
@@ -63,6 +64,7 @@
     "@rspack/core": "^1.5.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
+    "@types/bun": "^1.2.21",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.2",

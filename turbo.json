@@ -68,7 +68,8 @@
       "dependsOn": ["^biome:check:apply"]
     },
     "test": {
-      "dependsOn": ["^test"]
+      "dependsOn": ["^test"],
+      "cache": false
     },
     "test:ci": {
       "dependsOn": ["^test:ci"],

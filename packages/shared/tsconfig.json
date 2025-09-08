@@ -19,6 +19,7 @@
     "emitDeclarationOnly": true,
     "strict": true,
     "strictFunctionTypes": true,
+    "types": ["bun-types", "jest", "node"],
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
