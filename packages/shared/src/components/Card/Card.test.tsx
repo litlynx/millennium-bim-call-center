@@ -60,19 +60,19 @@ describe('Card', () => {
       expect(header).not.toBeInTheDocument();
     });
 
-    it('renders title with correct styling classes', () => {
+    it('renders title with correct parent div styling classes', () => {
       render(<Card title="Test Title" />);
 
       // Find the title element that contains the "Test Title" text
       const titleText = screen.getByText('Test Title');
-
+      const parentDivTitle = titleText.parentElement as HTMLDivElement | null;
       // The CardTitle element has the styling classes we're looking for
-      expect(titleText).toBeInTheDocument();
-      expect(titleText.className).toContain('flex');
-      expect(titleText.className).toContain('items-center');
-      expect(titleText.className).toContain('gap-2');
-      expect(titleText.className).toContain('text-xl');
-      expect(titleText.className).toContain('font-bold');
+      expect(parentDivTitle).toBeInTheDocument();
+      expect(parentDivTitle?.className).toContain('flex');
+      expect(parentDivTitle?.className).toContain('items-center');
+      expect(parentDivTitle?.className).toContain('gap-2');
+      expect(parentDivTitle?.className).toContain('text-xl');
+      expect(parentDivTitle?.className).toContain('font-bold');
     });
     it('renders both icon and title together', () => {
       render(<Card icon={<span data-testid="test-icon">Icon</span>} title="Test Title" />);
