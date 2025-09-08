@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import ChannelsAndServices from 'src/Vision360/components/ChannelsAndServices/ChannelsAndServices';
 
 const LazyEstateAndProducts = React.lazy(() =>
-  import('../../components/EstateAndProducts/EstateAndProducts').catch(() => ({
+  import('../components/EstateAndProducts/EstateAndProducts').catch(() => ({
     default: () => (
       <div className="bg-white rounded-lg p-4 text-center text-red-500">
         Failed to load Estate and Products component
