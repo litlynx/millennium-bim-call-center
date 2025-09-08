@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet';
+import PersonalData from 'src/components/PersonalData/PersonalData';
 import ChannelsAndServices from 'src/Vision360/components/ChannelsAndServices/ChannelsAndServices';
 
 export default function Vision360Page() {
@@ -9,7 +10,9 @@ export default function Vision360Page() {
       </Helmet>
       <div className="grid grid-cols-24 grid-rows-10 gap-4 px-4 py-5 rounded-lg bg-gray-100 w-full h-full overflow-y-auto">
         {/* Personal Data */}
-        <div className="row-span-10 col-span-5"></div>
+        <div className="row-span-10 col-span-5">
+          <PersonalData />
+        </div>
 
         {/* Estate and Products */}
         <div className="col-start-6 col-span-12 row-span-5"></div>
