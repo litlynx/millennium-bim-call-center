@@ -8,6 +8,7 @@ export interface ClaimsProps {
 }
 
 export interface IncidentsProps {
+  id: string;
   date: string;
   type: string;
   title: string;
