@@ -2,10 +2,23 @@ import type React from 'react';
 import { type CardTabItem, CardTabs, Icon } from 'shared/components';
 import { ClaimItem } from 'src/Vision360/components/ComplainsAndIncidents/components/ClaimItem';
 import IncidentItem from 'src/Vision360/components/ComplainsAndIncidents/components/IncidentItem';
-
 import data from './mock-data/mock-data.json';
 
 const { claims, incidents } = data;
+
+const sortClaims = (items: typeof claims) => {
+  return [...items].sort((a, b) => {
+    const toDate = (dateStr: string) => new Date(dateStr.split('/').reverse().join('-'));
+    return toDate(b.registerDate).getTime() - toDate(a.registerDate).getTime();
+  });
+};
+
+const sortIncidents = (items: typeof incidents) => {
+  return [...items].sort((a, b) => {
+    const toDate = (dateStr: string) => new Date(dateStr.split('-').reverse().join('-'));
+    return toDate(b.date).getTime() - toDate(a.date).getTime();
+  });
+};
 
 const tabs: CardTabItem[] = [
   {
@@ -13,10 +26,10 @@ const tabs: CardTabItem[] = [
     label: 'Reclamações',
     content: (
       <>
-        {claims.map((props, index) => (
+        {sortClaims(claims).map((props, index, arr) => (
           <div key={props.number}>
             <ClaimItem {...props} />
-            {index < claims.length - 1 && <hr className="my-2 text-gray-100" />}
+            {index < arr.length - 1 && <hr className="my-2 text-gray-100" />}
           </div>
         ))}
       </>
@@ -27,10 +40,10 @@ const tabs: CardTabItem[] = [
     label: 'Incidentes',
     content: (
       <>
-        {incidents.map((props, index) => (
+        {sortIncidents(incidents).map((props, index, arr) => (
           <div key={props.id}>
             <IncidentItem {...props} />
-            {index < incidents.length - 1 && <hr className="my-2 text-gray-100" />}
+            {index < arr.length - 1 && <hr className="my-2 text-gray-100" />}
           </div>
         ))}
       </>
