@@ -1,4 +1,9 @@
-import type { FinancialItemInterface } from '../../../api/EstateAndProducts/interfaces';
+export interface FinancialItemInterface {
+  name: string;
+  account?: string;
+  amount: string;
+  currency: string;
+}
 
 export interface FinancialSectionInterface {
   title: string;

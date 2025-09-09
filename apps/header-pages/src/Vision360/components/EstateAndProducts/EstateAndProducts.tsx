@@ -1,29 +1,26 @@
-import type { FC } from 'react';
+import type * as React from 'react';
 import { useNavigate } from 'react-router';
 import { Card, Icon } from 'shared/components';
-import type { FinancialItemInterface } from 'src/api/EstateAndProducts/interfaces';
-import EstateAndProductsSkeleton from './components/Skeleton';
-import { useEstateAndProducts } from './hooks';
-import type { FinancialSectionInterface } from './types';
+import mockData from './mock-data/mock-data.json';
+import type {
+  EstateAndProductsData,
+  FinancialItemInterface,
+  FinancialSectionInterface
+} from './types';
 
 interface FinancialItemProps {
   item: FinancialItemInterface;
   isLast?: boolean;
-  dataTestId?: string;
 }
 
 interface FinancialSectionProps {
   section: FinancialSectionInterface;
   className?: string;
-  sectionPrefix?: string;
 }
 
-const FinancialItem: FC<FinancialItemProps> = ({ item, isLast = false, dataTestId }) => (
+const FinancialItem: React.FC<FinancialItemProps> = ({ item, isLast = false }) => (
   <div
-    className={`flex justify-between items-center flex-wrap ${
-      !isLast ? 'border-b border-gray-200 pb-1' : ''
-    }`}
-    data-testid={dataTestId}
+    className={`flex justify-between items-center flex-wrap ${!isLast ? 'border-b border-gray-200 pb-1' : ''}`}
   >
     <span className="text-base">
       <span className="font-semibold">{item.name}</span>
@@ -36,11 +33,7 @@ const FinancialItem: FC<FinancialItemProps> = ({ item, isLast = false, dataTestI
   </div>
 );
 
-const FinancialSection: React.FC<FinancialSectionProps> = ({
-  section,
-  className = '',
-  sectionPrefix
-}) => (
+const FinancialSection: React.FC<FinancialSectionProps> = ({ section, className = '' }) => (
   <div className={`space-y-2 ${className}`}>
     <div className="flex justify-between items-center flex-wrap pb-[45px]">
       <h3 className="font-bold text-xl">{section.title}</h3>
@@ -60,35 +53,28 @@ const FinancialSection: React.FC<FinancialSectionProps> = ({
         key={`${item.name}-${index}`}
         item={item}
         isLast={index === section.items.length - 1}
-        dataTestId={`estate-and-products-${sectionPrefix}-item-${index}`}
       />
     ))}
   </div>
 );
 
-export default function EstateAndProducts() {
+export default function EstateAndProducts(props: { data?: Partial<EstateAndProductsData> | null }) {
+  const data: Partial<EstateAndProductsData> | null =
+    props?.data === undefined ? (mockData.estateAndProducts as EstateAndProductsData) : props.data;
   const navigate = useNavigate();
-  const { data, isLoading } = useEstateAndProducts();
 
-  if (!data && !isLoading) {
+  if (!data) {
     return (
       <Card
         icon={<Icon type="pieChart" className="bg-teal" />}
         title="Património e produtos"
         className="h-full"
-        data-testid="estate-and-products-card"
-        headerTestId="estate-and-products-header"
-        titleTestId="estate-and-products-title"
-        contentTestId="estate-and-products-content"
       >
         <div className="flex items-center justify-center h-32">
           <span className="text-gray-500">Dados não disponíveis</span>
         </div>
       </Card>
     );
-  }
-  if (isLoading || !data) {
-    return <EstateAndProductsSkeleton />;
   }
 
   return (
@@ -97,24 +83,18 @@ export default function EstateAndProducts() {
       title="Património e produtos"
       className="h-full"
       onTitleClick={() => navigate('/estate-and-products?details=true')}
-      data-testid="estate-and-products-card"
-      headerTestId="estate-and-products-header"
-      titleTestId="estate-and-products-title"
-      contentTestId="estate-and-products-content"
     >
-      <div className="grid grid-cols-2 divide-x divide-gray-200 pt-[1.9375rem]">
+      <div className="grid grid-cols-2 divide-x divide-gray-200">
         {data.assets && (
           <FinancialSection
             section={data.assets}
             className={data.liabilities ? 'pr-4' : undefined}
-            sectionPrefix="assets"
           />
         )}
         {data.liabilities && (
           <FinancialSection
             section={data.liabilities}
             className={data.assets ? 'pl-4' : undefined}
-            sectionPrefix="liabilities"
           />
         )}
       </div>
