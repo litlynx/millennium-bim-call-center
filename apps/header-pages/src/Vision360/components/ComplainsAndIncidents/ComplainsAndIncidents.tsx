@@ -1,4 +1,5 @@
 import type React from 'react';
+import { useNavigate } from 'react-router';
 import { type CardTabItem, CardTabs, Icon } from 'shared/components';
 import { ClaimItem } from 'src/Vision360/components/ComplainsAndIncidents/components/ClaimItem';
 import IncidentItem from 'src/Vision360/components/ComplainsAndIncidents/components/IncidentItem';
@@ -52,10 +53,13 @@ const tabs: CardTabItem[] = [
 ];
 
 const ComplainsAndIncidents: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <CardTabs
       icon={<Icon type="personalQuestion" className="bg-orange" />}
       title="Reclamações / Incidentes"
+      onTitleClick={() => navigate('/complains-and-incidents?details=true')}
       className="h-full"
       tabs={tabs}
       defaultValue="claims"
