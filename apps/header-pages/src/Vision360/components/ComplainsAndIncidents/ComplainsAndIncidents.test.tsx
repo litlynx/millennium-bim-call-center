@@ -53,7 +53,18 @@ mock.module('shared/components', () => {
     <span data-testid="icon" {...props} />
   );
 
-  return { __esModule: true, CardTabs, Icon };
+  const CardAccordion = ({ items }: { items: CardTabItem[] }) => (
+    <div>
+      {items.map((item) => (
+        <div key={item.value}>
+          <h3>{item.label}</h3>
+          <div>{item.content}</div>
+        </div>
+      ))}
+    </div>
+  );
+
+  return { __esModule: true, CardTabs, Icon, CardAccordion };
 });
 
 mock.module('./components/ClaimItem', () => ({
@@ -112,8 +123,6 @@ describe('ComplainsAndIncidents (bun:test)', () => {
     render(<Component />);
 
     const claimsTab = screen.getByRole('tab', { name: 'Reclamações' });
-
-    console.log(claimsTab);
 
     expect(claimsTab.getAttribute('aria-selected')).toBe('true');
   });
