@@ -57,7 +57,7 @@ const ComplainsAndIncidents: React.FC = () => {
 
   return (
     <CardTabs
-      icon={<Icon type="personalQuestion" className="bg-orange" />}
+      icon={<Icon type="personalQuestion" className="bg-orange-500" />}
       title="Reclamações / Incidentes"
       onTitleClick={() => navigate('/complains-and-incidents?details=true')}
       className="h-full"
