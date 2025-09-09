@@ -1,5 +1,6 @@
 [test]
 coverage = true
+coverageReporter = [ "text", "lcov", ]
 
 coveragePathIgnorePatterns = [
   "**/assets/**",

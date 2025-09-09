@@ -57,7 +57,8 @@
       "**/dist/**": true,
       "**/build/**": true,
       "**/.turbo/**": true,
-      "**/coverage/**": true,
+      // Allow coverage changes to be watched by Coverage Gutters
+      "**/coverage/**": false,
       "**/.wp_federation/**": true,
       "**/playwright-report/**": true,
       "**/test-results/**": true,
@@ -98,10 +99,17 @@
       "**/tmp/**": true,
       "**/temp": true,
       "**/temp/**": true
-    }
+    },
+    // Coverage Gutters: look for lcov.info in any coverage folder and auto-watch on open
+    "coverage-gutters.coverageBaseDir": "**/coverage",
+    "coverage-gutters.coverageFileNames": ["lcov.info"],
+    "coverage-gutters.watchOnActivate": true,
+    "coverage-gutters.showGutterCoverage": true,
+    "coverage-gutters.showLineCoverage": false
   },
   "extensions": {
     "recommendations": [
+      "ryanluker.vscode-coverage-gutters",
       "bradlc.vscode-tailwindcss",
       "biomejs.biome",
       "yoavbls.pretty-ts-errors",
