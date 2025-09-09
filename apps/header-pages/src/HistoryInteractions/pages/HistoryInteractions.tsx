@@ -1,12 +1,12 @@
-export default function LastContactsPage() {
+export default function HistoryInteractions() {
   const isParamsTrue = new URLSearchParams(window.location.search).get('details') === 'true';
 
   return (
     <div className="p-4">
       {isParamsTrue ? (
         <>
-          <h1 className="text-2xl font-bold mb-4">Detalhes de últimos contactos</h1>
-          <p>Aqui estão os detalhes dos últimos contactos...</p>
+          <h1 className="text-2xl font-bold mb-4">Histórico de interacções</h1>
+          <p>Aqui estão os detalhes do histórico de interacções...</p>
         </>
       ) : (
         <p>Sem detalhes disponíveis.</p>

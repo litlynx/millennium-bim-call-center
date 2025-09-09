@@ -7,7 +7,7 @@ const ChannelAndServicesPages = lazy(
   () => import('./ChannelsAndServices/pages/ChannelAndServicesPage')
 );
 const Vision360Page = lazy(() => import('./Vision360/pages/Vision360Page'));
-const LastContactsPage = lazy(() => import('./LastContacts/pages/LastContactsPage'));
+const LastContactsPage = lazy(() => import('./HistoryInteractions/pages/HistoryInteractions'));
 
 export default function App() {
   const navigate = useNavigate();
