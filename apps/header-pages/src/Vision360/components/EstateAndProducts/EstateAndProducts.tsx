@@ -1,3 +1,5 @@
+import type * as React from 'react';
+import { useNavigate } from 'react-router';
 import { Card, Icon } from 'shared/components';
 import mockData from './mock-data/mock-data.json';
 import type {
@@ -17,12 +19,14 @@ interface FinancialSectionProps {
 }
 
 const FinancialItem: React.FC<FinancialItemProps> = ({ item, isLast = false }) => (
-  <div className={`flex justify-between items-center ${!isLast ? 'border-b border-gray-200' : ''}`}>
+  <div
+    className={`flex justify-between items-center flex-wrap ${!isLast ? 'border-b border-gray-200 pb-1' : ''}`}
+  >
     <span className="text-base">
       <span className="font-semibold">{item.name}</span>
       <span className="font-medium">{item.account ? ` - ${item.account}` : ''}</span>
     </span>
-    <span className="flex text-base items-baseline">
+    <span className="flex text-base flex-wrap items-baseline">
       <span className="font-semibold pr-2">{item.amount}</span>
       <span className="text-gray-500">{item.currency}</span>
     </span>
@@ -31,9 +35,9 @@ const FinancialItem: React.FC<FinancialItemProps> = ({ item, isLast = false }) =
 
 const FinancialSection: React.FC<FinancialSectionProps> = ({ section, className = '' }) => (
   <div className={`space-y-2 ${className}`}>
-    <div className="flex justify-between items-center pb-[45px]">
+    <div className="flex justify-between items-center flex-wrap pb-[45px]">
       <h3 className="font-bold text-xl">{section.title}</h3>
-      <span className="flex items-baseline">
+      <span className="flex flex-wrap items-baseline">
         <h4 className="text-2xl pr-1 font-semibold">
           {section.total.amount.split(',')[0]}
           {section.total.amount.includes(',') && (
@@ -54,8 +58,10 @@ const FinancialSection: React.FC<FinancialSectionProps> = ({ section, className 
   </div>
 );
 
-export default function EstateAndProducts() {
-  const data: EstateAndProductsData = mockData.estateAndProducts;
+export default function EstateAndProducts(props: { data?: Partial<EstateAndProductsData> | null }) {
+  const data: Partial<EstateAndProductsData> | null =
+    props?.data === undefined ? (mockData.estateAndProducts as EstateAndProductsData) : props.data;
+  const navigate = useNavigate();
 
   if (!data) {
     return (
@@ -75,11 +81,22 @@ export default function EstateAndProducts() {
     <Card
       icon={<Icon type="pieChart" className="bg-teal" />}
       title="Património e produtos"
-      className="h-full pb-[39px]"
+      className="h-full"
+      onTitleClick={() => navigate('/estate-and-products?details=true')}
     >
-      <div className="grid grid-cols-2 divide-x divide-gray-200 pt-[0.625rem]">
-        {data.assets && <FinancialSection section={data.assets} className="pr-4" />}
-        {data.liabilities && <FinancialSection section={data.liabilities} className="pl-4" />}
+      <div className="grid grid-cols-2 divide-x divide-gray-200">
+        {data.assets && (
+          <FinancialSection
+            section={data.assets}
+            className={data.liabilities ? 'pr-4' : undefined}
+          />
+        )}
+        {data.liabilities && (
+          <FinancialSection
+            section={data.liabilities}
+            className={data.assets ? 'pl-4' : undefined}
+          />
+        )}
       </div>
     </Card>
   );
