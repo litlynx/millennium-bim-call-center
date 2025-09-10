@@ -26,7 +26,6 @@ describe('ComplainsAndIncidents', () => {
 
   test('switches between tabs correctly', async () => {
     renderWithRouter(<ComplainsAndIncidents />);
-
     const claimsTab = screen.getByRole('tab', { name: 'Reclamações' });
     const incidentsTab = screen.getByRole('tab', { name: 'Incidentes' });
 

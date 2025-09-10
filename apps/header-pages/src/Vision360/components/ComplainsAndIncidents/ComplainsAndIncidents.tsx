@@ -27,12 +27,14 @@ const tabs: CardTabItem[] = [
     label: 'Reclamações',
     content: (
       <>
-        {sortClaims(claims).map((props, index, arr) => (
-          <div key={props.number}>
-            <ClaimItem {...props} />
-            {index < arr.length - 1 && <hr className="my-2 text-gray-100" />}
-          </div>
-        ))}
+        {sortClaims(claims)
+          .slice(0, 3)
+          .map((props, index, arr) => (
+            <div key={props.number}>
+              <ClaimItem {...props} />
+              {index < arr.length - 1 && <hr className="text-gray-100" />}
+            </div>
+          ))}
       </>
     )
   },
@@ -41,12 +43,14 @@ const tabs: CardTabItem[] = [
     label: 'Incidentes',
     content: (
       <>
-        {sortIncidents(incidents).map((props, index, arr) => (
-          <div key={props.id}>
-            <IncidentItem {...props} />
-            {index < arr.length - 1 && <hr className="my-2 text-gray-100" />}
-          </div>
-        ))}
+        {sortIncidents(incidents)
+          .slice(0, 3)
+          .map((props, index, arr) => (
+            <div key={props.id}>
+              <IncidentItem {...props} />
+              {index < arr.length - 1 && <hr className="text-gray-100" />}
+            </div>
+          ))}
       </>
     )
   }

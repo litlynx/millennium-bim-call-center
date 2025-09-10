@@ -5,7 +5,7 @@ coverageReporter = [ "text", "lcov", ]
 coveragePathIgnorePatterns = [
   "**/@config/**",
   "**/types/**",
-  "**/__mocks__/**", # Exclude isolated error tests to prevent mock conflicts
+  "**/__mocks__/**",
 ]
 
 # Ensure DOM globals exist, then run unified setup (matchers + cleanup)

@@ -1,7 +1,30 @@
-import { describe, expect, mock, test } from 'bun:test';
+import { beforeEach, describe, expect, mock, test } from 'bun:test';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import type { ChannelServiceState } from './components/State';
+import type React from 'react';
+
+// Use centralized mocks to avoid duplication and conflicts
+mock.module(
+  'shared/lib/utils',
+  () => import('../../../../../../packages/shared/src/__mocks__/shared/lib')
+);
+mock.module(
+  'shared/components',
+  () => import('../../../../../../packages/shared/src/__mocks__/shared/components')
+);
+mock.module(
+  'react-router',
+  () => import('../../../../../../packages/shared/src/__mocks__/react-router')
+);
+
+beforeEach(async () => {
+  // Reset navigation spy between tests using the centralized mock
+  const { navigateSpy } = await import(
+    '../../../../../../packages/shared/src/__mocks__/react-router'
+  );
+  navigateSpy.mockClear();
+});
 
 // Import component after mocks are set up
 const ChannelsAndServices = (
@@ -10,6 +33,7 @@ const ChannelsAndServices = (
 
 describe('ChannelsAndServices', () => {
   const renderWithRouter = (ui: React.ReactElement) => render(ui, { wrapper: MemoryRouter });
+
   test('applies spacing classes (pr-4/pl-4) when both sections are present', async () => {
     renderWithRouter(<ChannelsAndServices />);
 
@@ -128,6 +152,7 @@ describe('ChannelsAndServices', () => {
     }));
 
     renderWithRouter(<ChannelsAndServices />);
+
 
     const titleBtn = await screen.findByRole('button', { name: /Canais e serviços/i });
     fireEvent.click(titleBtn);
