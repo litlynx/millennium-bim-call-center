@@ -39,15 +39,6 @@ describe('Vision360Page', () => {
     expect(personalDataCard).toBeDefined();
   });
 
-  it('renders the grid layout and Estate and Products card', async () => {
-    render(<Vision360Page />);
-    const cards = await screen.findAllByTestId('card');
-    const estateAndProductsCard = cards.find((card) =>
-      within(card).queryByRole('button', { name: /Património e produtos/i })
-    );
-    expect(estateAndProductsCard).toBeDefined();
-  });
-
   it('sets the document title via Helmet', async () => {
     render(<Vision360Page />);
     // Vision360Page sets <title>Visão 360</title>
@@ -175,5 +166,22 @@ describe('Vision360Page', () => {
     expect(mainGrid?.className).toContain('w-full');
     expect(mainGrid?.className).toContain('h-screen');
     expect(mainGrid?.className).toContain('overflow-y-auto');
+  });
+
+  // Separate test for normal EstateAndProducts rendering
+  it('renders the grid layout and Estate and Products card', async () => {
+    render(<Vision360Page />);
+    const cards = await screen.findAllByTestId('card');
+    const estateAndProductsCard = cards.find((card) =>
+      within(card).queryByRole('button', { name: /Património e produtos/i })
+    );
+    expect(estateAndProductsCard).toBeDefined();
+  });
+
+  it('lazy loads EstateAndProducts successfully (content appears without errors)', async () => {
+    // Render the page and assert that Estate & Products content eventually shows up
+    render(<Vision360Page />);
+    // Title of the Card from the lazy component
+    expect(await screen.findByRole('button', { name: /Património e produtos/i })).toBeTruthy();
   });
 });

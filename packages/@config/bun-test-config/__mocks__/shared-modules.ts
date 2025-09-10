@@ -2,19 +2,13 @@
 import { mock } from 'bun:test';
 
 // Mock shared/lib/utils globally
-mock.module(
-  'shared/lib/utils',
-  () => import('../../../../packages/shared/src/__mocks__/shared/lib/utils')
-);
+mock.module('shared/lib/utils', () => import('../../../shared/src/__mocks__/shared/lib/utils'));
 
 // Mock shared/components globally
-mock.module(
-  'shared/components',
-  () => import('../../../../packages/shared/src/__mocks__/shared/components')
-);
+mock.module('shared/components', () => import('../../../shared/src/__mocks__/shared/components'));
 
 // Mock react-router globally
-mock.module('react-router', () => import('../../../../packages/shared/src/__mocks__/react-router'));
+mock.module('react-router', () => import('../../../shared/src/__mocks__/react-router'));
 
 // Mock shared/styles/Global
 mock.module('shared/styles/Global', () => ({

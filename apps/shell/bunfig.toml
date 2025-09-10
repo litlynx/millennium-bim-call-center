@@ -12,5 +12,6 @@ coveragePathIgnorePatterns = [
 preload = [
   "@config/bun-test-config/happydom.ts",
   "@config/bun-test-config/setup-tests.ts",
-  "@config/bun-test-config/testing-library.ts"
+  "@config/bun-test-config/testing-library.ts",
+"../../packages/@config/bun-test-config/__mocks__/shared-modules.ts"
 ]

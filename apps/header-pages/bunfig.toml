@@ -5,7 +5,7 @@ coverageReporter = [ "text", "lcov", ]
 coveragePathIgnorePatterns = [
   "**/@config/**",
   "**/types/**",
-  "**/__mocks__/**",
+  "**/__mocks__/**", # Exclude isolated error tests to prevent mock conflicts
 ]
 
 # Ensure DOM globals exist, then run unified setup (matchers + cleanup)
@@ -13,5 +13,5 @@ preload = [
   "@config/bun-test-config/happydom.ts",
   "@config/bun-test-config/setup-tests.ts",
   "@config/bun-test-config/testing-library.ts",
-  "./src/__mocks__/shared-modules.ts"
+  "../../packages/@config/bun-test-config/__mocks__/shared-modules.ts"
 ]
