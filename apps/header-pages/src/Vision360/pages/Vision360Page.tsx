@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import ComplainsAndIncidents from 'src/Vision360/components/ComplainsAndIncidents/ComplainsAndIncidents';
 import ChannelsAndServices from '../components/ChannelsAndServices/ChannelsAndServices';
 import PersonalData from '../components/PersonalData/PersonalData';
 
@@ -19,7 +20,7 @@ export default function Vision360Page() {
       <Helmet>
         <title>Visão 360</title>
       </Helmet>
-      <div className="grid grid-cols-24 grid-rows-10 gap-4 px-4 py-5 rounded-lg bg-gray-100 w-full h-full overflow-y-auto">
+      <div className="grid grid-cols-24 grid-rows-10 gap-4 px-4 py-5 rounded-lg bg-gray-100 w-full h-screen overflow-y-auto">
         {/* Personal Data */}
         <div className="row-span-10 col-span-5">
           <PersonalData />
@@ -39,7 +40,9 @@ export default function Vision360Page() {
         </div>
 
         {/* Incidents */}
-        <div className="col-start-16 col-span-7 row-start-6 row-span-5"></div>
+        <div className="col-start-16 col-span-7 row-start-6 row-span-5">
+          <ComplainsAndIncidents />
+        </div>
       </div>
     </>
   );

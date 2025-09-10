@@ -116,5 +116,3 @@ export const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = (
 export const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (props) => (
   <input data-testid="input" {...props} />
 );
-
-export default { CardTabs, Icon, Card, CardAccordion, CardItemLabel, Button, Input };

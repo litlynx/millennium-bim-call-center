@@ -5,7 +5,6 @@ export interface ClaimsProps {
   status: string;
   amount: string;
   type: string;
-  dataTestId?: string;
 }
 
 export interface IncidentsProps {
@@ -13,5 +12,4 @@ export interface IncidentsProps {
   date: string;
   type: string;
   title: string;
-  dataTestId?: string;
 }

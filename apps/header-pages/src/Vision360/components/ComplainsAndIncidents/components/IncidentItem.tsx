@@ -8,9 +8,9 @@ const IncidentHeader: React.FC<{ date: string; type: string }> = ({ date, type }
   </span>
 );
 
-const IncidentItem: React.FC<IncidentsProps> = ({ date, type, title, dataTestId }) => {
+const IncidentItem: React.FC<IncidentsProps> = ({ date, type, title }) => {
   return (
-    <div className="flex gap-2 p-4 pl-0 items-start" data-testid={dataTestId}>
+    <div className="flex gap-2 p-4 pl-0 items-start">
       <Icon type="exclamation" className="bg-primary-500" rounded size="sm" />
       <div className="flex flex-col gap-1">
         <IncidentHeader date={date} type={type} />

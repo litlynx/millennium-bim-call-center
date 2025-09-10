@@ -1,5 +1,12 @@
 {
-  "include": ["./**/*", "**/*", "package.json"],
+  "include": [
+    "./**/*",
+    "**/*",
+    "package.json",
+    "../__mocks__",
+    "../../packages/shared/src/__mocks__/shared",
+    "../../packages/shared/src/__mocks__/react-router.ts"
+  ],
   "exclude": ["build", "dist", "coverage", "node_modules", "rspack/**/*"],
   "extends": "@config/tsconfig",
   "compilerOptions": {

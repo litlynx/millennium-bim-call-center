@@ -25,7 +25,6 @@ const tabs: CardTabItem[] = [
   {
     value: 'claims',
     label: 'Reclamações',
-    dataTestId: 'complains-and-incidents-tab-claims',
     content: (
       <>
         {sortClaims(claims)
@@ -42,7 +41,6 @@ const tabs: CardTabItem[] = [
   {
     value: 'incidents',
     label: 'Incidentes',
-    dataTestId: 'complains-and-incidents-tab-incidents',
     content: (
       <>
         {sortIncidents(incidents)
@@ -69,11 +67,6 @@ const ComplainsAndIncidents: React.FC = () => {
       className="h-full"
       tabs={tabs}
       defaultValue="claims"
-      data-testid="complains-and-incidents-card"
-      headerTestId="complains-and-incidents-header"
-      titleTestId="complains-and-incidents-title"
-      contentTestId="complains-and-incidents-content"
-      tabsListClassName="pt-[1.125rem]"
     />
   );
 };
