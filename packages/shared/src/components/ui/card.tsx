@@ -18,11 +18,7 @@ Card.displayName = 'Card';
 
 const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('flex flex-col space-y-1.5 pb-5', className)}
-      {...props}
-    />
+    <div ref={ref} className={cn('flex flex-col space-y-1.5 pb-5', className)} {...props} />
   )
 );
 CardHeader.displayName = 'CardHeader';
@@ -48,12 +44,7 @@ CardDescription.displayName = 'CardDescription';
 const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     // biome-ignore lint/correctness/useUniqueElementIds: id needed here
-    <div
-      ref={ref}
-      id="card-content"
-      className={cn('has-[#scroll-bar]:pr-[0.5625rem]', className)}
-      {...props}
-    />
+    <div ref={ref} id="card-content" className={cn('', className)} {...props} />
   )
 );
 CardContent.displayName = 'CardContent';
@@ -66,4 +57,3 @@ const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 CardFooter.displayName = 'CardFooter';
 
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };
-
