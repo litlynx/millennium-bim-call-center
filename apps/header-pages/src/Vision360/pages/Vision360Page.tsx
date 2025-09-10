@@ -9,7 +9,7 @@ export default function Vision360Page() {
       <Helmet>
         <title>Visão 360</title>
       </Helmet>
-      <div className="grid grid-cols-24 grid-rows-10 gap-4 px-4 py-5 rounded-lg bg-gray-100 w-full h-full overflow-y-auto">
+      <div className="grid grid-cols-24 grid-rows-10 gap-4 px-4 py-5 rounded-lg bg-gray-100 w-full h-screen overflow-y-auto">
         {/* Personal Data */}
         <div className="row-span-10 col-span-5">
           <PersonalData />
