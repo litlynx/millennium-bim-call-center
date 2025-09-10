@@ -41,6 +41,46 @@ export const CardAccordionItemContactsMapData: CardAccordionItemContactsProps[] 
         value: 'x230876 | El Kaizen'
       }
     ]
+  },
+  {
+    header: {
+      icon: 'phoneCall',
+      iconBackground: 'bg-green',
+      date: '18-04-2025',
+      time: '00h31',
+      title: 'Cartões - Cancelamento / Bloqueio'
+    },
+    body: [
+      {
+        icon: 'ringCall',
+        label: 'Origem'
+      },
+      {
+        icon: 'callCenterWorker',
+        label: 'Comunicador',
+        value: 'x230876 | El Kaizen'
+      }
+    ]
+  },
+  {
+    header: {
+      icon: 'phoneCall',
+      iconBackground: 'bg-blue',
+      date: '17-04-2025',
+      time: '22h33',
+      title: 'Cartões - Cancelamento / Bloqueio'
+    },
+    body: [
+      {
+        icon: 'ringCall',
+        label: 'Origem'
+      },
+      {
+        icon: 'callCenterWorker',
+        label: 'Comunicador',
+        value: 'x230876 | El Kaizen'
+      }
+    ]
   }
 ];
 
