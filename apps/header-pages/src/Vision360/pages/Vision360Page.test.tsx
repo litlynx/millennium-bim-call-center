@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'bun:test';
 import { render, screen, waitFor, within } from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
 import Vision360Page from 'src/Vision360/pages/Vision360Page';
 
 describe('Vision360Page', () => {
@@ -16,8 +17,15 @@ describe('Vision360Page', () => {
     }
   });
 
+  const renderWithRouter = () =>
+    render(
+      <MemoryRouter>
+        <Vision360Page />
+      </MemoryRouter>
+    );
+
   it('renders the grid layout and ChannelsAndServices section', async () => {
-    render(<Vision360Page />);
+    renderWithRouter();
     const cards = await screen.findAllByTestId('card');
     expect(cards.length).toBeGreaterThanOrEqual(2); // PersonalData, ChannelsAndServices, and ComplainsAndIncidents
     const channelsAndServicesCard = cards.find((card) =>
@@ -31,7 +39,7 @@ describe('Vision360Page', () => {
   });
 
   it('renders the grid layout and PersonalData card', async () => {
-    render(<Vision360Page />);
+    renderWithRouter();
     const cards = await screen.findAllByTestId('card');
     const personalDataCard = cards.find((card) =>
       within(card).queryByRole('button', { name: /Dados Pessoais/i })
@@ -40,13 +48,13 @@ describe('Vision360Page', () => {
   });
 
   it('sets the document title via Helmet', async () => {
-    render(<Vision360Page />);
+    renderWithRouter();
     // Vision360Page sets <title>Visão 360</title>
     await waitFor(() => expect(document.title).toBe('Visão 360'));
   });
 
   it('renders ComplainsAndIncidents component', async () => {
-    render(<Vision360Page />);
+    renderWithRouter();
 
     // Wait for the CardTabs component to render - use getAllByText for multiple matches
     const cardTabs = await screen.findAllByText(/Reclamações/i);
@@ -54,7 +62,7 @@ describe('Vision360Page', () => {
   });
 
   it('renders all main layout sections with proper grid classes', () => {
-    render(<Vision360Page />);
+    renderWithRouter();
 
     // Verify the grid structure is present
     const gridContainer = document.querySelector('.grid-cols-24.grid-rows-10');
@@ -72,7 +80,7 @@ describe('Vision360Page', () => {
   });
 
   it('renders with proper accessibility structure', async () => {
-    render(<Vision360Page />);
+    renderWithRouter();
 
     // Check that Helmet is setting the title - need to wait for it
     await waitFor(() => {
@@ -103,7 +111,7 @@ describe('Vision360Page', () => {
   });
 
   it('renders empty Last Contact section', () => {
-    render(<Vision360Page />);
+    renderWithRouter();
 
     // The Last Contact section is currently empty but should exist in the DOM
     const lastContactSection = document.querySelector(
@@ -119,7 +127,7 @@ describe('Vision360Page', () => {
     // This test ensures the lazy component is properly defined
     // Even though we can't easily test the error boundary in Bun test,
     // we can at least verify the component structure doesn't crash
-    render(<Vision360Page />);
+    renderWithRouter();
 
     // Verify that the estate section exists and doesn't crash
     const estateSection = document.querySelector('.col-start-6.col-span-12.row-span-5');
@@ -130,7 +138,7 @@ describe('Vision360Page', () => {
   });
 
   it('renders all required grid sections with correct positioning', () => {
-    render(<Vision360Page />);
+    renderWithRouter();
 
     // Test specific grid positioning classes for all sections
 
@@ -170,7 +178,7 @@ describe('Vision360Page', () => {
 
   // Separate test for normal EstateAndProducts rendering
   it('renders the grid layout and Estate and Products card', async () => {
-    render(<Vision360Page />);
+    renderWithRouter();
     const cards = await screen.findAllByTestId('card');
     const estateAndProductsCard = cards.find((card) =>
       within(card).queryByRole('button', { name: /Património e produtos/i })
@@ -180,7 +188,7 @@ describe('Vision360Page', () => {
 
   it('lazy loads EstateAndProducts successfully (content appears without errors)', async () => {
     // Render the page and assert that Estate & Products content eventually shows up
-    render(<Vision360Page />);
+    renderWithRouter();
     // Title of the Card from the lazy component
     expect(await screen.findByRole('button', { name: /Património e produtos/i })).toBeTruthy();
   });

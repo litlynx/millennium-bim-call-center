@@ -1,5 +1,6 @@
 // Global mock setup for shared modules in Bun test
 import { mock } from 'bun:test';
+import type React from 'react';
 
 // Mock shared/lib/utils globally
 mock.module('shared/lib/utils', () => import('../../../shared/src/__mocks__/shared/lib/utils'));
@@ -7,8 +8,9 @@ mock.module('shared/lib/utils', () => import('../../../shared/src/__mocks__/shar
 // Mock shared/components globally
 mock.module('shared/components', () => import('../../../shared/src/__mocks__/shared/components'));
 
-// Mock react-router globally
-mock.module('react-router', () => import('../../../shared/src/__mocks__/react-router'));
+// Avoid globally mocking 'react-router' to prevent circular/partial init issues.
+// Individual tests that need navigation spying should locally
+// mock 'react-router' and/or import navigateSpy from the shared mock.
 
 // Mock shared/styles/Global
 mock.module('shared/styles/Global', () => ({
