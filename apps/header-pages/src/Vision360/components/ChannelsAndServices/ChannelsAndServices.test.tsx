@@ -1,5 +1,7 @@
 import { describe, expect, mock, test } from 'bun:test';
 import { fireEvent, render, screen, within } from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
+import type { ChannelServiceState } from './components/State';
 
 // Import component after mocks are set up
 const ChannelsAndServices = (
@@ -7,8 +9,9 @@ const ChannelsAndServices = (
 ).default;
 
 describe('ChannelsAndServices', () => {
+  const renderWithRouter = (ui: React.ReactElement) => render(ui, { wrapper: MemoryRouter });
   test('applies spacing classes (pr-4/pl-4) when both sections are present', async () => {
-    render(<ChannelsAndServices />);
+    renderWithRouter(<ChannelsAndServices />);
 
     const digitalHeader = screen.getByText('Canais Digitais');
     const servicesHeader = screen.getByText('Serviços');
@@ -29,11 +32,11 @@ describe('ChannelsAndServices', () => {
         items: [
           { label: 'Pagamento', state: 'A' },
           { label: 'Transferência', state: 'B' }
-        ]
+        ] as { label: string; state: ChannelServiceState }[]
       }
-    } as const;
+    };
 
-    render(<ChannelsAndServices data={data} />);
+    renderWithRouter(<ChannelsAndServices data={data} />);
 
     // Only services header should be present
     const servicesHeader = screen.getByText('Serviços');
@@ -52,11 +55,11 @@ describe('ChannelsAndServices', () => {
         items: [
           { label: 'App Mobile', state: 'C' },
           { label: 'Internet Banking', state: 'A' }
-        ]
+        ] as { label: string; state: ChannelServiceState }[]
       }
-    } as const;
+    };
 
-    render(<ChannelsAndServices data={data} />);
+    renderWithRouter(<ChannelsAndServices data={data} />);
 
     // Only digital header should be present
     const digitalHeader = screen.getByText('Canais Digitais');
@@ -68,7 +71,7 @@ describe('ChannelsAndServices', () => {
   });
 
   test('renders empty Card when data is null (no sections, no navigation on title click)', async () => {
-    render(<ChannelsAndServices data={null} />);
+    renderWithRouter(<ChannelsAndServices data={null} />);
 
     // Header still renders
     const titleBtn = await screen.findByRole('button', { name: /Canais e serviços/i });
@@ -88,7 +91,7 @@ describe('ChannelsAndServices', () => {
     expect(calls.length).toBe(0);
   });
   test('renders title, sections, items and state badges from mock data', async () => {
-    render(<ChannelsAndServices />);
+    renderWithRouter(<ChannelsAndServices />);
 
     // Title button via Card mock
     const titleBtn = await screen.findByRole('button', { name: /Canais e serviços/i });
@@ -124,7 +127,7 @@ describe('ChannelsAndServices', () => {
       useNavigate: () => mockNavigate
     }));
 
-    render(<ChannelsAndServices />);
+    renderWithRouter(<ChannelsAndServices />);
 
     const titleBtn = await screen.findByRole('button', { name: /Canais e serviços/i });
     fireEvent.click(titleBtn);
@@ -135,12 +138,12 @@ describe('ChannelsAndServices', () => {
   });
 
   test('renders the icon in the Card header', async () => {
-    render(<ChannelsAndServices />);
+    renderWithRouter(<ChannelsAndServices />);
     expect(screen.getByTestId('icon')).toBeTruthy();
   });
 
   test('applies border classes to non-last items only', async () => {
-    render(<ChannelsAndServices />);
+    renderWithRouter(<ChannelsAndServices />);
 
     const first = screen.getByText('Internet Banking');
     const second = screen.getByText('Millennium IZI');
@@ -156,7 +159,7 @@ describe('ChannelsAndServices', () => {
   });
 
   test('items with null state do not render a State badge', async () => {
-    render(<ChannelsAndServices />);
+    renderWithRouter(<ChannelsAndServices />);
 
     const item = screen.getByText('Extracto Mensal');
     const container = item.closest('div') as HTMLElement;
@@ -165,7 +168,7 @@ describe('ChannelsAndServices', () => {
   });
 
   test('state badge includes accessible label text (aria-label)', async () => {
-    render(<ChannelsAndServices />);
+    renderWithRouter(<ChannelsAndServices />);
     const badges = screen.getAllByRole('img');
     const label = badges[0]?.getAttribute('aria-label') ?? '';
     expect(label).toMatch(/\((A|B|C|V|I)\)$/);
