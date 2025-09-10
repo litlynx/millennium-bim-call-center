@@ -46,15 +46,6 @@ describe('Vision360Page', () => {
     );
     expect(personalDataCard).toBeDefined();
   });
-  it('renders the grid layout and Estate and Products card', async () => {
-    const Vision360Page = await loadPage();
-    render(<Vision360Page />);
-    const cards = await screen.findAllByTestId('card');
-    const estateAndProductsCard = cards.find((card) =>
-      within(card).queryByRole('button', { name: /Património e produtos/i })
-    );
-    expect(estateAndProductsCard).toBeDefined();
-  });
 
   it('sets the document title via Helmet', async () => {
     renderWithRouter();

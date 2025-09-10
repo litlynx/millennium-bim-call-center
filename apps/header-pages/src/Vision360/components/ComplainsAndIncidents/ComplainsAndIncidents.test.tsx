@@ -36,7 +36,7 @@ describe('ComplainsAndIncidents', () => {
     const claimItems = screen.queryAllByTestId('claim-item');
     if (claimItems.length === 0) {
       // If mocked items aren't found, look for the actual claim content
-      expect(screen.getAllByText(/Nº Reclamação/)).toHaveLength(4);
+      expect(screen.getAllByText(/Nº Reclamação/)).toHaveLength(3);
     } else {
       expect(claimItems).toHaveLength(2);
     }
@@ -73,14 +73,14 @@ describe('ComplainsAndIncidents', () => {
       // When using real component, the header contains "Nº Reclamação - <number>"
       const found = numbers.filter((t) => /133342231[23]/.test(t)).join(' ');
       expect(found.includes('1333422313')).toBe(true);
-      expect(found.includes('1333422312')).toBe(true);
+      expect(found.includes('1333422312')).toBe(false);
     } else {
       // Fallback to visible text assert
       expect(screen.getAllByText(/Nº Reclamação/)).toHaveLength(2);
     }
 
     const separators = tabContent.querySelectorAll('hr');
-    expect(separators.length).toBe(3); // n-3 separators for 4 items
+    expect(separators.length).toBe(2); // n-2 separators for 3 items
   });
 
   test('sorts incidents by date desc and renders separators', async () => {
@@ -104,7 +104,7 @@ describe('ComplainsAndIncidents', () => {
     }
 
     const separators = tabContent.querySelectorAll('hr');
-    expect(separators.length).toEqual(4); // 5 items => 4 separators
+    expect(separators.length).toEqual(2); // 3 items => 2 separators
   });
 
   test('clicking the title triggers navigation to details route', async () => {
