@@ -1,7 +1,19 @@
+import { lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
+import ComplainsAndIncidents from 'src/Vision360/components/ComplainsAndIncidents/ComplainsAndIncidents';
 import ChannelsAndServices from '../components/ChannelsAndServices/ChannelsAndServices';
 import LastContact from '../components/LastContact/LastContact';
 import PersonalData from '../components/PersonalData/PersonalData';
+
+const EstateAndProducts = lazy(() =>
+  import('../components/EstateAndProducts/EstateAndProducts').catch(() => ({
+    default: () => (
+      <div className="bg-white rounded-lg p-4 text-center text-red-500">
+        Failed to load Estate and Products component
+      </div>
+    )
+  }))
+);
 
 export default function Vision360Page() {
   return (
@@ -16,7 +28,11 @@ export default function Vision360Page() {
         </div>
 
         {/* Estate and Products */}
-        <div className="col-start-6 col-span-12 row-span-5"></div>
+        <div className="col-start-6 col-span-12 row-span-5">
+          <Suspense fallback={<div>Loading...</div>}>
+            <EstateAndProducts />
+          </Suspense>
+        </div>
 
         {/* Last Contact */}
         <div className="col-start-16 col-span-7 row-span-5">
@@ -29,7 +45,9 @@ export default function Vision360Page() {
         </div>
 
         {/* Incidents */}
-        <div className="col-start-16 col-span-7 row-start-6 row-span-5"></div>
+        <div className="col-start-16 col-span-7 row-start-6 row-span-5">
+          <ComplainsAndIncidents />
+        </div>
       </div>
     </>
   );
