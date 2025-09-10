@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, mock, test } from 'bun:test';
 import { fireEvent, render, screen } from '@testing-library/react';
+import PersonalData from 'src/Vision360/components/PersonalData/PersonalData';
 
 // Use centralized mocks to avoid duplication and conflicts
 mock.module(
@@ -21,15 +22,9 @@ beforeEach(async () => {
   }
 });
 
-async function loadComponent() {
-  const mod = await import('./PersonalData');
-  return (mod.default ?? mod) as React.FC<{ data?: unknown | null }>;
-}
-
 describe('PersonalData', () => {
   test('renders Card with title and icon', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    render(<PersonalData />);
 
     expect(screen.getByTestId('card')).toBeTruthy();
     expect(screen.getByText('Dados Pessoais')).toBeTruthy();
@@ -45,8 +40,7 @@ describe('PersonalData', () => {
       useNavigate: () => mockNavigate
     }));
 
-    const Component = await loadComponent();
-    render(<Component />);
+    render(<PersonalData />);
 
     const titleBtn = await screen.findByRole('button', { name: /dados pessoais/i });
     fireEvent.click(titleBtn);
@@ -56,13 +50,12 @@ describe('PersonalData', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/personal-data?details=true');
   });
   test('renders items from mockData', async () => {
-    const Component = await loadComponent();
     const data = {
       'Nome completo': 'Jacinto Fazenda Protótipo',
       CIF: '0000000'
     } as const;
 
-    render(<Component data={data} />);
+    render(<PersonalData data={data} />);
 
     const items = screen.getAllByTestId('card-item');
     expect(items.length).toBe(2);

@@ -1,21 +1,6 @@
-import { beforeEach, describe, expect, it, mock } from 'bun:test';
+import { beforeEach, describe, expect, it } from 'bun:test';
 import { render, screen, waitFor, within } from '@testing-library/react';
-
-// Mock configurations using centralized mocks
-mock.module(
-  'shared/lib/utils',
-  () => import('../../../../../packages/shared/src/__mocks__/shared/lib')
-);
-mock.module(
-  'shared/components',
-  () => import('../../../../../packages/shared/src/__mocks__/shared/components')
-);
-mock.module(
-  'react-router',
-  () => import('../../../../../packages/shared/src/__mocks__/react-router')
-);
-
-const loadPage = async () => (await import('./Vision360Page')).default;
+import Vision360Page from 'src/Vision360/pages/Vision360Page';
 
 describe('Vision360Page', () => {
   beforeEach(async () => {
@@ -32,7 +17,6 @@ describe('Vision360Page', () => {
   });
 
   it('renders the grid layout and ChannelsAndServices section', async () => {
-    const Vision360Page = await loadPage();
     render(<Vision360Page />);
     const cards = await screen.findAllByTestId('card');
     expect(cards.length).toBeGreaterThanOrEqual(2); // PersonalData, ChannelsAndServices, and ComplainsAndIncidents
@@ -47,7 +31,6 @@ describe('Vision360Page', () => {
   });
 
   it('renders the grid layout and PersonalData card', async () => {
-    const Vision360Page = await loadPage();
     render(<Vision360Page />);
     const cards = await screen.findAllByTestId('card');
     const personalDataCard = cards.find((card) =>
@@ -56,7 +39,6 @@ describe('Vision360Page', () => {
     expect(personalDataCard).toBeDefined();
   });
   it('renders the grid layout and Estate and Products card', async () => {
-    const Vision360Page = await loadPage();
     render(<Vision360Page />);
     const cards = await screen.findAllByTestId('card');
     const estateAndProductsCard = cards.find((card) =>
@@ -66,7 +48,6 @@ describe('Vision360Page', () => {
   });
 
   it('sets the document title via Helmet', async () => {
-    const Vision360Page = await loadPage();
     render(<Vision360Page />);
     // Vision360Page sets <title>Visão 360</title>
     await waitFor(() => expect(document.title).toBe('Visão 360'));

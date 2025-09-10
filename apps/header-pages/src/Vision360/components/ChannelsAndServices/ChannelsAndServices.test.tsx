@@ -1,38 +1,14 @@
-import { beforeEach, describe, expect, mock, test } from 'bun:test';
+import { describe, expect, mock, test } from 'bun:test';
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import type React from 'react';
 
-// Use centralized mocks to avoid duplication and conflicts
-mock.module(
-  'shared/lib/utils',
-  () => import('../../../../../../packages/shared/src/__mocks__/shared/lib')
-);
-mock.module(
-  'shared/components',
-  () => import('../../../../../../packages/shared/src/__mocks__/shared/components')
-);
-mock.module(
-  'react-router',
-  () => import('../../../../../../packages/shared/src/__mocks__/react-router')
-);
-
-beforeEach(async () => {
-  // Reset navigation spy between tests using the centralized mock
-  const { navigateSpy } = await import(
-    '../../../../../../packages/shared/src/__mocks__/react-router'
-  );
-  navigateSpy.mockClear();
-});
-
-async function loadComponent() {
-  const mod = await import('./ChannelsAndServices');
-  return (mod.default ?? mod) as React.FC<{ data?: unknown | null }>;
-}
+// Import component after mocks are set up
+const ChannelsAndServices = (
+  await import('src/Vision360/components/ChannelsAndServices/ChannelsAndServices')
+).default;
 
 describe('ChannelsAndServices', () => {
   test('applies spacing classes (pr-4/pl-4) when both sections are present', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    render(<ChannelsAndServices />);
 
     const digitalHeader = screen.getByText('Canais Digitais');
     const servicesHeader = screen.getByText('Serviços');
@@ -46,7 +22,6 @@ describe('ChannelsAndServices', () => {
   });
 
   test('renders only services section without left padding when digital channels are absent', async () => {
-    const Component = await loadComponent();
     const data = {
       services: {
         id: 'services',
@@ -58,7 +33,7 @@ describe('ChannelsAndServices', () => {
       }
     } as const;
 
-    render(<Component data={data} />);
+    render(<ChannelsAndServices data={data} />);
 
     // Only services header should be present
     const servicesHeader = screen.getByText('Serviços');
@@ -70,7 +45,6 @@ describe('ChannelsAndServices', () => {
   });
 
   test('renders only digital channels section without right padding when services are absent', async () => {
-    const Component = await loadComponent();
     const data = {
       digitalChannels: {
         id: 'digital',
@@ -82,7 +56,7 @@ describe('ChannelsAndServices', () => {
       }
     } as const;
 
-    render(<Component data={data} />);
+    render(<ChannelsAndServices data={data} />);
 
     // Only digital header should be present
     const digitalHeader = screen.getByText('Canais Digitais');
@@ -94,8 +68,7 @@ describe('ChannelsAndServices', () => {
   });
 
   test('renders empty Card when data is null (no sections, no navigation on title click)', async () => {
-    const Component = await loadComponent();
-    render(<Component data={null} />);
+    render(<ChannelsAndServices data={null} />);
 
     // Header still renders
     const titleBtn = await screen.findByRole('button', { name: /Canais e serviços/i });
@@ -115,8 +88,7 @@ describe('ChannelsAndServices', () => {
     expect(calls.length).toBe(0);
   });
   test('renders title, sections, items and state badges from mock data', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    render(<ChannelsAndServices />);
 
     // Title button via Card mock
     const titleBtn = await screen.findByRole('button', { name: /Canais e serviços/i });
@@ -152,8 +124,7 @@ describe('ChannelsAndServices', () => {
       useNavigate: () => mockNavigate
     }));
 
-    const Component = await loadComponent();
-    render(<Component />);
+    render(<ChannelsAndServices />);
 
     const titleBtn = await screen.findByRole('button', { name: /Canais e serviços/i });
     fireEvent.click(titleBtn);
@@ -164,14 +135,12 @@ describe('ChannelsAndServices', () => {
   });
 
   test('renders the icon in the Card header', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    render(<ChannelsAndServices />);
     expect(screen.getByTestId('icon')).toBeTruthy();
   });
 
   test('applies border classes to non-last items only', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    render(<ChannelsAndServices />);
 
     const first = screen.getByText('Internet Banking');
     const second = screen.getByText('Millennium IZI');
@@ -187,8 +156,7 @@ describe('ChannelsAndServices', () => {
   });
 
   test('items with null state do not render a State badge', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    render(<ChannelsAndServices />);
 
     const item = screen.getByText('Extracto Mensal');
     const container = item.closest('div') as HTMLElement;
@@ -197,8 +165,7 @@ describe('ChannelsAndServices', () => {
   });
 
   test('state badge includes accessible label text (aria-label)', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    render(<ChannelsAndServices />);
     const badges = screen.getAllByRole('img');
     const label = badges[0]?.getAttribute('aria-label') ?? '';
     expect(label).toMatch(/\((A|B|C|V|I)\)$/);

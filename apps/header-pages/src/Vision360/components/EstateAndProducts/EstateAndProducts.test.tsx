@@ -1,18 +1,11 @@
 import { beforeEach, describe, expect, mock, test } from 'bun:test';
 import { render, screen } from '@testing-library/react';
+import EstateAndProducts from 'src/Vision360/components/EstateAndProducts/EstateAndProducts';
 
 describe('EstateAndProducts - Cobertura Completa', () => {
   beforeEach(() => {
     // Clean up mocks between tests
     mock.restore();
-    mock.module(
-      'react-router',
-      () => import('../../../../../../packages/shared/src/__mocks__/react-router')
-    );
-    mock.module(
-      'shared/components',
-      () => import('../../../../../../packages/shared/src/__mocks__/shared/components')
-    );
   });
 
   describe('Cenário 1: Dados completos válidos', () => {
@@ -45,7 +38,6 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar componente principal com dados', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
       render(<EstateAndProducts />);
 
       // Testa linhas 70-84 (componente principal com dados)
@@ -55,7 +47,6 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar seções FinancialSection com total formatado', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
       render(<EstateAndProducts />);
 
       expect(screen.getByText('Activos')).toBeTruthy();
@@ -68,7 +59,6 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar FinancialItem com conta', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
       render(<EstateAndProducts />);
 
       // O texto está dividido em elementos separados, usar busca mais específica
@@ -80,7 +70,6 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar FinancialItem sem conta', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
       render(<EstateAndProducts />);
 
       // Testa a condição ternária item.account ? ` - ${item.account}` : ''
@@ -89,7 +78,6 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar último item sem border (isLast=true)', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
       render(<EstateAndProducts />);
 
       // O último item de cada array não deve ter border-bottom
@@ -98,7 +86,6 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve processar items array através do map', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
       render(<EstateAndProducts />);
 
       // Verifica que todos os items são renderizados
@@ -121,7 +108,6 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar estado vazio quando dados são null', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
       render(<EstateAndProducts />);
 
       expect(screen.getByText('Dados não disponíveis')).toBeTruthy();
@@ -155,7 +141,6 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve processar valores sem vírgula corretamente', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
       render(<EstateAndProducts />);
       // Testa a condição section.total.amount.includes(',')
       expect(screen.getAllByText('15000').length).toBe(2);
@@ -187,7 +172,6 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve lidar com arrays de items vazios', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
       render(<EstateAndProducts />);
 
       // Testa que as seções são renderizadas mesmo com arrays vazios
@@ -215,7 +199,6 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar apenas assets quando liabilities undefined', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
       render(<EstateAndProducts />);
 
       // Testa as condições {data.assets && ...} e {data.liabilities && ...}

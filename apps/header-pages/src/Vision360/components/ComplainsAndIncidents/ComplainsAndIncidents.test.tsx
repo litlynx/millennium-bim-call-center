@@ -1,25 +1,32 @@
-import { beforeEach, describe, expect, mock, test } from 'bun:test';
+import { describe, expect, mock, test } from 'bun:test';
 import { fireEvent, render, screen } from '@testing-library/react';
-import type { CardTabItem, CardTabsProps } from 'shared/components';
+import type React from 'react';
 import type {
   ClaimsProps,
   IncidentsProps
 } from 'src/Vision360/components/ComplainsAndIncidents/types';
 
-// Use a scoped module mock approach to avoid conflicts with other tests
-const mockedNavigate = mock(() => {});
+// Define mock for CardTabs to handle tab switching
+interface CardTabItem {
+  value: string;
+  label: string;
+  content: React.ReactNode;
+}
 
-mock.module('react-router', () => ({
-  __esModule: true,
-  useNavigate: () => mockedNavigate
-}));
+interface CardTabsProps {
+  icon?: React.ReactNode;
+  title?: string;
+  tabs: CardTabItem[];
+  className?: string;
+  defaultValue?: string;
+}
 
+// Mock all shared modules at the module level
 mock.module('shared/components', () => {
   const React = require('react');
 
   const CardTabs = ({ icon, title, tabs, className, defaultValue }: CardTabsProps) => {
     const [activeTab, setActiveTab] = React.useState(defaultValue || tabs[0]?.value);
-
     const currentTab = tabs.find((tab: CardTabItem) => tab.value === activeTab);
 
     return (
@@ -50,12 +57,15 @@ mock.module('shared/components', () => {
     );
   };
 
-  const Icon: React.FC<React.HTMLAttributes<HTMLSpanElement>> = (props) => (
-    <span data-testid="icon" {...props} />
-  );
-
-  return { __esModule: true, CardTabs, Icon };
+  return {
+    CardTabs,
+    Icon: (props: React.HTMLAttributes<HTMLSpanElement>) => <span data-testid="icon" {...props} />
+  };
 });
+
+mock.module('react-router', () => ({
+  useNavigate: () => mock(() => {})
+}));
 
 mock.module('./components/ClaimItem', () => ({
   __esModule: true,
@@ -67,29 +77,19 @@ mock.module('./components/IncidentItem', () => ({
   default: ({ id }: IncidentsProps) => <div data-testid="incident-item">{id}</div>
 }));
 
-async function loadComponent() {
-  const mod = await import('./ComplainsAndIncidents');
-  return (mod.default ?? mod) as React.FC<{ data?: unknown | null }>;
-}
+// Import component after mocks are set up
+const ComplainsAndIncidents = (await import('./ComplainsAndIncidents')).default;
 
 describe('ComplainsAndIncidents', () => {
-  beforeEach(() => {
-    // Clean up DOM between tests and reset mocks
-    document.body.innerHTML = '';
-    mockedNavigate.mockReset();
-  });
-
   test('renders CardTabs with title and icon', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    render(<ComplainsAndIncidents />);
 
     expect(screen.getByText(/Reclamações \/ Incidentes/i)).toBeTruthy();
     expect(screen.getByTestId('icon')).toBeTruthy();
   });
 
   test('switches between tabs correctly', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    render(<ComplainsAndIncidents />);
 
     const claimsTab = screen.getByRole('tab', { name: 'Reclamações' });
     const incidentsTab = screen.getByRole('tab', { name: 'Incidentes' });
@@ -118,8 +118,7 @@ describe('ComplainsAndIncidents', () => {
   });
 
   test('renders correct default tab (claims)', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    render(<ComplainsAndIncidents />);
 
     const claimsTab = screen.getByRole('tab', { name: 'Reclamações' });
 
