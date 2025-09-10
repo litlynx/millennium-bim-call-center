@@ -1,10 +1,10 @@
-import React from 'react';
+import { lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
 import ComplainsAndIncidents from 'src/Vision360/components/ComplainsAndIncidents/ComplainsAndIncidents';
 import ChannelsAndServices from '../components/ChannelsAndServices/ChannelsAndServices';
 import PersonalData from '../components/PersonalData/PersonalData';
 
-const LazyEstateAndProducts = React.lazy(() =>
+const EstateAndProducts = lazy(() =>
   import('../components/EstateAndProducts/EstateAndProducts').catch(() => ({
     default: () => (
       <div className="bg-white rounded-lg p-4 text-center text-red-500">
@@ -28,7 +28,9 @@ export default function Vision360Page() {
 
         {/* Estate and Products */}
         <div className="col-start-6 col-span-12 row-span-5">
-          <LazyEstateAndProducts />
+          <Suspense fallback={<div>Loading...</div>}>
+            <EstateAndProducts />
+          </Suspense>
         </div>
 
         {/* Last Contact */}
