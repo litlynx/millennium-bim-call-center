@@ -1,26 +1,6 @@
-import { beforeEach, describe, expect, mock, test } from 'bun:test';
+import { describe, expect, mock, test } from 'bun:test';
 import { fireEvent, render, screen } from '@testing-library/react';
 import PersonalData from 'src/Vision360/components/PersonalData/PersonalData';
-
-// Use centralized mocks to avoid duplication and conflicts
-mock.module(
-  'shared/components',
-  () => import('../../../../../../packages/shared/src/__mocks__/shared/components')
-);
-mock.module(
-  'react-router',
-  () => import('../../../../../../packages/shared/src/__mocks__/react-router')
-);
-
-beforeEach(async () => {
-  // Just clear the calls, don't reset the mock entirely
-  const { navigateSpy } = await import(
-    '../../../../../../packages/shared/src/__mocks__/react-router'
-  );
-  if (navigateSpy.mockClear) {
-    navigateSpy.mockClear();
-  }
-});
 
 describe('PersonalData', () => {
   test('renders Card with title and icon', async () => {
