@@ -15,6 +15,22 @@
       "status": "Submetido",
       "amount": "1000,00 MZN",
       "type": "Tranferência e-Mola"
+    },
+    {
+      "number": "1333422314",
+      "registerDate": "21/12/2025",
+      "deadlineDate": "29/12/2025",
+      "status": "Submetido",
+      "amount": "1000,00 MZN",
+      "type": "Tranferência e-Mola"
+    },
+    {
+      "number": "1333422315",
+      "registerDate": "21/12/2025",
+      "deadlineDate": "29/12/2025",
+      "status": "Submetido",
+      "amount": "1000,00 MZN",
+      "type": "Tranferência e-Mola"
     }
   ],
   "incidents": [
@@ -32,6 +48,18 @@
     },
     {
       "id": "ic3",
+      "date": "21-04-2025",
+      "type": "INIBCHQS",
+      "title": "Conta inibida de requisitar cheques"
+    },
+    {
+      "id": "ic4",
+      "date": "21-04-2025",
+      "type": "INIBCHQS",
+      "title": "Conta inibida de requisitar cheques"
+    },
+    {
+      "id": "ic5",
       "date": "21-04-2025",
       "type": "INIBCHQS",
       "title": "Conta inibida de requisitar cheques"

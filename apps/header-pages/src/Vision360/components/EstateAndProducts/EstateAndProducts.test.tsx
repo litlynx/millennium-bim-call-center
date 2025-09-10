@@ -1,18 +1,15 @@
 import { beforeEach, describe, expect, mock, test } from 'bun:test';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
+import EstateAndProducts from 'src/Vision360/components/EstateAndProducts/EstateAndProducts';
+import type { EstateAndProductsData } from './types';
 
 describe('EstateAndProducts - Cobertura Completa', () => {
+  const renderWithRouter = (ui: React.ReactElement) => render(ui, { wrapper: MemoryRouter });
+
   beforeEach(() => {
     // Clean up mocks between tests
     mock.restore();
-    mock.module(
-      'react-router',
-      () => import('../../../../../../packages/shared/src/__mocks__/react-router')
-    );
-    mock.module(
-      'shared/components',
-      () => import('../../../../../../packages/shared/src/__mocks__/shared/components')
-    );
   });
 
   describe('Cenário 1: Dados completos válidos', () => {
@@ -45,8 +42,7 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar componente principal com dados', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
-      render(<EstateAndProducts />);
+      renderWithRouter(<EstateAndProducts />);
 
       // Testa linhas 70-84 (componente principal com dados)
       expect(screen.getByText('Património e produtos')).toBeTruthy();
@@ -55,8 +51,7 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar seções FinancialSection com total formatado', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
-      render(<EstateAndProducts />);
+      renderWithRouter(<EstateAndProducts />);
 
       expect(screen.getByText('Activos')).toBeTruthy();
       expect(screen.getByText('Passivos')).toBeTruthy();
@@ -68,8 +63,7 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar FinancialItem com conta', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
-      render(<EstateAndProducts />);
+      renderWithRouter(<EstateAndProducts />);
 
       // O texto está dividido em elementos separados, usar busca mais específica
       expect(screen.getAllByText('DDA').length).toBe(2);
@@ -80,8 +74,7 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar FinancialItem sem conta', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
-      render(<EstateAndProducts />);
+      renderWithRouter(<EstateAndProducts />);
 
       // Testa a condição ternária item.account ? ` - ${item.account}` : ''
       expect(screen.getByText('DP - Millennium IZI')).toBeTruthy();
@@ -89,8 +82,7 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar último item sem border (isLast=true)', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
-      render(<EstateAndProducts />);
+      renderWithRouter(<EstateAndProducts />);
 
       // O último item de cada array não deve ter border-bottom
       expect(screen.getByText('DP - Millennium IZI')).toBeTruthy();
@@ -98,8 +90,7 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve processar items array através do map', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
-      render(<EstateAndProducts />);
+      renderWithRouter(<EstateAndProducts />);
 
       // Verifica que todos os items são renderizados
       expect(screen.getAllByText('DDA').length).toBe(2);
@@ -121,8 +112,7 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar estado vazio quando dados são null', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
-      render(<EstateAndProducts />);
+      renderWithRouter(<EstateAndProducts />);
 
       expect(screen.getByText('Dados não disponíveis')).toBeTruthy();
       expect(screen.getByText('Património e produtos')).toBeTruthy();
@@ -155,8 +145,7 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve processar valores sem vírgula corretamente', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
-      render(<EstateAndProducts />);
+      renderWithRouter(<EstateAndProducts />);
       // Testa a condição section.total.amount.includes(',')
       expect(screen.getAllByText('15000').length).toBe(2);
       expect(screen.getAllByText('5000').length).toBe(2);
@@ -187,8 +176,7 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve lidar com arrays de items vazios', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
-      render(<EstateAndProducts />);
+      renderWithRouter(<EstateAndProducts />);
 
       // Testa que as seções são renderizadas mesmo com arrays vazios
       expect(screen.getByText('Activos')).toBeTruthy();
@@ -215,13 +203,88 @@ describe('EstateAndProducts - Cobertura Completa', () => {
     });
 
     test('deve renderizar apenas assets quando liabilities undefined', async () => {
-      const { default: EstateAndProducts } = await import('./EstateAndProducts');
-      render(<EstateAndProducts />);
+      renderWithRouter(<EstateAndProducts />);
 
       // Testa as condições {data.assets && ...} e {data.liabilities && ...}
       expect(screen.getByText('Activos')).toBeTruthy();
       expect(screen.getByText('Conta Única')).toBeTruthy();
       expect(screen.queryByText('Passivos')).toBeFalsy();
     });
+  });
+
+  describe('Classes de espaçamento entre colunas (pr-4/pl-4)', () => {
+    test('aplica pr-4 em assets e pl-4 em liabilities quando ambas as secções existem', async () => {
+      const data: Partial<EstateAndProductsData> = {
+        assets: {
+          title: 'Activos',
+          total: { amount: '1,00', currency: 'MZN' },
+          items: [{ name: 'Conta A', amount: '1,00', currency: 'MZN' }]
+        },
+        liabilities: {
+          title: 'Passivos',
+          total: { amount: '2,00', currency: 'MZN' },
+          items: [{ name: 'Empréstimo', amount: '2,00', currency: 'MZN' }]
+        }
+      };
+
+      renderWithRouter(<EstateAndProducts data={data} />);
+
+      const assetsHeader = screen.getByText('Activos');
+      const liabilitiesHeader = screen.getByText('Passivos');
+
+      const assetsContainer = assetsHeader.parentElement?.parentElement as HTMLDivElement | null;
+      const liabilitiesContainer = liabilitiesHeader.parentElement
+        ?.parentElement as HTMLDivElement | null;
+
+      expect(assetsContainer?.className.includes('pr-4')).toBe(true);
+      expect(liabilitiesContainer?.className.includes('pl-4')).toBe(true);
+    });
+
+    test('não aplica pr-4 quando apenas assets existem', async () => {
+      const data: Partial<EstateAndProductsData> = {
+        assets: {
+          title: 'Activos',
+          total: { amount: '1,00', currency: 'MZN' },
+          items: [{ name: 'Conta A', amount: '1,00', currency: 'MZN' }]
+        }
+      };
+
+      renderWithRouter(<EstateAndProducts data={data} />);
+
+      const assetsHeader = screen.getByText('Activos');
+      const assetsContainer = assetsHeader.parentElement?.parentElement as HTMLDivElement | null;
+      expect(assetsContainer?.className.includes('pr-4')).toBe(false);
+    });
+
+    test('não aplica pl-4 quando apenas liabilities existem', async () => {
+      const data: Partial<EstateAndProductsData> = {
+        liabilities: {
+          title: 'Passivos',
+          total: { amount: '2,00', currency: 'MZN' },
+          items: [{ name: 'Empréstimo', amount: '2,00', currency: 'MZN' }]
+        }
+      };
+
+      renderWithRouter(<EstateAndProducts data={data} />);
+
+      const liabilitiesHeader = screen.getByText('Passivos');
+      const liabilitiesContainer = liabilitiesHeader.parentElement
+        ?.parentElement as HTMLDivElement | null;
+      expect(liabilitiesContainer?.className.includes('pl-4')).toBe(false);
+    });
+  });
+
+  test('clicar no título navega para a rota de detalhes', async () => {
+    const mockNavigate = mock((_path: string) => {});
+    mock.module('react-router', () => ({
+      useNavigate: () => mockNavigate
+    }));
+
+    renderWithRouter(<EstateAndProducts />);
+
+    const titleBtn = await screen.findByRole('button', { name: /Património e produtos/i });
+    fireEvent.click(titleBtn);
+    expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith('/estate-and-products?details=true');
   });
 });
