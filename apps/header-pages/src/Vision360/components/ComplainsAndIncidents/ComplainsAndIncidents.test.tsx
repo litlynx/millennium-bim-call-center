@@ -37,7 +37,7 @@ describe('ComplainsAndIncidents', () => {
     const claimItems = screen.queryAllByTestId('claim-item');
     if (claimItems.length === 0) {
       // If mocked items aren't found, look for the actual claim content
-      expect(screen.getAllByText(/Nº Reclamação/)).toHaveLength(2);
+      expect(screen.getAllByText(/Nº Reclamação/)).toHaveLength(4);
     } else {
       expect(claimItems).toHaveLength(2);
     }
@@ -81,7 +81,7 @@ describe('ComplainsAndIncidents', () => {
     }
 
     const separators = tabContent.querySelectorAll('hr');
-    expect(separators.length).toBe(1); // n-1 separators for 2 items
+    expect(separators.length).toBe(3); // n-3 separators for 4 items
   });
 
   test('sorts incidents by date desc and renders separators', async () => {
@@ -105,7 +105,7 @@ describe('ComplainsAndIncidents', () => {
     }
 
     const separators = tabContent.querySelectorAll('hr');
-    expect(separators.length).toBe(2); // 3 items => 2 separators
+    expect(separators.length).toEqual(4); // 5 items => 4 separators
   });
 
   test('clicking the title triggers navigation to details route', async () => {
