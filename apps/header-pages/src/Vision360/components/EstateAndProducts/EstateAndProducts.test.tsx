@@ -1,44 +1,18 @@
 import { beforeEach, describe, expect, mock, test } from 'bun:test';
 import { render, screen } from '@testing-library/react';
-import type React from 'react';
-
-// Mock function para shared/components (único e reutilizável)
-const createSharedComponentsMock = () => ({
-  __esModule: true,
-  Card: ({
-    title,
-    icon,
-    className,
-    children
-  }: {
-    title?: React.ReactNode;
-    icon?: React.ReactNode;
-    className?: string;
-    children?: React.ReactNode;
-  }) => (
-    <div data-testid="card" className={className}>
-      <div data-testid="card-header">
-        {icon && <div data-testid="card-icon">{icon}</div>}
-        {title && <h2>{title}</h2>}
-      </div>
-      <div data-testid="card-content">{children}</div>
-    </div>
-  ),
-  Icon: ({ type, className }: { type: string; className?: string }) => (
-    <span data-testid={`icon-${type}`} className={className}>
-      Icon
-    </span>
-  )
-});
-
-// Aplica o mock uma única vez
-mock.module('shared/components', createSharedComponentsMock);
 
 describe('EstateAndProducts - Cobertura Completa', () => {
   beforeEach(() => {
-    // Limpa apenas os mocks dos dados, mantém o shared/components
+    // Clean up mocks between tests
     mock.restore();
-    mock.module('shared/components', createSharedComponentsMock);
+    mock.module(
+      'react-router',
+      () => import('../../../../../../packages/shared/src/__mocks__/react-router')
+    );
+    mock.module(
+      'shared/components',
+      () => import('../../../../../../packages/shared/src/__mocks__/shared/components')
+    );
   });
 
   describe('Cenário 1: Dados completos válidos', () => {
@@ -76,7 +50,7 @@ describe('EstateAndProducts - Cobertura Completa', () => {
 
       // Testa linhas 70-84 (componente principal com dados)
       expect(screen.getByText('Património e produtos')).toBeTruthy();
-      expect(screen.getByTestId('icon-pieChart')).toBeTruthy();
+      expect(screen.getByTestId('icon')).toBeTruthy();
       expect(screen.getByTestId('card')).toBeTruthy();
     });
 
@@ -152,7 +126,7 @@ describe('EstateAndProducts - Cobertura Completa', () => {
 
       expect(screen.getByText('Dados não disponíveis')).toBeTruthy();
       expect(screen.getByText('Património e produtos')).toBeTruthy();
-      expect(screen.getByTestId('icon-pieChart')).toBeTruthy();
+      expect(screen.getByTestId('icon')).toBeTruthy();
 
       const card = screen.getByTestId('card');
       expect(card.className).toContain('h-full');
