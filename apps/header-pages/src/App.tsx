@@ -7,7 +7,9 @@ const ChannelAndServicesPages = lazy(
   () => import('./ChannelsAndServices/pages/ChannelAndServicesPage')
 );
 const Vision360Page = lazy(() => import('./Vision360/pages/Vision360Page'));
-const LastContactsPage = lazy(() => import('./HistoryInteractions/pages/HistoryInteractions'));
+const HistoryInteractionsPage = lazy(
+  () => import('./HistoryInteractions/pages/HistoryInteractionsPage')
+);
 
 export default function App() {
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ export default function App() {
             </div>
           }
         />
-        <Route path="/last-contacts" element={<LastContactsPage />} />
+        <Route path="/history-interactions" element={<HistoryInteractionsPage />} />
         <Route path="/channels-and-services" element={<ChannelAndServicesPages />} />
         <Route path="/vision-360" element={<Vision360Page />} />
         <Route
