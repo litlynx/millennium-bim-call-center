@@ -30,7 +30,7 @@ const tabs: CardTabItem[] = [
         {sortClaims(claims).map((props, index, arr) => (
           <div key={props.number}>
             <ClaimItem {...props} />
-            {index < arr.length - 1 && <hr className="my-2 text-gray-100" />}
+            {index < arr.length - 1 && <hr className="text-gray-100" />}
           </div>
         ))}
       </>
@@ -44,7 +44,7 @@ const tabs: CardTabItem[] = [
         {sortIncidents(incidents).map((props, index, arr) => (
           <div key={props.id}>
             <IncidentItem {...props} />
-            {index < arr.length - 1 && <hr className="my-2 text-gray-100" />}
+            {index < arr.length - 1 && <hr className="text-gray-100" />}
           </div>
         ))}
       </>
