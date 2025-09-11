@@ -1,0 +1,12 @@
+{
+  "name": "e2e",
+  "version": "0.0.1",
+  "scripts": {
+    "e2e": "bunx playwright test",
+    "e2e:show-report": "bunx playwright show-report"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.40.0",
+    "cross-env": "^7.0.3"
+  }
+}
