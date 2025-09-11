@@ -9,8 +9,6 @@ export default defineConfig({
   // Diretório onde os testes estão localizados (será sobrescrito pelos MFEs)
   testDir: './tests',
 
-  testMatch: /.*\.spec\.ts/,
-
   // Execução paralela total - melhora performance
   fullyParallel: true,
 
@@ -78,7 +76,7 @@ export default defineConfig({
   // Configuração do web server para testes
   webServer: {
     // Comando para iniciar os serviços (usa o script preview do projeto)
-    command: 'cd .. && bun build && bun run preview:serve',
+    command: 'cd .. && bun build && bun run preview:serve:win',
 
     url: 'http://localhost:8080/',
 
