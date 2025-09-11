@@ -65,7 +65,7 @@ module.exports = {
           DEFAULT: '#0052B4'
         },
         teal: {
-          DEFAULT: '#14A9B9'
+          DEFAULT: '#0297A7'
         },
         orange: {
           500: '#FF810A',

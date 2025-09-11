@@ -1,15 +1,18 @@
 [test]
 coverage = true
+coverageReporter = [ "text", "lcov", ]
 
 coveragePathIgnorePatterns = [
   "**/assets/**",
   "**/@config/**",
   "**/types/**",
-  "**/components/ui/**"
+  "**/components/ui/**",
+  "**/__mocks__/**",
 ]
 
 preload = [
   "../../packages/@config/bun-test-config/happydom.ts",
   "../../packages/@config/bun-test-config/setup-tests.ts",
-  "../../packages/@config/bun-test-config/testing-library.ts"
+  "../../packages/@config/bun-test-config/testing-library.ts",
+  "../@config/bun-test-config/__mocks__/shared-modules.ts"
 ]

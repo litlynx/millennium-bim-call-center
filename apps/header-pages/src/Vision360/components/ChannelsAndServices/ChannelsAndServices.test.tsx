@@ -1,72 +1,27 @@
-import { beforeEach, describe, expect, type Mock, mock, test } from 'bun:test';
+import { beforeEach, describe, expect, mock, test } from 'bun:test';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import type React from 'react';
+import { MemoryRouter } from 'react-router';
+import type { ChannelServiceState } from './components/State';
 
-// Note on mocking order:
-// - We use dynamic import() of the component inside each test to ensure
-//   these mocks apply before the module is evaluated.
-
-// Minimal replacement for shared/lib/utils.cn used by <State />
-mock.module('shared/lib/utils', () => ({
-  cn: (...inputs: unknown[]) => inputs.flat().filter(Boolean).map(String).join(' ')
-}));
-
-// Minimal Card and Icon to avoid cross-package federation during tests
-mock.module('shared/components', () => {
-  const React = require('react');
-  const Card: React.FC<{
-    title?: React.ReactNode;
-    onTitleClick?: () => void;
-    icon?: React.ReactNode;
-    className?: string;
-    children?: React.ReactNode;
-  }> = ({ title, onTitleClick, icon, className, children }) => (
-    <div data-testid="card" className={className}>
-      <div>
-        {(icon || title) && (
-          <h4>
-            {icon}
-            {/* Render title as a button so tests can click */}
-            <button type="button" onClick={onTitleClick}>
-              {title}
-            </button>
-          </h4>
-        )}
-      </div>
-      <div>{children}</div>
-    </div>
+beforeEach(async () => {
+  // Reset navigation spy between tests using the centralized mock
+  const { navigateSpy } = await import(
+    '../../../../../../packages/shared/src/__mocks__/react-router'
   );
-
-  const Icon: React.FC<React.HTMLAttributes<HTMLSpanElement>> = (props) => (
-    <span data-testid="icon" {...props} />
-  );
-
-  return { __esModule: true, Card, Icon };
+  navigateSpy.mockClear();
 });
 
-// Spy for navigation calls
-type NavFn = (path: string) => void;
-const navigateSpy: Mock<NavFn> = mock<NavFn>();
-mock.module('react-router', () => ({
-  __esModule: true,
-  useNavigate: () => navigateSpy
-}));
+// Import component after mocks are set up
+const ChannelsAndServices = (
+  await import('src/Vision360/components/ChannelsAndServices/ChannelsAndServices')
+).default;
 
-beforeEach(() => {
-  // reset call history between tests
-  navigateSpy.mockReset();
-  // Also clear Testing Library screen between tests is handled by global setup
-});
+describe('ChannelsAndServices', () => {
+  const renderWithRouter = (ui: React.ReactElement) => render(ui, { wrapper: MemoryRouter });
 
-async function loadComponent() {
-  const mod = await import('./ChannelsAndServices');
-  return (mod.default ?? mod) as React.FC<{ data?: unknown | null }>;
-}
-
-describe('ChannelsAndServices (bun:test)', () => {
   test('applies spacing classes (pr-4/pl-4) when both sections are present', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    renderWithRouter(<ChannelsAndServices />);
 
     const digitalHeader = screen.getByText('Canais Digitais');
     const servicesHeader = screen.getByText('Serviços');
@@ -80,7 +35,6 @@ describe('ChannelsAndServices (bun:test)', () => {
   });
 
   test('renders only services section without left padding when digital channels are absent', async () => {
-    const Component = await loadComponent();
     const data = {
       services: {
         id: 'services',
@@ -88,11 +42,11 @@ describe('ChannelsAndServices (bun:test)', () => {
         items: [
           { label: 'Pagamento', state: 'A' },
           { label: 'Transferência', state: 'B' }
-        ]
+        ] as { label: string; state: ChannelServiceState }[]
       }
-    } as const;
+    };
 
-    render(<Component data={data} />);
+    renderWithRouter(<ChannelsAndServices data={data} />);
 
     // Only services header should be present
     const servicesHeader = screen.getByText('Serviços');
@@ -104,7 +58,6 @@ describe('ChannelsAndServices (bun:test)', () => {
   });
 
   test('renders only digital channels section without right padding when services are absent', async () => {
-    const Component = await loadComponent();
     const data = {
       digitalChannels: {
         id: 'digital',
@@ -112,11 +65,11 @@ describe('ChannelsAndServices (bun:test)', () => {
         items: [
           { label: 'App Mobile', state: 'C' },
           { label: 'Internet Banking', state: 'A' }
-        ]
+        ] as { label: string; state: ChannelServiceState }[]
       }
-    } as const;
+    };
 
-    render(<Component data={data} />);
+    renderWithRouter(<ChannelsAndServices data={data} />);
 
     // Only digital header should be present
     const digitalHeader = screen.getByText('Canais Digitais');
@@ -128,8 +81,7 @@ describe('ChannelsAndServices (bun:test)', () => {
   });
 
   test('renders empty Card when data is null (no sections, no navigation on title click)', async () => {
-    const Component = await loadComponent();
-    render(<Component data={null} />);
+    renderWithRouter(<ChannelsAndServices data={null} />);
 
     // Header still renders
     const titleBtn = await screen.findByRole('button', { name: /Canais e serviços/i });
@@ -142,12 +94,14 @@ describe('ChannelsAndServices (bun:test)', () => {
 
     // Clicking title should not navigate (no onTitleClick prop in this branch)
     fireEvent.click(titleBtn);
+    const { navigateSpy } = await import(
+      '../../../../../../packages/shared/src/__mocks__/react-router'
+    );
     const calls = (navigateSpy as unknown as { mock: { calls: string[][] } }).mock.calls;
     expect(calls.length).toBe(0);
   });
   test('renders title, sections, items and state badges from mock data', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    renderWithRouter(<ChannelsAndServices />);
 
     // Title button via Card mock
     const titleBtn = await screen.findByRole('button', { name: /Canais e serviços/i });
@@ -175,28 +129,31 @@ describe('ChannelsAndServices (bun:test)', () => {
   });
 
   test('clicking the title navigates to the details route', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    // Create a fresh mock for this test to avoid interference
+    const mockNavigate = mock((_path: string) => {});
+
+    // Override the mock for this specific test
+    mock.module('react-router', () => ({
+      useNavigate: () => mockNavigate
+    }));
+
+    renderWithRouter(<ChannelsAndServices />);
 
     const titleBtn = await screen.findByRole('button', { name: /Canais e serviços/i });
     fireEvent.click(titleBtn);
 
-    // Verify navigation was called once with the expected route
-    const calls = (navigateSpy as unknown as { mock: { calls: string[][] } }).mock.calls;
-    expect(calls.length).toBe(1);
-    const [firstArg] = calls[0] ?? [];
-    expect(firstArg).toBe('/channels-and-services?details=true');
+    // Check the fresh mock
+    expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith('/channels-and-services?details=true');
   });
 
   test('renders the icon in the Card header', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    renderWithRouter(<ChannelsAndServices />);
     expect(screen.getByTestId('icon')).toBeTruthy();
   });
 
   test('applies border classes to non-last items only', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    renderWithRouter(<ChannelsAndServices />);
 
     const first = screen.getByText('Internet Banking');
     const second = screen.getByText('Millennium IZI');
@@ -212,8 +169,7 @@ describe('ChannelsAndServices (bun:test)', () => {
   });
 
   test('items with null state do not render a State badge', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    renderWithRouter(<ChannelsAndServices />);
 
     const item = screen.getByText('Extracto Mensal');
     const container = item.closest('div') as HTMLElement;
@@ -222,8 +178,7 @@ describe('ChannelsAndServices (bun:test)', () => {
   });
 
   test('state badge includes accessible label text (aria-label)', async () => {
-    const Component = await loadComponent();
-    render(<Component />);
+    renderWithRouter(<ChannelsAndServices />);
     const badges = screen.getAllByRole('img');
     const label = badges[0]?.getAttribute('aria-label') ?? '';
     expect(label).toMatch(/\((A|B|C|V|I)\)$/);
