@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes, useNavigate } from 'react-router';
 import { Button } from 'shared/components';
+import PersonalDataPage from 'src/PersonalData/pages/PersonalDataPage';
 import Spinner from './components';
 
 const ChannelAndServicesPages = lazy(
@@ -31,6 +32,7 @@ export default function App() {
             </div>
           }
         />
+        <Route path="/personal-data" element={<PersonalDataPage />} />
         <Route path="/channels-and-services" element={<ChannelAndServicesPages />} />
         <Route path="/estate-and-products" element={<EstateAndProductsPage />} />
         <Route path="/complains-and-incidents" element={<ComplainsAndIncidents />} />
