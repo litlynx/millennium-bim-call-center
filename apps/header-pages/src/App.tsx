@@ -7,6 +7,9 @@ import Spinner from './components';
 const ChannelAndServicesPages = lazy(
   () => import('./ChannelsAndServices/pages/ChannelAndServicesPage')
 );
+const HistoryInteractionsPage = lazy(
+  () => import('./HistoryInteractions/pages/HistoryInteractionsPage')
+);
 const Vision360Page = lazy(() => import('./Vision360/pages/Vision360Page'));
 const EstateAndProductsPage = lazy(() => import('./EstateAndProducts/pages/EstateAndProductsPage'));
 const ComplainsAndIncidents = lazy(
@@ -32,6 +35,7 @@ export default function App() {
             </div>
           }
         />
+        <Route path="/history-interactions" element={<HistoryInteractionsPage />} />
         <Route path="/personal-data" element={<PersonalDataPage />} />
         <Route path="/channels-and-services" element={<ChannelAndServicesPages />} />
         <Route path="/estate-and-products" element={<EstateAndProductsPage />} />

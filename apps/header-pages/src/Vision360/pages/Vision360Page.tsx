@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
 import ComplainsAndIncidents from 'src/Vision360/components/ComplainsAndIncidents/ComplainsAndIncidents';
 import ChannelsAndServices from '../components/ChannelsAndServices/ChannelsAndServices';
+import LastContact from '../components/LastContact/LastContact';
 import PersonalData from '../components/PersonalData/PersonalData';
 
 const EstateAndProducts = lazy(() =>
@@ -34,7 +35,9 @@ export default function Vision360Page() {
         </div>
 
         {/* Last Contact */}
-        <div className="col-start-16 col-span-7 row-span-5"></div>
+        <div className="col-start-16 col-span-7 row-span-5">
+          <LastContact />
+        </div>
 
         {/* Channels and Services */}
         <div className="col-start-6 col-span-12 row-span-5 row-start-6">

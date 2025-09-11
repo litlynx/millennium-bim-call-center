@@ -17,5 +17,4 @@ export const CardAccordion = ({ header, children }: CardAccordionProps) => {
     </Accordion>
   );
 };
-
 export default CardAccordion;
