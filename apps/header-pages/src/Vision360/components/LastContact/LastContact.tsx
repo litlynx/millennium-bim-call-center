@@ -70,7 +70,7 @@ const LastContact: React.FC = () => {
       defaultValue="calls"
       className="w-full"
       tabsTriggerClassName="text-lg"
-      onTitleClick={() => navigate('/history-interactions')}
+      onTitleClick={() => navigate('/history-interactions?details=true&component=calls')}
     />
   );
 };
