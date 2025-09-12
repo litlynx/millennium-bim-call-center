@@ -1,5 +1,3 @@
-const HeaderPages = React.lazy(() => import('headerPages/App'));
-
 import * as React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { client } from 'shared/queries';
@@ -23,7 +21,25 @@ const App: React.FC = () => {
         <Routes>
           {/* Dashboard routes with DashboardLayout */}
           <Route path="/" element={<DashboardLayout />}>
-            <Route path="/*" element={<HeaderPages />} />
+            <Route
+              path="/*"
+              element={
+                <LazyErrorBoundary
+                  componentName="HeaderPages"
+                  enableIntelligentRecovery={true}
+                  onError={(error, errorInfo) => {
+                    console.error('HeaderPages component error:', error, errorInfo);
+                    // You can add error reporting service here (e.g., Sentry)
+                  }}
+                  onReset={() => {
+                    // Optional: Add any cleanup logic when user clicks "Try again"
+                    console.log('Resetting HeaderPages component');
+                  }}
+                >
+                  <HeaderPages />
+                </LazyErrorBoundary>
+              }
+            />
             <Route index element={<RootPage />} />
           </Route>
 
