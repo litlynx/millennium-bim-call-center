@@ -7,7 +7,8 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "packages/@config/*"
+    "packages/@config/*",
+    "e2e"
   ],
   "scripts": {
     "analyze": "turbo run analyze",
@@ -25,8 +26,8 @@
     "test": "turbo run test",
     "test:ci": "turbo run test:ci",
     "test:watch": "turbo run test:watch",
-    "e2e": "turbo e2e",
-    "e2e:show-report": "turbo e2e:show-report",
+    "e2e": "turbo run e2e --filter=e2e",
+    "e2e:show-report": "turbo run e2e:show-report --filter=e2e",
     "typecheck": "turbo run typecheck",
     "ci": "bun run types:build && bun run typecheck && bun run test:ci && bun run biome:check",
     "clean": "rimraf apps/*/node_modules packages/*/node_modules bun.lock node_modules",
