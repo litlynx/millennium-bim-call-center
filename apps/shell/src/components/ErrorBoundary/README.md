@@ -9,29 +9,9 @@ The `LazyErrorBoundary` component wraps around lazy-loaded components to catch J
 ## Features
 
 - 🎯 **Targeted for lazy components**: Specifically designed for React.lazy() components
-- 🎨 **User-friendly error UI**: Clean, styled error messages with actionable buttons
-- 🎨 **Tailwind CSS styling**: Modern, responsive design using Tailwind CSS classes
 - 🔧 **Detailed error information**: Expandable technical details for debugging
 - 📊 **Error reporting ready**: Built-in hooks for error tracking services
-- ♻️ **Recovery options**: "Try Again" and "Reload Page" buttons
-- 🧪 **Fully tested**: Comprehensive test coverage
-
-## Styling
-
-The component uses Tailwind CSS classes for styling, providing:
-
-- **Responsive design**: Works well on all screen sizes
-- **Consistent theming**: Follows design system color patterns
-- **Interactive elements**: Hover effects and transitions
-- **Accessibility**: Proper contrast and focus states
-
-### Tailwind Classes Used
-
-- Layout: `p-5`, `m-5`, `flex`, `gap-2.5`
-- Colors: `bg-red-50`, `border-red-400`, `text-pink-700`, `bg-blue-600`
-- Typography: `text-xl`, `font-semibold`, `font-sans`
-- Interactive: `hover:bg-blue-700`, `cursor-pointer`, `transition-colors`
-- Spacing: `mb-2.5`, `mb-4`, `mt-2.5`
+- ♻️ **Recovery options**: "Reload component" and "Reload Page" buttons
 
 ## Usage
 
@@ -121,21 +101,6 @@ The ErrorBoundary is currently implemented in the Shell component to wrap the la
     </LazyErrorBoundary>
   }
 />
-```
-
-## Testing
-
-The component includes comprehensive tests covering:
-
-- ✅ Normal rendering without errors
-- ✅ Error fallback display when component throws
-- ✅ Error details visibility
-- ✅ Error callback invocation
-
-Run tests with:
-
-```bash
-bun run test
 ```
 
 ## Error Reporting Integration
