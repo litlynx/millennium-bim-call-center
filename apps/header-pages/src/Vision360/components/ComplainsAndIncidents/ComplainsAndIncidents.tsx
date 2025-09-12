@@ -67,6 +67,7 @@ const ComplainsAndIncidents: React.FC = () => {
       className="h-full"
       tabs={tabs}
       defaultValue="claims"
+      data-testid="complains-and-incidents-card"
     />
   );
 };

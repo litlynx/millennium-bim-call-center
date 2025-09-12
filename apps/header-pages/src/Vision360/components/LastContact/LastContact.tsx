@@ -71,6 +71,7 @@ const LastContact: React.FC = () => {
       className="w-full"
       tabsTriggerClassName="text-lg"
       onTitleClick={() => navigate('/history-interactions?details=true&component=calls')}
+      data-testid="last-contact-card"
     />
   );
 };

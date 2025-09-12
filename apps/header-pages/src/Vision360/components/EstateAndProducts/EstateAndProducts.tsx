@@ -69,6 +69,7 @@ export default function EstateAndProducts(props: { data?: Partial<EstateAndProdu
         icon={<Icon type="pieChart" className="bg-teal" />}
         title="Património e produtos"
         className="h-full"
+        data-testid="estate-and-products-card"
       >
         <div className="flex items-center justify-center h-32">
           <span className="text-gray-500">Dados não disponíveis</span>
@@ -83,6 +84,7 @@ export default function EstateAndProducts(props: { data?: Partial<EstateAndProdu
       title="Património e produtos"
       className="h-full"
       onTitleClick={() => navigate('/estate-and-products?details=true')}
+      data-testid="estate-and-products-card"
     >
       <div className="grid grid-cols-2 divide-x divide-gray-200">
         {data.assets && (

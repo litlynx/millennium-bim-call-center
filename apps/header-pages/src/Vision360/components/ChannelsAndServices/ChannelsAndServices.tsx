@@ -33,7 +33,7 @@ const ServiceItem: React.FC<ServiceItemProps> = ({ item, isLast }) => {
         !isLast ? 'border-b border-gray-200 pb-1' : ''
       }`}
     >
-      <span className="text-sm">
+      <span className="text-sm" data-testid="service-item-label">
         {item.label} {item.state && <State value={item.state} className="ml-[8px]" />}
       </span>
     </div>
@@ -45,7 +45,9 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ section, className }) =
   return (
     <div className={`space-y-2 ${cn}`}>
       <div className="flex justify-between items-center">
-        <h4 className="font-bold">{section.title}</h4>
+        <h4 className="font-bold" data-testid="service-section-title">
+          {section.title}
+        </h4>
       </div>
 
       <br />
@@ -72,6 +74,7 @@ export default function ChannelsAndServices(props: {
         icon={<Icon type="box" className="bg-green-500" />}
         title="Canais e serviços"
         className="h-full"
+        data-testid="channels-and-services-card"
       ></Card>
     );
   }
@@ -82,6 +85,7 @@ export default function ChannelsAndServices(props: {
       title="Canais e serviços"
       className="h-full"
       onTitleClick={() => navigate('/channels-and-services?details=true')}
+      data-testid="channels-and-services-card"
     >
       <div className="grid grid-cols-2 divide-x divide-gray-200">
         {resolvedData.digitalChannels && (

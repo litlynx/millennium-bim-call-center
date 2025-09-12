@@ -19,15 +19,40 @@ export interface CardProps extends CardBaseProps {
   footer?: React.ReactNode;
   children?: React.ReactNode;
   onTitleClick?: () => void;
+  headerTestId?: string;
+  titleTestId?: string;
+  descriptionTestId?: string;
+  footerTestId?: string;
+  contentTestId?: string;
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ icon, title, description, footer, children, className, onTitleClick, ...props }, ref) => (
+  (
+    {
+      icon,
+      title,
+      description,
+      footer,
+      children,
+      className,
+      onTitleClick,
+      headerTestId,
+      titleTestId,
+      descriptionTestId,
+      footerTestId,
+      contentTestId,
+      ...props
+    },
+    ref
+  ) => (
     <UICard ref={ref} className={cn(className, 'bg-white p-6')} {...props}>
       {(icon || title || description) && (
-        <CardHeader>
+        <CardHeader data-testid={headerTestId}>
           {(icon || title) && (
-            <CardTitle className="flex items-center gap-2 text-xl font-bold">
+            <CardTitle
+              className="flex items-center gap-2 text-xl font-bold"
+              data-testid={titleTestId}
+            >
               {icon && <>{icon}</>}
               {title && onTitleClick ? (
                 <button type="submit" onClick={onTitleClick}>
@@ -38,17 +63,22 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
               )}
             </CardTitle>
           )}
-          {description && <CardDescription>{description}</CardDescription>}
+          {description && (
+            <CardDescription data-testid={descriptionTestId}>{description}</CardDescription>
+          )}
         </CardHeader>
       )}
 
       {children && (
-        <CardContent className="flex-1 min-h-0 overflow-auto flex flex-col gap-4">
+        <CardContent
+          className="flex-1 min-h-0 overflow-auto flex flex-col gap-4"
+          data-testid={contentTestId}
+        >
           {children}
         </CardContent>
       )}
 
-      {footer && <CardFooter>{footer}</CardFooter>}
+      {footer && <CardFooter data-testid={footerTestId}>{footer}</CardFooter>}
     </UICard>
   )
 );
