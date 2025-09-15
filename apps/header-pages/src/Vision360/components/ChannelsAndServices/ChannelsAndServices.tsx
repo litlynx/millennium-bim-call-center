@@ -19,19 +19,22 @@ interface ChannelsAndServicesData {
 interface ServiceItemProps {
   item: { label: string; state: ChannelServiceState };
   isLast?: boolean;
+  dataTestId?: string;
 }
 
 interface ServiceSectionProps {
   section: ServiceSectionInterface;
   className?: string;
+  sectionPrefix?: string;
 }
 
-const ServiceItem: React.FC<ServiceItemProps> = ({ item, isLast }) => {
+const ServiceItem: React.FC<ServiceItemProps> = ({ item, isLast, dataTestId }) => {
   return (
     <div
       className={`flex justify-between items-center ${
         !isLast ? 'border-b border-gray-200 pb-1' : ''
       }`}
+      data-testid={dataTestId}
     >
       <span className="text-sm" data-testid="service-item-label">
         {item.label} {item.state && <State value={item.state} className="ml-[8px]" />}
@@ -40,7 +43,7 @@ const ServiceItem: React.FC<ServiceItemProps> = ({ item, isLast }) => {
   );
 };
 
-const ServiceSection: React.FC<ServiceSectionProps> = ({ section, className }) => {
+const ServiceSection: React.FC<ServiceSectionProps> = ({ section, className, sectionPrefix }) => {
   const cn = className ?? '';
   return (
     <div className={`space-y-2 ${cn}`}>
@@ -53,7 +56,12 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ section, className }) =
       <br />
 
       {section.items?.map((item, index) => (
-        <ServiceItem key={item.label} item={item} isLast={index === section.items.length - 1} />
+        <ServiceItem
+          key={item.label}
+          item={item}
+          isLast={index === section.items.length - 1}
+          dataTestId={`channels-and-services-${sectionPrefix}-item-${index}`}
+        />
       ))}
     </div>
   );
@@ -75,6 +83,9 @@ export default function ChannelsAndServices(props: {
         title="Canais e serviços"
         className="h-full"
         data-testid="channels-and-services-card"
+        headerTestId="channels-and-services-header"
+        titleTestId="channels-and-services-title"
+        contentTestId="channels-and-services-content"
       ></Card>
     );
   }
@@ -86,18 +97,23 @@ export default function ChannelsAndServices(props: {
       className="h-full"
       onTitleClick={() => navigate('/channels-and-services?details=true')}
       data-testid="channels-and-services-card"
+      headerTestId="channels-and-services-header"
+      titleTestId="channels-and-services-title"
+      contentTestId="channels-and-services-content"
     >
       <div className="grid grid-cols-2 divide-x divide-gray-200">
         {resolvedData.digitalChannels && (
           <ServiceSection
             section={resolvedData.digitalChannels}
             className={resolvedData.services ? 'pr-4' : undefined}
+            sectionPrefix="digitalChannels"
           />
         )}
         {resolvedData.services && (
           <ServiceSection
             section={resolvedData.services}
             className={resolvedData.digitalChannels ? 'pl-4' : undefined}
+            sectionPrefix="services"
           />
         )}
       </div>
