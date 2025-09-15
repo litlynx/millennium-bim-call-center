@@ -14,7 +14,8 @@ export const ClaimItem: React.FC<ClaimsProps> = ({
   deadlineDate,
   status,
   amount,
-  type
+  type,
+  dataTestId
 }) => {
   const infoItems: { label: string; value: string }[] = [
     { label: 'Data Registro | Prazo', value: `${registerDate} | ${deadlineDate}` },
@@ -34,6 +35,7 @@ export const ClaimItem: React.FC<ClaimsProps> = ({
           </div>
         </div>
       }
+      data-testid={dataTestId}
     >
       <div className="flex flex-col gap-1">
         {infoItems.map(({ label, value }) => (

@@ -35,6 +35,7 @@ const LastContact: React.FC = () => {
     {
       value: 'calls',
       label: 'Chamadas',
+      dataTestId: 'last-contact-tab-calls',
       content: (
         <>
           {sortedContacts.map((props, index) => (
@@ -52,6 +53,7 @@ const LastContact: React.FC = () => {
     {
       value: 'messages',
       label: 'Mensagens',
+      dataTestId: 'last-contact-tab-messages',
       content: (
         <>
           {CardItemMessagesMapData.map((props, index) => (

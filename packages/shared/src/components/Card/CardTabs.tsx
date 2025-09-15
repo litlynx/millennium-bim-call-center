@@ -47,7 +47,7 @@ const CardTabs: React.ForwardRefExoticComponent<
                 key={tab.value}
                 value={tab.value}
                 className={tabsTriggerClassName}
-                data-testid={`tab-${tab.value}`}
+                data-testid={tab.dataTestId}
               >
                 {tab.label}
               </TabsTrigger>
