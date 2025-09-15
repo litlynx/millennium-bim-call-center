@@ -11,16 +11,19 @@ import type {
 interface FinancialItemProps {
   item: FinancialItemInterface;
   isLast?: boolean;
+  dataTestId?: string;
 }
 
 interface FinancialSectionProps {
   section: FinancialSectionInterface;
   className?: string;
+  sectionPrefix?: string;
 }
 
-const FinancialItem: React.FC<FinancialItemProps> = ({ item, isLast = false }) => (
+const FinancialItem: React.FC<FinancialItemProps> = ({ item, isLast = false, dataTestId }) => (
   <div
     className={`flex justify-between items-center flex-wrap ${!isLast ? 'border-b border-gray-200 pb-1' : ''}`}
+    data-testid={dataTestId}
   >
     <span className="text-base">
       <span className="font-semibold">{item.name}</span>
@@ -33,7 +36,11 @@ const FinancialItem: React.FC<FinancialItemProps> = ({ item, isLast = false }) =
   </div>
 );
 
-const FinancialSection: React.FC<FinancialSectionProps> = ({ section, className = '' }) => (
+const FinancialSection: React.FC<FinancialSectionProps> = ({
+  section,
+  className = '',
+  sectionPrefix
+}) => (
   <div className={`space-y-2 ${className}`}>
     <div className="flex justify-between items-center flex-wrap pb-[45px]">
       <h3 className="font-bold text-xl">{section.title}</h3>
@@ -53,6 +60,7 @@ const FinancialSection: React.FC<FinancialSectionProps> = ({ section, className 
         key={`${item.name}-${index}`}
         item={item}
         isLast={index === section.items.length - 1}
+        dataTestId={`estate-and-products-${sectionPrefix}-item-${index}`}
       />
     ))}
   </div>
@@ -70,6 +78,9 @@ export default function EstateAndProducts(props: { data?: Partial<EstateAndProdu
         title="Património e produtos"
         className="h-full"
         data-testid="estate-and-products-card"
+        headerTestId="estate-and-products-header"
+        titleTestId="estate-and-products-title"
+        contentTestId="estate-and-products-content"
       >
         <div className="flex items-center justify-center h-32">
           <span className="text-gray-500">Dados não disponíveis</span>
@@ -85,18 +96,23 @@ export default function EstateAndProducts(props: { data?: Partial<EstateAndProdu
       className="h-full"
       onTitleClick={() => navigate('/estate-and-products?details=true')}
       data-testid="estate-and-products-card"
+      headerTestId="estate-and-products-header"
+      titleTestId="estate-and-products-title"
+      contentTestId="estate-and-products-content"
     >
       <div className="grid grid-cols-2 divide-x divide-gray-200">
         {data.assets && (
           <FinancialSection
             section={data.assets}
             className={data.liabilities ? 'pr-4' : undefined}
+            sectionPrefix="assets"
           />
         )}
         {data.liabilities && (
           <FinancialSection
             section={data.liabilities}
             className={data.assets ? 'pl-4' : undefined}
+            sectionPrefix="liabilities"
           />
         )}
       </div>
