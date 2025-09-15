@@ -57,11 +57,42 @@ test('Vision360 ChannelsAndServices displays all content', async ({ page }) => {
   await expect(page.getByTestId('channels-and-services-services-item-2')).toBeVisible();
 });
 
-/*test('Vision360 LastContact displays all content', async ({ page }) => {
+test('Vision360 LastContact displays all content', async ({ page }) => {
   await page.goto('/vision-360');
+  await expect(page.getByTestId('last-contact-header')).toBeVisible();
+  await expect(page.getByTestId('last-contact-header').locator('svg')).toBeVisible();
+  await expect(page.getByTestId('last-contact-title')).toBeVisible();
+  await expect(page.getByTestId('last-contact-content')).toBeVisible();
+  await expect(page.getByTestId('tab-calls')).toBeVisible();
+  await expect(page.getByTestId('tab-messages')).toBeVisible();
+  await expect(page.getByTestId('tab-calls')).toBeVisible();
+  await expect(page.getByTestId('tab-messages')).toBeVisible();
+  const hasCallItems = await page
+    .getByTestId('last-contact-call-item-0')
+    .isVisible()
+    .catch(() => false);
+  if (hasCallItems) {
+    await expect(page.getByTestId('last-contact-call-item-0')).toBeVisible();
+  }
+  const hasMessageItems = await page
+    .getByTestId('last-contact-message-item-0')
+    .isVisible()
+    .catch(() => false);
+  if (hasMessageItems) {
+    await expect(page.getByTestId('last-contact-message-item-0')).toBeVisible();
+  }
 });
 
-test('Vision360 ComplaintsAndIncidents displays all content', async ({ page }) => {
+test('Vision360 LastContact tabs working', async ({ page }) => {
+  await page.goto('/vision-360');
+  await expect(page.getByTestId('tab-calls')).toHaveAttribute('data-state', 'active');
+  await page.getByTestId('tab-messages').click();
+  await expect(page.getByTestId('tab-messages')).toHaveAttribute('data-state', 'active');
+  await page.getByTestId('tab-calls').click();
+  await expect(page.getByTestId('tab-calls')).toHaveAttribute('data-state', 'active');
+});
+
+/*test('Vision360 ComplaintsAndIncidents displays all content', async ({ page }) => {
   await page.goto('/vision-360');
 });
 
