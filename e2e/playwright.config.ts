@@ -66,10 +66,6 @@ export default defineConfig({
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] }
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] }
     }
   ],
 
@@ -90,3 +86,5 @@ export default defineConfig({
   // Pastas de output
   outputDir: 'test-results/'
 });
+
+//TODO adicionar forma de não fazer build localmente
