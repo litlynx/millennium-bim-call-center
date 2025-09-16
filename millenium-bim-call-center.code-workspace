@@ -4,7 +4,6 @@
     { "name": "Shell (Host)", "path": "apps/shell/src" },
     { "name": "Header Pages (remote)", "path": "apps/header-pages/src" },
     { "name": "Shared Components", "path": "packages/shared/src" },
-    { "name": "ModuleFederation", "path": "packages/@config/webpack-config/" },
     { "name": "Config (Webpack/TS/etc)", "path": "packages/@config" }
   ],
   "settings": {
