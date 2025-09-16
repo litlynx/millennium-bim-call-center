@@ -132,15 +132,21 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
     remotes: {
       dev: {
         // Add cache-busting query so Firefox doesn't serve a cached remoteEntry in dev
-        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js?cb=${DEV_BUILD_ID}`,
+        shared: `shared@http://localhost:${
+          mapPorts[Apps.shared].devPort
+        }/remoteEntry.js?cb=${DEV_BUILD_ID}`,
         // Exposes from apps/header-pages
-        headerPages: `headerPages@http://localhost:${mapPorts[Apps['header-pages']].devPort}/remoteEntry.js?cb=${DEV_BUILD_ID}`
+        headerPages: `headerPages@http://localhost:${
+          mapPorts[Apps['header-pages']].devPort
+        }/remoteEntry.js?cb=${DEV_BUILD_ID}`
       },
       prod: {
         // In preview/local prod-serve, add cache-busting to avoid stale remoteEntry caches
         shared: `shared@${withLocalhostCacheBust(`${sharedHostBaseUrl}remoteEntry.js`)}`,
         // Assuming production assets are served from apps/header-pages/dist; adjust if deploy layout differs
-        headerPages: `headerPages@${withLocalhostCacheBust(`${headerPagesHostBaseUrl}remoteEntry.js`)}`
+        headerPages: `headerPages@${withLocalhostCacheBust(
+          `${headerPagesHostBaseUrl}remoteEntry.js`
+        )}`
       }
     }
   },
@@ -155,7 +161,8 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
         './components/ui': './src/components/ui',
         './components/Icon': './src/components/Icon/Icon',
         './styles/Global': './src/styles/GlobalStyles',
-        './lib/utils': './src/lib/utils'
+        './lib/utils': './src/lib/utils',
+        './queries': './src/queries'
       }
     }
   },
@@ -174,7 +181,9 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
     remotes: {
       dev: {
         // Add cache-busting query so Firefox doesn't serve a cached remoteEntry in dev
-        shared: `shared@http://localhost:${mapPorts[Apps.shared].devPort}/remoteEntry.js?cb=${DEV_BUILD_ID}`
+        shared: `shared@http://localhost:${
+          mapPorts[Apps.shared].devPort
+        }/remoteEntry.js?cb=${DEV_BUILD_ID}`
       },
       prod: {
         shared: `shared@${withLocalhostCacheBust(`${sharedHostBaseUrl}remoteEntry.js`)}`

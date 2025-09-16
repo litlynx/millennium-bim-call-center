@@ -101,7 +101,7 @@ export default function ChannelsAndServices(props: {
       titleTestId="channels-and-services-title"
       contentTestId="channels-and-services-content"
     >
-      <div className="grid grid-cols-2 divide-x divide-gray-200">
+      <div className="grid grid-cols-2 divide-x divide-gray-200 pt-[2.25rem]">
         {resolvedData.digitalChannels && (
           <ServiceSection
             section={resolvedData.digitalChannels}

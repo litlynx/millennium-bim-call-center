@@ -27,9 +27,7 @@ export interface CardProps extends CardBaseProps {
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  (
-    {
-      icon,
+  ({  icon,
       title,
       description,
       footer,
@@ -41,13 +39,10 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       descriptionTestId,
       footerTestId,
       contentTestId,
-      ...props
-    },
-    ref
-  ) => (
-    <UICard ref={ref} className={cn(className, 'bg-white p-6')} {...props}>
+      ...props }, ref) => (
+    <UICard ref={ref} className={cn(className, 'bg-white')} {...props}>
       {(icon || title || description) && (
-        <CardHeader data-testid={headerTestId}>
+        <CardHeader data-testid={headerTestId} className="p-6 pb-0">
           {(icon || title) && (
             <CardTitle
               className="flex items-center gap-2 text-xl font-bold"
@@ -56,10 +51,10 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
               {icon && <>{icon}</>}
               {title && onTitleClick ? (
                 <button type="submit" onClick={onTitleClick}>
-                  <h4>{title}</h4>
+                  <h4 className="text-left leading-tight">{title}</h4>
                 </button>
               ) : (
-                <h4>{title}</h4>
+                <h4 className="text-left leading-tight">{title}</h4>
               )}
             </CardTitle>
           )}
@@ -70,10 +65,8 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       )}
 
       {children && (
-        <CardContent
-          className="flex-1 min-h-0 overflow-auto flex flex-col gap-4"
+        <CardContent className="flex-1 min-h-0 overflow-auto flex flex-col gap-4 p-6 pt-0">
           data-testid={contentTestId}
-        >
           {children}
         </CardContent>
       )}

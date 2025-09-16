@@ -1,12 +1,10 @@
-import type * as React from 'react';
+import type { FC } from 'react';
 import { useNavigate } from 'react-router';
 import { Card, Icon } from 'shared/components';
-import mockData from './mock-data/mock-data.json';
-import type {
-  EstateAndProductsData,
-  FinancialItemInterface,
-  FinancialSectionInterface
-} from './types';
+import type { FinancialItemInterface } from 'src/api/EstateAndProducts/interfaces';
+import EstateAndProductsSkeleton from './components/Skeleton';
+import { useEstateAndProducts } from './hooks';
+import type { FinancialSectionInterface } from './types';
 
 interface FinancialItemProps {
   item: FinancialItemInterface;
@@ -20,9 +18,11 @@ interface FinancialSectionProps {
   sectionPrefix?: string;
 }
 
-const FinancialItem: React.FC<FinancialItemProps> = ({ item, isLast = false, dataTestId }) => (
+const FinancialItem: FC<FinancialItemProps> = ({ item, isLast = false, dataTestId }) => (
   <div
-    className={`flex justify-between items-center flex-wrap ${!isLast ? 'border-b border-gray-200 pb-1' : ''}`}
+    className={`flex justify-between items-center flex-wrap ${
+      !isLast ? 'border-b border-gray-200 pb-1' : ''
+    }`}
     data-testid={dataTestId}
   >
     <span className="text-base">
@@ -66,12 +66,11 @@ const FinancialSection: React.FC<FinancialSectionProps> = ({
   </div>
 );
 
-export default function EstateAndProducts(props: { data?: Partial<EstateAndProductsData> | null }) {
-  const data: Partial<EstateAndProductsData> | null =
-    props?.data === undefined ? (mockData.estateAndProducts as EstateAndProductsData) : props.data;
+export default function EstateAndProducts() {
   const navigate = useNavigate();
+  const { data, isLoading } = useEstateAndProducts();
 
-  if (!data) {
+  if (!data && !isLoading) {
     return (
       <Card
         icon={<Icon type="pieChart" className="bg-teal" />}
@@ -88,6 +87,9 @@ export default function EstateAndProducts(props: { data?: Partial<EstateAndProdu
       </Card>
     );
   }
+  if (isLoading || !data) {
+    return <EstateAndProductsSkeleton />;
+  }
 
   return (
     <Card
@@ -100,7 +102,7 @@ export default function EstateAndProducts(props: { data?: Partial<EstateAndProdu
       titleTestId="estate-and-products-title"
       contentTestId="estate-and-products-content"
     >
-      <div className="grid grid-cols-2 divide-x divide-gray-200">
+      <div className="grid grid-cols-2 divide-x divide-gray-200 pt-[1.9375rem]">
         {data.assets && (
           <FinancialSection
             section={data.assets}

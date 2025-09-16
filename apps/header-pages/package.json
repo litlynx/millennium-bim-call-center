@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.8",
+    "axios": "^1.12.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-helmet": "^6.1.0",

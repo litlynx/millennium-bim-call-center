@@ -73,6 +73,7 @@ const ComplainsAndIncidents: React.FC = () => {
       headerTestId="complains-and-incidents-header"
       titleTestId="complains-and-incidents-title"
       contentTestId="complains-and-incidents-content"
+      tabsListClassName="pt-[1.125rem]"
     />
   );
 };
