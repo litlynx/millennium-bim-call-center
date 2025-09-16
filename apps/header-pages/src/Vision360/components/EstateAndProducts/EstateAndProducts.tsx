@@ -84,7 +84,7 @@ export default function EstateAndProducts(props: { data?: Partial<EstateAndProdu
       className="h-full"
       onTitleClick={() => navigate('/estate-and-products?details=true')}
     >
-      <div className="grid grid-cols-2 divide-x divide-gray-200">
+      <div className="grid grid-cols-2 divide-x divide-gray-200 pt-[1.9375rem]">
         {data.assets && (
           <FinancialSection
             section={data.assets}

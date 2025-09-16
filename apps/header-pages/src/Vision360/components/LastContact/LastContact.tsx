@@ -69,6 +69,7 @@ const LastContact: React.FC = () => {
       tabs={tabs}
       defaultValue="calls"
       className="w-full"
+      tabsListClassName="pt-[1.125rem]"
       tabsTriggerClassName="text-lg"
       onTitleClick={() => navigate('/history-interactions?details=true&component=calls')}
     />
