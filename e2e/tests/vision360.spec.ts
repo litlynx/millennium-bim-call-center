@@ -19,7 +19,7 @@ test.describe('Page Vision360', () => {
       await expect(page.getByTestId('personal-data-header').locator('svg')).toBeVisible();
       await expect(page.getByTestId('personal-data-title')).toBeVisible();
       await expect(page.getByTestId('personal-data-content')).toBeVisible();
-      await expect(page.locator('[data-testid^="personal-data-item-"]')).toHaveCount(8);
+      await expect(page.locator('[data-testid^="personal-data-item-"]')).toHaveCount(9);
     });
 
     test('EstateAndProducts displays all content', async ({ page }) => {
