@@ -72,7 +72,7 @@ export default defineConfig({
   // Configuração do web server para testes
   webServer: {
     // Comando para iniciar os serviços (usa o script preview do projeto)
-    command: 'cd .. && bun run build && bun run preview:serve:win',
+    command: 'cd .. && bun run build && bun run preview:serve',
 
     url: 'http://localhost:8080/',
 
