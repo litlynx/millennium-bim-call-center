@@ -183,10 +183,10 @@ test.describe('Page Vision360', () => {
     });
 
     test('Zoom out to ensure all elements are visible in smaller viewports', async ({ page }) => {
-      await expect(page.getByTestId('complains-and-incidents-claims-item-2')).not.toBeVisible();
+      await expect(page.getByTestId('last-contact-call-item-0')).not.toBeVisible();
       await page.getByTestId('last-contact-content').hover();
-      await page.mouse.wheel(0, 200);
-      await expect(page.getByTestId('complains-and-incidents-claims-item-2')).toBeVisible();
+      await page.mouse.wheel(0, 1500);
+      await expect(page.getByTestId('last-contact-call-item-0')).toBeVisible();
     });
   });
 });
