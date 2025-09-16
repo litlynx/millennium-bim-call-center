@@ -67,6 +67,7 @@ const ComplainsAndIncidents: React.FC = () => {
       className="h-full"
       tabs={tabs}
       defaultValue="claims"
+      tabsListClassName="pt-[1.125rem]"
     />
   );
 };
