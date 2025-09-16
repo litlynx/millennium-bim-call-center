@@ -83,7 +83,7 @@ export default function ChannelsAndServices(props: {
       className="h-full"
       onTitleClick={() => navigate('/channels-and-services?details=true')}
     >
-      <div className="grid grid-cols-2 divide-x divide-gray-200">
+      <div className="grid grid-cols-2 divide-x divide-gray-200 pt-[2.25rem]">
         {resolvedData.digitalChannels && (
           <ServiceSection
             section={resolvedData.digitalChannels}
