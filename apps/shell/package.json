@@ -37,7 +37,6 @@
     "@config/bun-test-config": "workspace:*",
     "@config/rspack-config": "workspace:*",
     "@config/tsconfig": "workspace:*",
-    "@config/webpack-config": "workspace:*",
     "@rspack/cli": "^1.5.2",
     "@rspack/core": "^1.5.2",
     "@testing-library/jest-dom": "^6.6.3",
