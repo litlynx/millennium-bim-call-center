@@ -37,17 +37,17 @@
     "preview:serve:win": "concurrently -n shell,shared,header -c green,magenta,cyan \"cd apps/shell && bunx serve -s dist -l 8080\" \"cd packages/shared && bunx serve -s dist -l 8081\" \"cd apps/header-pages && bunx serve -s dist -l 8082\""
   },
   "devDependencies": {
-    "dotenv-cli": "^7.4.2",
+    "dotenv-cli": "^7.4.4",
     "@commitlint/config-conventional": "^19.8.1",
-    "@biomejs/biome": "^2.2.2",
+    "@biomejs/biome": "^2.2.4",
     "commitlint": "^19.8.1",
     "cross-env": "^7.0.3",
     "husky": "^9.1.7",
-    "concurrently": "^9.1.0",
+    "concurrently": "^9.2.1",
     "lint-staged": "^15.5.2",
     "rimraf": "^6.0.1",
     "serve": "^14.2.5",
-    "turbo": "^2.5.5"
+    "turbo": "^2.5.6"
   },
   "engines": {
     "node": ">=18.0.0",
