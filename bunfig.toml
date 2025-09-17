@@ -28,6 +28,7 @@ coveragePathIgnorePatterns = [
   "**/@config/**",
   "**/types/**",
   "**/__mocks__/**",
+  "**/e2e/**",
 ]
 
 # Ensure DOM globals exist, then run unified setup (matchers + cleanup)

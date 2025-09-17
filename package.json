@@ -26,25 +26,29 @@
     "test": "turbo run test",
     "test:ci": "turbo run test:ci",
     "test:watch": "turbo run test:watch",
+    "e2e": "turbo run e2e --filter=e2e",
+    "e2e:headed": "turbo run e2e:headed --filter=e2e",
+    "e2e:show-report": "turbo run e2e:show-report --filter=e2e",
     "typecheck": "turbo run typecheck",
     "ci": "bun run types:build && bun run typecheck && bun run test:ci && bun run biome:check",
     "clean": "rimraf apps/*/node_modules packages/*/node_modules bun.lock node_modules",
     "prepare": "husky",
-    "preview": "cross-env-shell \"SHELL_PREVIEW_PORT=8080 SHARED_PREVIEW_PORT=8081 HEADER_PAGES_PREVIEW_PORT=8082 SHARED_HOST_BASE_URL=http://localhost:8081/ HEADER_PAGES_HOST_BASE_URL=http://localhost:8082/ turbo run build --force && bun run preview:serve\"",
-    "preview:serve": "cross-env SHELL_PREVIEW_PORT=8080 SHARED_PREVIEW_PORT=8081 HEADER_PAGES_PREVIEW_PORT=8082 concurrently -n shell,shared,header -c green,magenta,cyan \"cd apps/shell && bun run serve:prod\" \"cd packages/shared && bun run serve:prod\" \"cd apps/header-pages && bun run serve:prod\""
+    "preview": "bunx cross-env-shell \"SHELL_PREVIEW_PORT=8080 SHARED_PREVIEW_PORT=8081 HEADER_PAGES_PREVIEW_PORT=8082 SHARED_HOST_BASE_URL=http://localhost:8081/ HEADER_PAGES_HOST_BASE_URL=http://localhost:8082/ turbo run build --force && bun run preview:serve\"",
+    "preview:serve": "concurrently --kill-others-on-fail -n shell,shared,header -c green,magenta,cyan \"cd apps/shell && bunx serve -s dist -l 8080\" \"cd packages/shared && bunx serve -s dist -l 8081\" \"cd apps/header-pages && bunx serve -s dist -l 8082\"",
+    "preview:serve:win": "concurrently -n shell,shared,header -c green,magenta,cyan \"cd apps/shell && bunx serve -s dist -l 8080\" \"cd packages/shared && bunx serve -s dist -l 8081\" \"cd apps/header-pages && bunx serve -s dist -l 8082\""
   },
   "devDependencies": {
-    "dotenv-cli": "^7.4.2",
+    "dotenv-cli": "^10.0.0",
     "@commitlint/config-conventional": "^19.8.1",
     "@biomejs/biome": "^2.2.4",
     "commitlint": "^19.8.1",
     "cross-env": "^10.0.0",
     "husky": "^9.1.7",
-    "concurrently": "^9.1.0",
-    "lint-staged": "^15.5.2",
+    "concurrently": "^9.2.1",
+    "lint-staged": "^16.1.6",
     "rimraf": "^6.0.1",
     "serve": "^14.2.5",
-    "turbo": "^2.5.5"
+    "turbo": "^2.5.6"
   },
   "engines": {
     "node": ">=18.0.0",

@@ -17,11 +17,15 @@ const PersonalData: React.FC<PersonalDataProps> = ({ data }) => {
       title="Dados Pessoais"
       className="h-full"
       onTitleClick={() => navigate('/personal-data?details=true')}
+      data-testid="personal-data-card"
+      headerTestId="personal-data-header"
+      titleTestId="personal-data-title"
+      contentTestId="personal-data-content"
     >
       <div className="pt-[1.5625rem]">
         {items
-          ? Object.entries(items).map(([label, value]) => (
-              <CardItemLabel key={label} title={label} text={value} />
+          ? Object.entries(items).map(([label, value], index) => (
+              <CardItemLabel key={label} title={label} text={value} dataTestId={`personal-data-item-${index}`}/>
             ))
           : null}
       </div>
