@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "e2e": "bunx playwright test",
+    "e2e:headed": "bunx playwright test --headed",
     "e2e:show-report": "bunx playwright show-report"
   },
   "dependencies": {
