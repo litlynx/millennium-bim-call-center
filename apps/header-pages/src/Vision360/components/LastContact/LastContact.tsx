@@ -35,11 +35,15 @@ const LastContact: React.FC = () => {
     {
       value: 'calls',
       label: 'Chamadas',
+      dataTestId: 'last-contact-tab-calls',
       content: (
         <>
           {sortedContacts.map((props, index) => (
             <React.Fragment key={`${props.header.date}-${props.header.time}`}>
-              <CardAccordionItemContacts {...props} />
+              <CardAccordionItemContacts
+                {...props}
+                dataTestId={`last-contact-call-item-${index}`}
+              />
               {index < sortedContacts.length - 1 && <hr className="text-gray-100" />}
             </React.Fragment>
           ))}
@@ -49,11 +53,12 @@ const LastContact: React.FC = () => {
     {
       value: 'messages',
       label: 'Mensagens',
+      dataTestId: 'last-contact-tab-messages',
       content: (
         <>
           {CardItemMessagesMapData.map((props, index) => (
             <React.Fragment key={`${props.date}-${props.time}`}>
-              <CardItemMessages {...props} />
+              <CardItemMessages {...props} dataTestId={`last-contact-message-item-${index}`} />
               {index < CardItemMessagesMapData.length - 1 && <hr className="text-gray-100" />}
             </React.Fragment>
           ))}
@@ -72,6 +77,10 @@ const LastContact: React.FC = () => {
       tabsListClassName="pt-[1.125rem]"
       tabsTriggerClassName="text-lg"
       onTitleClick={() => navigate('/history-interactions?details=true&component=calls')}
+      data-testid="last-contact-card"
+      headerTestId="last-contact-header"
+      titleTestId="last-contact-title"
+      contentTestId="last-contact-content"
     />
   );
 };

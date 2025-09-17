@@ -82,6 +82,11 @@
       "env": ["CI"],
       "outputs": ["playwright-report/**", "test-results/**"]
     },
+
+    "e2e:headed": {
+      "env": ["HEADED=true"],
+      "outputs": ["playwright-report/**", "test-results/**"]
+    },
     "e2e:show-report": {
       "persistent": true
     },

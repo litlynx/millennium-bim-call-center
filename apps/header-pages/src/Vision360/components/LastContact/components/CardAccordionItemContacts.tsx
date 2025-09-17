@@ -20,11 +20,13 @@ export interface CardBodyItemProps {
 export interface CardAccordionItemContactsProps {
   header: CardHeaderProps;
   body: CardBodyItemProps[];
+  dataTestId?: string;
 }
 
 export const CardAccordionItemContacts: React.FC<CardAccordionItemContactsProps> = ({
   header: { icon, iconBackground, date, time, title },
-  body
+  body,
+  dataTestId
 }) => {
   return (
     <CardAccordion
@@ -39,6 +41,7 @@ export const CardAccordionItemContacts: React.FC<CardAccordionItemContactsProps>
           </div>
         </div>
       }
+      dataTestId={dataTestId}
     >
       <div className="flex flex-col mb-6">
         {body.map(({ icon: itemIcon, label, value }) => (
