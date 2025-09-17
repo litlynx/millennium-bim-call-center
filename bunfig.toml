@@ -3,17 +3,14 @@
 [install]
 # Bun workspaces configuration
 # Automatically installs dependencies for all workspace packages
-auto = true
-
-# Keep package-lock.json for compatibility with existing CI/CD
-# Set to false to use only bun.lockb
-frozen = false
-
-# Cache directory
-cache = ".bun-cache"
+auto = "auto"
 
 # Registry configuration
 registry = "https://registry.npmjs.org/"
+
+# Cache directory
+[install.cache]
+dir = ".bun-cache"
 
 [install.scopes]
 # Scoped package configurations if needed
@@ -31,6 +28,7 @@ coveragePathIgnorePatterns = [
   "**/@config/**",
   "**/types/**",
   "**/__mocks__/**",
+  "**/e2e/**",
 ]
 
 # Ensure DOM globals exist, then run unified setup (matchers + cleanup)

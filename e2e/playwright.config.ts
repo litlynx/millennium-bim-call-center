@@ -9,6 +9,9 @@ export default defineConfig({
   // Diretório onde os testes estão localizados (será sobrescrito pelos MFEs)
   testDir: './tests',
 
+  // Padrão de arquivos de teste - apenas arquivos *.e2e.*
+  testMatch: '**/*.e2e.*',
+
   // Execução paralela total - melhora performance
   fullyParallel: true,
 
