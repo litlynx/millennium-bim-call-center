@@ -1,5 +1,4 @@
 /* Global CSS entry used by shadcn/ui configuration */
-/* stylelint-disable at-rule-no-unknown */
 /** biome-ignore-all lint/suspicious/noUnknownAtRules: Post-css wrong error */
 @import "tw-animate-css";
 

@@ -1,14 +1,16 @@
 {
   "include": ["./**/*", "**/*", "package.json"],
-  "exclude": ["build", "dist", "coverage", "node_modules"],
+  "exclude": ["build", "dist", "coverage", "node_modules", "rspack/**/*"],
   "extends": "@config/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "shared/*": [
+        "../../packages/shared/.wp_federation/shared/dts/src/*",
         "../../packages/shared/.wp_federation/shared/*",
         "../../packages/shared/types/src/*"
-      ]
+      ],
+      "headerPages/*": ["../header-pages/.wp_federation/headerPages/*"]
     }
   }
 }

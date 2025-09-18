@@ -1,8 +1,8 @@
 export const RegisterIcon = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
-      <g clip-path="url(#clip0_5783_7872)">
-        <g clip-path="url(#clip1_5783_7872)">
+      <g clipPath="url(#clip0_5783_7872)">
+        <g clipPath="url(#clip1_5783_7872)">
           <path
             d="M24.1713 0.257812H-3.01953V27.4487H24.1713V0.257812Z"
             fill="currentColor"

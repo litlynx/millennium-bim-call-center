@@ -12,7 +12,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      'inline-flex h-[32px] gap-2 items-center justify-start w-full bg-muted text-muted-foreground border-b border-b-gray-100',
+      'inline-flex gap-2 items-center justify-start w-full bg-muted text-muted-foreground border-b border-b-gray-100',
       className
     )}
     {...props}
@@ -29,7 +29,7 @@ const TabsTrigger = React.forwardRef<
     className={cn(
       // Do not stretch to full width so the underline matches label width
       // Rounded underline via pseudo-element
-      'relative inline-flex w-full items-center justify-start whitespace-nowrap py-1 text-sm text-gray-500 font-semibold transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 after:absolute after:left-0 after:bottom-[-1px] after:h-[3px] after:w-full after:rounded-full after:bg-primary-500 after:content-[""] after:opacity-0 after:transition after:duration-200 data-[state=active]:text-primary-500 data-[state=active]:after:opacity-100',
+      'relative inline-flex w-full items-center justify-start whitespace-nowrap py-1 text-sm text-gray-500 font-semibold transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 after:absolute after:left-0 after:bottom-[-1px] after:h-[5px] after:w-full after:rounded-full after:bg-primary-500 after:content-[""] after:opacity-0 after:transition after:duration-200 data-[state=active]:text-primary-500 data-[state=active]:after:opacity-100',
       className
     )}
     {...props}
@@ -44,7 +44,7 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+      'ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
       className
     )}
     {...props}
@@ -52,4 +52,4 @@ const TabsContent = React.forwardRef<
 ));
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 
-export { Tabs, TabsList, TabsTrigger, TabsContent };
+export { Tabs, TabsContent, TabsList, TabsTrigger };

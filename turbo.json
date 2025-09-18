@@ -6,14 +6,28 @@
       "dependsOn": ["^analyze"],
       "persistent": true
     },
+    "rsdoctor": {
+      "dependsOn": ["^rsdoctor"],
+      "persistent": true
+    },
     "build": {
       "dependsOn": ["^build"],
-      "env": ["HOST_BASE_URL", "API_BASE_URL"],
+      "env": [
+        "HOST_BASE_URL",
+        "API_BASE_URL",
+        "SHARED_HOST_BASE_URL",
+        "HEADER_PAGES_HOST_BASE_URL"
+      ],
       "outputs": ["dist/**", "build/**", "types/**", ".wp_federation/**"]
     },
     "build:local": {
       "dependsOn": ["^build"],
-      "env": ["HOST_BASE_URL", "API_BASE_URL"],
+      "env": [
+        "HOST_BASE_URL",
+        "API_BASE_URL",
+        "SHARED_HOST_BASE_URL",
+        "HEADER_PAGES_HOST_BASE_URL"
+      ],
       "outputs": ["dist/**", "build/**", "types/**", ".wp_federation/**"]
     },
     "types:generate": {
@@ -54,7 +68,8 @@
       "dependsOn": ["^biome:check:apply"]
     },
     "test": {
-      "dependsOn": ["^test"]
+      "dependsOn": ["^test"],
+      "cache": false
     },
     "test:ci": {
       "dependsOn": ["^test:ci"],
@@ -67,8 +82,17 @@
       "env": ["CI"],
       "outputs": ["playwright-report/**", "test-results/**"]
     },
+
+    "e2e:headed": {
+      "env": ["HEADED=true"],
+      "outputs": ["playwright-report/**", "test-results/**"]
+    },
     "e2e:show-report": {
       "persistent": true
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
+      "outputs": []
     },
     "dev": {
       "dependsOn": ["^dev"],

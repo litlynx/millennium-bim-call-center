@@ -32,3 +32,8 @@ bun.lockb
 # TS declarations
 .wp_federation
 .bun-cache
+
+# Playwright reports and test results
+e2e/playwright-report/
+**/test-results/
+

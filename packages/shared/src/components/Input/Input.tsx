@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from '@/components/Icon';
 
-interface InputProps {
+export interface InputProps {
   name?: string;
   placeholder?: string;
 }
