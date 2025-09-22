@@ -1,9 +1,9 @@
 import type React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { cn } from '@/lib/utils';
-import type { MenuItemProps } from '../data/menuData';
-import { getMenusBySidebarId, getSidebarLabelById } from '../utils/utils';
+import { cn } from 'shared/lib/utils';
+import type { MenuItemProps } from '../../data/menuData';
+import { getMenusBySidebarId, getSidebarLabelById } from '../../utils/utils';
 import Submenu from './Submenu';
 
 const Menu: React.FC<MenuItemProps> = ({
@@ -36,11 +36,11 @@ const Menu: React.FC<MenuItemProps> = ({
       onMouseLeave={onCloseMenu}
     >
       <div className="pl-6 pr-10 pb-10 pt-3 flex absolute w-full h-full overflow-hidden">
-        {/* Menu lateral */}
         <div className="w-[24.5rem]">
           <p className="font-semibold text-gray-800 mb-2 text-[2rem] relative after:content-[''] after:absolute after:-bottom-[5px] after:left-0 after:w-[15%] after:h-[5px] after:bg-primary-500">
             {getSidebarLabelById(activeItem)}
           </p>
+
           <div className="py-3 flex flex-col overflow-y-auto">
             {menuItems.map((item) => {
               const isPendingActive = activeSubmenuItem === item.id;

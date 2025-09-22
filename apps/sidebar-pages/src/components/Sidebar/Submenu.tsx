@@ -1,7 +1,7 @@
 import type React from 'react';
 import { Link } from 'react-router';
-import type { SubmenuItemProps } from '../data/menuData';
-import { getSubmenuLinksBySubmenuId, getSubmenusByMenuId } from '../utils/utils';
+import type { SubmenuItemProps } from '../../data/menuData';
+import { getSubmenuLinksBySubmenuId, getSubmenusByMenuId } from '../../utils/utils';
 
 const Submenu: React.FC<SubmenuItemProps> = ({
   isSubmenuOpen,
@@ -28,6 +28,7 @@ const Submenu: React.FC<SubmenuItemProps> = ({
             <p className="uppercase p-4 bg-gray-100 rounded-lg text-gray-800 opacity-60 m-0 font-semibold">
               {submenu.label}
             </p>
+
             <div className="flex flex-col overflow-y-auto">
               {submenuLinks.map((link) => (
                 <Link
@@ -37,6 +38,7 @@ const Submenu: React.FC<SubmenuItemProps> = ({
                   className="group flex flex-col justify-center font-medium text-xl py-5 text-left pl-10 rounded-[1.25rem] border-b border-gray-100 hover:bg-primary-500 hover:text-white active:bg-primary-500 active:text-white transition-all duration-300"
                 >
                   {link.label}
+
                   {link.description && (
                     <span className="font-medium text-gray-800 group-hover:text-white text-xs">
                       {link.description}
