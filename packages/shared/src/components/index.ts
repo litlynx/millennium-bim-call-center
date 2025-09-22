@@ -8,6 +8,11 @@ export { default as CardItemLabel } from './CardItem/CardItemLabel';
 export type { IconProps } from './Icon/Icon';
 export { default as Icon } from './Icon/Icon';
 export { default as Input } from './Input/Input';
+export type {
+  ChannelAndServiceProps,
+  PageHeaderProps
+} from './PageHeader/PageHeader';
+export { default as PageHeader, default as PageHeaderTemplate } from './PageHeader/PageHeader';
 
 // ShadCN UI components
 export * from './ui';
