@@ -22,9 +22,6 @@ export default function App() {
   return (
     <Suspense fallback={<Spinner />}>
       <Routes>
-        {/* Index route for /vision360 */}
-        <Route index element={<Vision360Page />} />
-        {/* Sub-route under /vision360 */}
         <Route
           path="another-level"
           element={
@@ -35,22 +32,12 @@ export default function App() {
             </div>
           }
         />
-        <Route path="/history-interactions" element={<HistoryInteractionsPage />} />
-        <Route path="/personal-data" element={<PersonalDataPage />} />
-        <Route path="/channels-and-services" element={<ChannelAndServicesPages />} />
-        <Route path="/estate-and-products" element={<EstateAndProductsPage />} />
-        <Route path="/complains-and-incidents" element={<ComplainsAndIncidents />} />
-        <Route path="/vision-360" element={<Vision360Page />} />
-        <Route
-          path="/*"
-          element={
-            <div>
-              <h1>404</h1>
-              <p>Page not found</p>
-              <Button onClick={() => navigate('/')}>Go to Homepage</Button>
-            </div>
-          }
-        />
+        <Route path="history-interactions" element={<HistoryInteractionsPage />} />
+        <Route path="personal-data" element={<PersonalDataPage />} />
+        <Route path="channels-and-services" element={<ChannelAndServicesPages />} />
+        <Route path="estate-and-products" element={<EstateAndProductsPage />} />
+        <Route path="complains-and-incidents" element={<ComplainsAndIncidents />} />
+        <Route path="vision-360" element={<Vision360Page />} />
       </Routes>
     </Suspense>
   );
