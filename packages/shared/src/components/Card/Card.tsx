@@ -1,4 +1,7 @@
+/** biome-ignore-all lint/correctness/useUniqueElementIds: is is being used statically */
+
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '@ui/scroll-area';
 import * as React from 'react';
 import {
   CardContent,
@@ -24,6 +27,7 @@ export interface CardProps extends CardBaseProps {
   descriptionTestId?: string;
   footerTestId?: string;
   contentTestId?: string;
+  cardContentClassName?: string;
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
@@ -41,6 +45,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       descriptionTestId,
       footerTestId,
       contentTestId,
+      cardContentClassName,
       ...props
     },
     ref
@@ -71,10 +76,15 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
       {children && (
         <CardContent
-          className="flex-1 min-h-0 overflow-auto flex flex-col gap-4 p-6 pt-0"
+          className={cn(
+            `flex-1 min-h-0 flex flex-col p-6 pt-0 overflow-hidden`,
+            cardContentClassName
+          )}
           data-testid={contentTestId}
         >
-          {children}
+          <ScrollArea className="flex-1">
+            <div className="flex flex-col gap-4 min-w-max">{children}</div>
+          </ScrollArea>
         </CardContent>
       )}
 
