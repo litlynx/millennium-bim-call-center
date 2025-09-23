@@ -7,6 +7,7 @@ export * from './CallBackIcon';
 export * from './CallCenterWorkerIcon';
 export * from './CallDotsIcon';
 export * from './CellPhoneIcon';
+export * from './ChevronDownIcon';
 export * from './ChevronRightIcon';
 export * from './CloseBlackIcon';
 export * from './CloseIcon';
@@ -53,3 +54,4 @@ export * from './SendIcon';
 export * from './ShareIcon';
 export * from './ShoppingBagIcon';
 export * from './UserIcon';
+

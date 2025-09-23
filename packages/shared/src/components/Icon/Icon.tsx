@@ -24,10 +24,67 @@ const buildIconsMap = (
 
 const iconsMap = buildIconsMap({ ...Icons });
 
-export type IconType = keyof typeof iconsMap;
+// Generate a union type of all available icon names for better type safety
+export type IconType =
+  | 'alertFolder'
+  | 'analyticsBusinessChart'
+  | 'bell'
+  | 'box'
+  | 'calendar'
+  | 'callBack'
+  | 'callCenterWorker'
+  | 'callDots'
+  | 'cellPhone'
+  | 'chevronDown'
+  | 'chevronRight'
+  | 'closeBlack'
+  | 'close'
+  | 'complains'
+  | 'config'
+  | 'contact'
+  | 'contacts'
+  | 'danger'
+  | 'dialPad'
+  | 'documentation'
+  | 'documentLayout'
+  | 'email'
+  | 'exclamation'
+  | 'eye'
+  | 'files'
+  | 'graph2'
+  | 'graph'
+  | 'history'
+  | 'home'
+  | 'info'
+  | 'location'
+  | 'logo'
+  | 'makePhoneCall'
+  | 'messageCircleDots'
+  | 'message'
+  | 'packageWarning'
+  | 'pause'
+  | 'personal'
+  | 'personalQuestion'
+  | 'person'
+  | 'personMale'
+  | 'personMalePolygon'
+  | 'phone2'
+  | 'phoneCall'
+  | 'phoneDots'
+  | 'pieChart'
+  | 'pin'
+  | 'play'
+  | 'register'
+  | 'ringCall'
+  | 'risk'
+  | 'search'
+  | 'send'
+  | 'share'
+  | 'shoppingBag'
+  | 'user';
 
 export interface IconProps {
-  type: keyof typeof iconsMap;
+  type: IconType;
   rounded?: boolean;
   size?: 'sm' | 'lg';
   className?: string;
