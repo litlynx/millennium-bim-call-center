@@ -3,12 +3,13 @@ import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router';
 import { Button } from 'shared/components';
 
-const Root: React.FC = () => {
+const HomePage: React.FC = () => {
   const navigate = useNavigate();
+
   return (
     <>
       <Helmet>
-        <title>Root title</title>
+        <title>Home Page</title>
       </Helmet>
       <div>Just a root page</div>
       <Button onClick={() => navigate('/vision-360')}>Go to Vision360</Button>
@@ -16,4 +17,4 @@ const Root: React.FC = () => {
   );
 };
 
-export default Root;
+export default HomePage;
