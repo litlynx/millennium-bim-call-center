@@ -79,7 +79,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ headers, data }) => {
                   <TableHead
                     key={header.key}
                     className={cn(
-                      'font-semibold text-2xs leading-tight text-gray-800 sticky top-0 z-10',
+                      'font-semibold text-xs leading-tight text-gray-800 sticky top-0 z-10 uppercase',
                       header.className,
                       index < headers.length - 1 && 'pr-4'
                     )}
@@ -106,7 +106,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ headers, data }) => {
                       <TableCell
                         key={`${row.id}-${col?.key ?? cellIndex}`}
                         className={cn(
-                          'text-gray-600 text-2xs leading-tight font-medium',
+                          'text-gray-600 text-xs leading-tight font-medium',
                           row.cells.length - 1 !== cellIndex && 'pr-3',
                           cellClasses
                         )}
