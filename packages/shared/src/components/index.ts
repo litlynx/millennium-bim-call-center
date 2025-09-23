@@ -19,6 +19,7 @@ export type {
 export { default as PageHeader, default as PageHeaderTemplate } from './PageHeader/PageHeader';
 export { default as ScriptDetail } from './ScriptDetail/ScriptDetail';
 export { default as Table } from './Table/Table';
+export { default as TextArea } from './TextArea/TextArea';
 
 // ShadCN UI components
 export * from './ui';
