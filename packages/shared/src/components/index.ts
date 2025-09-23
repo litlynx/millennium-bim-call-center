@@ -10,6 +10,7 @@ export type { IconProps } from './Icon/Icon';
 export { default as Icon } from './Icon/Icon';
 export { default as Input } from './Input/Input';
 export { default as Modal } from './Modal/Modal';
+export { default as Table } from './Table/Table';
 
 // ShadCN UI components
 export * from './ui';
