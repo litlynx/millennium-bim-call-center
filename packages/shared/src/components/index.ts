@@ -9,6 +9,7 @@ export { default as DatePicker } from './DatePicker/DatePicker';
 export type { IconProps } from './Icon/Icon';
 export { default as Icon } from './Icon/Icon';
 export { default as Input } from './Input/Input';
+export { default as Modal } from './Modal/Modal';
 
 // ShadCN UI components
 export * from './ui';
