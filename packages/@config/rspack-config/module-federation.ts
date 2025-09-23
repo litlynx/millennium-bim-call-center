@@ -33,7 +33,7 @@ const resolveRemoteBaseUrl = (
 };
 
 // Allow overriding prod remote base URLs per app when previewing locally on different ports
-// e.g. SHARED_HOST_BASE_URL=http://localhost:8081/ HEADER_PAGES_HOST_BASE_URL=http://localhost:8082/ SIDEBAR_PAGES_HOST_BASE_URL=http://localhost:8083
+// e.g. SHARED_HOST_BASE_URL=http://localhost:8081/ HEADER_PAGES_HOST_BASE_URL=http://localhost:8082/ SIDEBAR_PAGES_HOST_BASE_URL=http://localhost:8083 / RECORDS_PAGES_HOST_BASE_URL=http://localhost:8084/
 const sharedHostBaseUrl = resolveRemoteBaseUrl(
   process.env.SHARED_HOST_BASE_URL,
   'packages/shared/dist/',
@@ -44,10 +44,15 @@ const headerPagesHostBaseUrl = resolveRemoteBaseUrl(
   'apps/header-pages/dist/',
   parseInt(process.env.HEADER_PAGES_PREVIEW_PORT || '8082', 10)
 );
-const SidebarPagesHostBaseUrl = resolveRemoteBaseUrl(
+const sidebarPagesHostBaseUrl = resolveRemoteBaseUrl(
   process.env.SIDEBAR_PAGES_HOST_BASE_URL,
   'apps/sidebar-pages/dist/',
   parseInt(process.env.SIDEBAR_PAGES_PREVIEW_PORT || '8083', 10)
+);
+const recordsPagesHostBaseUrl = resolveRemoteBaseUrl(
+  process.env.RECORDS_PAGES_HOST_BASE_URL,
+  'apps/records-pages/dist/',
+  parseInt(process.env.RECORDS_PAGES_PREVIEW_PORT || '8084', 10)
 );
 
 /**
@@ -147,6 +152,10 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
         // Exposes from apps/sidebar-pages
         sidebarPages: `sidebarPages@http://localhost:${
           mapPorts[Apps['sidebar-pages']].devPort
+        }/remoteEntry.js?cb=${DEV_BUILD_ID}`,
+        // Exposes from apps/records-pages
+        recordsPages: `recordsPages@http://localhost:${
+          mapPorts[Apps['records-pages']].devPort
         }/remoteEntry.js?cb=${DEV_BUILD_ID}`
       },
       prod: {
@@ -158,7 +167,11 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
         )}`,
         // Assuming production assets are served from apps/sidebar-pages/dist; adjust if deploy layout differs
         sidebarPages: `sidebarPages@${withLocalhostCacheBust(
-          `${SidebarPagesHostBaseUrl}remoteEntry.js`
+          `${sidebarPagesHostBaseUrl}remoteEntry.js`
+        )}`,
+        // Assuming production assets are served from apps/records-pages/dist; adjust if deploy layout differs
+        recordsPages: `recordsPages@${withLocalhostCacheBust(
+          `${recordsPagesHostBaseUrl}remoteEntry.js`
         )}`
       }
     }
@@ -213,6 +226,28 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
       exposes: {
         './App': './src/App',
         './SidebarDiv': './src/SidebarDiv'
+      }
+    },
+    remotes: {
+      dev: {
+        // Add cache-busting query so Firefox doesn't serve a cached remoteEntry in dev
+        shared: `shared@http://localhost:${
+          mapPorts[Apps.shared].devPort
+        }/remoteEntry.js?cb=${DEV_BUILD_ID}`
+      },
+      prod: {
+        shared: `shared@${withLocalhostCacheBust(`${sharedHostBaseUrl}remoteEntry.js`)}`
+      }
+    }
+  },
+  [Apps['records-pages']]: {
+    devPort: mapPorts[Apps['records-pages']].devPort,
+    analyzerPort: mapPorts[Apps['records-pages']].analyzerPort,
+    baseConfig: {
+      name: 'recordsPages',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './App': './src/App'
       }
     },
     remotes: {

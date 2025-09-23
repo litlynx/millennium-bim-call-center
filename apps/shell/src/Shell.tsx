@@ -12,6 +12,9 @@ registerComponent('HeaderPages', () => import('headerPages/App'));
 // Register the HeaderPages component in the registry
 const SidebarPages = React.lazy(() => import('sidebarPages/App'));
 registerComponent('SidebarPages', () => import('sidebarPages/App'));
+// Register RecordsPages component in the registry
+const RecordsPages = React.lazy(() => import('recordsPages/App'));
+registerComponent('RecordsPages', () => import('recordsPages/App'));
 
 // Layouts
 import DashboardLayout from './layouts/DashboardLayout';
@@ -40,6 +43,15 @@ const App: React.FC = () => {
                 element={
                   <LazyErrorBoundary componentName="HeaderPages" enableIntelligentRecovery>
                     <HeaderPages />
+                  </LazyErrorBoundary>
+                }
+              />
+              {/* records mounted at /records - colocado antes do catch-all do HeaderPages */}
+              <Route
+                path="records/*"
+                element={
+                  <LazyErrorBoundary componentName="RecordsPages" enableIntelligentRecovery>
+                    <RecordsPages />
                   </LazyErrorBoundary>
                 }
               />
