@@ -18,26 +18,67 @@ export interface CardProps extends CardBaseProps {
   description?: React.ReactNode;
   footer?: React.ReactNode;
   children?: React.ReactNode;
+  onTitleClick?: () => void;
+  headerTestId?: string;
+  titleTestId?: string;
+  descriptionTestId?: string;
+  footerTestId?: string;
+  contentTestId?: string;
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ icon, title, description, footer, children, className, ...props }, ref) => (
+  (
+    {
+      icon,
+      title,
+      description,
+      footer,
+      children,
+      className,
+      onTitleClick,
+      headerTestId,
+      titleTestId,
+      descriptionTestId,
+      footerTestId,
+      contentTestId,
+      ...props
+    },
+    ref
+  ) => (
     <UICard ref={ref} className={cn(className, 'bg-white')} {...props}>
       {(icon || title || description) && (
-        <CardHeader>
+        <CardHeader data-testid={headerTestId} className="p-6 pb-0">
           {(icon || title) && (
-            <CardTitle className="flex items-center gap-2 text-xl font-bold">
+            <CardTitle
+              className="flex items-center gap-2 text-xl font-bold"
+              data-testid={titleTestId}
+            >
               {icon && <>{icon}</>}
-              {title && <>{title}</>}
+              {title && onTitleClick ? (
+                <button type="submit" onClick={onTitleClick}>
+                  <h4 className="text-left leading-tight">{title}</h4>
+                </button>
+              ) : (
+                <h4 className="text-left leading-tight">{title}</h4>
+              )}
             </CardTitle>
           )}
-          {description && <CardDescription>{description}</CardDescription>}
+          {description && (
+            <CardDescription data-testid={descriptionTestId}>{description}</CardDescription>
+          )}
         </CardHeader>
       )}
 
-      {children && <CardContent className="flex-1 min-h-0 overflow-auto">{children}</CardContent>}
+      {children && (
+        <CardContent
+          className="flex-1 min-h-0 overflow-auto flex flex-col gap-4 p-6 pt-0"
+          data-testid={contentTestId}
+        >
+          {children}
+        </CardContent>
+      )}
 
-      {footer && <CardFooter>{footer}</CardFooter>}
+      {footer && <CardFooter data-testid={footerTestId}>{footer}</CardFooter>}
     </UICard>
   )
 );

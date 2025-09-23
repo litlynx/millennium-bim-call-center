@@ -1,20 +1,21 @@
 import type * as React from 'react';
+import { cn } from '@/lib/utils';
 
-interface TailwindButtonProps {
+export interface ButtonProps {
   variant?: 'solid' | 'outline';
   children: React.ReactNode;
   onClick?: () => void;
   className?: string;
 }
 
-const Button: React.FC<TailwindButtonProps> = ({
+const Button: React.FC<ButtonProps> = ({
   variant = 'solid',
   children,
   onClick,
   className = ''
 }) => {
   const baseClasses =
-    'px-[1.125rem] py-[0.5625rem] rounded-[1.75rem] border border-primary-500 font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
+    'px-[1.125rem] py-[0.5625rem] rounded-[1.75rem] border border-primary-500 font-semibold transition-colors duration-200 focus:outline-none';
 
   const variantClasses = {
     solid: 'bg-primary-500 hover:bg-white text-white hover:text-primary-600 w-fit',
@@ -24,7 +25,7 @@ const Button: React.FC<TailwindButtonProps> = ({
   return (
     <button
       type="button"
-      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
+      className={cn(baseClasses, variantClasses[variant], className)}
       onClick={onClick}
     >
       {children}

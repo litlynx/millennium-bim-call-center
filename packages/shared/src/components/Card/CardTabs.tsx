@@ -1,7 +1,8 @@
 /** biome-ignore-all lint/correctness/useUniqueElementIds: is is being used statically */
+
 import { ScrollArea, ScrollBar } from '@ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs';
-import React from 'react';
+import * as React from 'react';
 import { cn } from '@/lib/utils';
 import type { CardProps } from './Card';
 import Card from './Card';
@@ -10,6 +11,7 @@ export interface CardTabItem {
   value: string;
   label: React.ReactNode;
   content: React.ReactNode;
+  dataTestId?: string;
 }
 
 export interface CardTabsProps extends Omit<CardProps, 'children'> {
@@ -20,7 +22,9 @@ export interface CardTabsProps extends Omit<CardProps, 'children'> {
   tabsContentClassName?: string;
 }
 
-const CardTabs = React.forwardRef<HTMLDivElement, CardTabsProps>(
+const CardTabs: React.ForwardRefExoticComponent<
+  CardTabsProps & React.RefAttributes<HTMLDivElement>
+> = React.forwardRef<HTMLDivElement, CardTabsProps>(
   (
     {
       tabs,
@@ -39,7 +43,12 @@ const CardTabs = React.forwardRef<HTMLDivElement, CardTabsProps>(
         <Tabs defaultValue={defaultTab} className="w-full h-full flex flex-col">
           <TabsList className={tabsListClassName}>
             {tabs.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value} className={tabsTriggerClassName}>
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className={tabsTriggerClassName}
+                data-testid={tab.dataTestId}
+              >
                 {tab.label}
               </TabsTrigger>
             ))}

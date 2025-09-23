@@ -49,7 +49,7 @@ const sheetVariants = cva(
   }
 );
 
-interface SheetContentProps
+export interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {}
 
@@ -109,13 +109,13 @@ SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
 export {
   Sheet,
-  SheetPortal,
-  SheetOverlay,
-  SheetTrigger,
   SheetClose,
   SheetContent,
-  SheetHeader,
+  SheetDescription,
   SheetFooter,
+  SheetHeader,
+  SheetOverlay,
+  SheetPortal,
   SheetTitle,
-  SheetDescription
+  SheetTrigger
 };

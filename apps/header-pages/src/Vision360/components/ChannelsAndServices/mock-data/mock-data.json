@@ -1,0 +1,20 @@
+{
+  "digitalChannels": {
+    "id": "digitalChannels",
+    "title": "Canais Digitais",
+    "items": [
+      { "label": "Internet Banking", "state": "C" },
+      { "label": "Millennium IZI", "state": "A" },
+      { "label": "Linha Millennium bim", "state": null }
+    ]
+  },
+  "services": {
+    "id": "services",
+    "title": "Serviços",
+    "items": [
+      { "label": "Cartão de Débito Estudante", "state": "B" },
+      { "label": "Extracto Mensal", "state": null },
+      { "label": "Seguro de Vida", "state": null }
+    ]
+  }
+}
