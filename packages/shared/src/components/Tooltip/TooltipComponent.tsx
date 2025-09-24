@@ -14,6 +14,7 @@ interface TooltipProps {
   variant?: TooltipVariant;
   side?: TooltipSide;
   align?: TooltipAlign;
+  button?: string;
 }
 
 const variantStyles: Record<TooltipVariant, string> = {
@@ -27,7 +28,8 @@ const TooltipComponent: React.FC<TooltipProps> = ({
   children,
   variant = 'white',
   side = 'top',
-  align = 'center'
+  align = 'center',
+  button
 }) => {
   return (
     <TooltipProvider delayDuration={100}>
@@ -43,6 +45,18 @@ const TooltipComponent: React.FC<TooltipProps> = ({
             {title}
           </p>
           {content}
+
+          {button && (
+            <div className="flex justify-end mt-4">
+              <button
+                type="button"
+                className="bg-white text-[#8B39A0] font-semibold text-sm rounded-full px-3 py-1 small"
+              >
+                {button}
+              </button>
+            </div>
+          )}
+
           <TooltipArrow
             className={cn(
               '-translate-y-[2px] w-[1.5625rem] h-[0.875rem]',
