@@ -14,6 +14,7 @@ export type UserStore = {
   getCustomerName: () => string;
   getCif: () => string;
   getAccountNumber: () => string;
+
 };
 
 const MOCK_USER: User = {
