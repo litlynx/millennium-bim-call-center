@@ -13,8 +13,8 @@ export default function RecordsPageHeaderWrapper() {
   return (
     <PageHeader
       type="channelAndService"
-      channelCategory="Atendimento"
-      serviceTitle="Serviço de Exemplo"
+      channelCategory="Canais Digitais"
+      serviceTitle="Smart IZI - Cancelamento/Bloqueio"
       customerName={customerName}
       cif={cif}
       accountNumber={accountNumber}
