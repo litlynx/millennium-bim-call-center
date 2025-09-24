@@ -30,8 +30,10 @@ export * from './InfoIcon';
 export * from './LocationIcon';
 export * from './LogoIcon';
 export * from './MakePhoneCallIcon';
+export * from './MaximizeIcon';
 export * from './MessageCircleDotsIcon';
 export * from './MessageIcon';
+export * from './MinifyIcon';
 export * from './PackageWarningIcon';
 export * from './PauseIcon';
 export * from './PersonalIcon';
@@ -53,3 +55,4 @@ export * from './SendIcon';
 export * from './ShareIcon';
 export * from './ShoppingBagIcon';
 export * from './UserIcon';
+
