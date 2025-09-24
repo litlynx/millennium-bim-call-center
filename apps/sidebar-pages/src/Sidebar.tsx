@@ -99,7 +99,7 @@ const SidebarItem: React.FC<Omit<SidebarItemProps, 'isActive'>> = ({
   );
 };
 
-const SideBarDiv: React.FC = () => {
+const SideBar: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeItem, setActiveItem] = useState<string | null>(null);
@@ -204,4 +204,4 @@ const SideBarDiv: React.FC = () => {
   );
 };
 
-export default SideBarDiv;
+export default SideBar;
