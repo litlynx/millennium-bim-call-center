@@ -29,9 +29,11 @@ interface ChannelAndServiceProps extends BasePageHeaderTemplateProps {
   type: 'channelAndService';
   channelCategory: string;
   serviceTitle: string;
-  customerName: string;
-  cif: string;
-  accountNumber: string;
+  user: {
+    customerName: string;
+    cif: string;
+    accountNumber: string;
+  };
 }
 
 // Union type for all possible template props
@@ -50,9 +52,9 @@ export default function PageHeader(props: PageHeaderProps) {
           }
           rightBlock={
             <>
-              <p className="font-medium">{props.customerName}</p>
-              <p className="font-medium">CIF: {props.cif}</p>
-              <p className="font-medium">Nº Conta: {props.accountNumber}</p>
+              <p className="font-medium">{props.user.customerName}</p>
+              <p className="font-medium">CIF: {props.user.cif}</p>
+              <p className="font-medium">Nº Conta: {props.user.accountNumber}</p>
             </>
           }
         />

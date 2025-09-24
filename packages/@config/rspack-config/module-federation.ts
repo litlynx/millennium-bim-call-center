@@ -202,8 +202,7 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
       exposes: {
         './App': './src/App',
         './ChannelAndServicesPage': './src/ChannelsAndServices/pages/ChannelAndServicesPage',
-        './Vision360Page': './src/Vision360/pages/Vision360Page',
-        './HeaderDiv': './src/HeaderDiv'
+        './Vision360Page': './src/Vision360/pages/Vision360Page'
       }
     },
     remotes: {
@@ -226,7 +225,7 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
       filename: 'remoteEntry.js',
       exposes: {
         './App': './src/App',
-        './SidebarDiv': './src/SidebarDiv'
+        './Sidebar': './src/Sidebar'
       }
     },
     remotes: {

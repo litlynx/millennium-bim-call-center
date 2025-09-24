@@ -46,7 +46,6 @@ const App: React.FC = () => {
                   </LazyErrorBoundary>
                 }
               />
-              {/* records mounted at /records - colocado antes do catch-all do HeaderPages */}
               <Route
                 path="records/*"
                 element={

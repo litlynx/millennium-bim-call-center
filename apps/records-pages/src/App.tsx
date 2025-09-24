@@ -9,8 +9,11 @@ export default function App() {
   return (
     <Suspense fallback={<Spinner />}>
       <Routes>
-        <Route path="mobile-banking/accesses" element={<Accesses />} />
-        <Route path="mobile-banking/cancels-blocked" element={<CancelsBlocked />} />
+        <Route path="digital-channels/mobile-banking/accesses" element={<Accesses />} />
+        <Route
+          path="digital-channels/mobile-banking/cancels-blocked"
+          element={<CancelsBlocked />}
+        />
       </Routes>
     </Suspense>
   );

@@ -1,4 +1,4 @@
-/* Header-Pages rspack config */
+/* Sidebar-Pages rspack config */
 
 import { Apps } from '@config/rspack-config/enums';
 import { getAppModuleFederationConfig } from '@config/rspack-config/module-federation';

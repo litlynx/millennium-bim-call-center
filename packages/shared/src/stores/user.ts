@@ -11,6 +11,9 @@ export type UserStore = {
   user: User | null;
   setUser: (userData: User | null) => void;
   clearUser: () => void;
+  getCustomerName: () => string;
+  getCif: () => string;
+  getAccountNumber: () => string;
 };
 
 const MOCK_USER: User = {
@@ -21,10 +24,13 @@ const MOCK_USER: User = {
 
 export const useUserStore = create<UserStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: MOCK_USER,
       setUser: (userData) => set(() => ({ user: userData })),
-      clearUser: () => set(() => ({ user: null }))
+      clearUser: () => set(() => ({ user: null })),
+      getCustomerName: () => get().user?.name ?? 'Utilizador',
+      getCif: () => get().user?.cif ?? '—',
+      getAccountNumber: () => get().user?.accountNumber ?? '—'
     }),
     { name: 'user-store' }
   )
