@@ -66,50 +66,50 @@ export const sidebarMapData: SidebarItem[] = [
     id: 'registos',
     icon: 'register',
     label: 'Registos'
-  },
-  {
-    id: 'outbounds',
-    icon: 'makePhoneCall',
-    label: 'Outbounds',
-    path: '/outbounds'
-  },
-  {
-    id: 'vendas',
-    icon: 'shoppingBag',
-    label: 'Vendas',
-    path: '/sales'
-  },
-  {
-    id: 'scripts',
-    icon: 'info',
-    label: 'Scripts',
-    path: '/scripts'
-  },
-  {
-    id: 'documentacao',
-    icon: 'files',
-    label: 'Documentação'
-  },
-  {
-    id: 'kpis',
-    icon: 'graph2',
-    label: "KPI's",
-    path: '/kpis'
   }
+  // {
+  //   id: 'outbounds',
+  //   icon: 'makePhoneCall',
+  //   label: 'Outbounds',
+  //   path: '/outbounds'
+  // },
+  // {
+  //   id: 'vendas',
+  //   icon: 'shoppingBag',
+  //   label: 'Vendas',
+  //   path: '/sales'
+  // },
+  // {
+  //   id: 'scripts',
+  //   icon: 'info',
+  //   label: 'Scripts',
+  //   path: '/scripts'
+  // },
+  // {
+  //   id: 'documentacao',
+  //   icon: 'files',
+  //   label: 'Documentação'
+  // },
+  // {
+  //   id: 'kpis',
+  //   icon: 'graph2',
+  //   label: "KPI's",
+  //   path: '/kpis'
+  // }
 ];
 
 export const bottomSidebarMapData: SidebarItem[] = [
-  {
-    id: 'definicoes',
-    icon: 'config',
-    label: 'Definições',
-    path: '/settings'
-  },
-  {
-    id: 'pesquisa',
-    icon: 'search',
-    label: 'Pesquisa'
-  }
+  // {
+  //   id: 'definicoes',
+  //   icon: 'config',
+  //   label: 'Definições',
+  //   path: '/settings'
+  // },
+  // {
+  //   id: 'pesquisa',
+  //   icon: 'search',
+  //   label: 'Pesquisa'
+  // }
 ];
 
 export const menuMapData: MenuItem[] = [
@@ -119,75 +119,75 @@ export const menuMapData: MenuItem[] = [
     label: 'Canais Digitais',
     parentSidebarId: 'registos',
     submenuIds: ['mobile-banking-izi-smart-izi-submenu']
-  },
-  {
-    id: 'cartoes',
-    label: 'Cartões',
-    parentSidebarId: 'registos',
-    submenuIds: ['cartoes-submenu']
-  },
-  {
-    id: 'contas-a-ordem',
-    label: 'Contas à Ordem',
-    parentSidebarId: 'registos',
-    submenuIds: ['contas-a-ordem-submenu']
-  },
-  {
-    id: 'creditos',
-    label: 'Créditos',
-    parentSidebarId: 'registos',
-    submenuIds: ['creditos-submenu']
-  },
-  {
-    id: 'reclamacoes',
-    label: 'Reclamações',
-    parentSidebarId: 'registos',
-    submenuIds: ['reclamacoes-submenu']
-  },
-  {
-    id: 'outros-servicos',
-    label: 'Outros Serviços',
-    parentSidebarId: 'registos',
-    submenuIds: ['outros-servicos-submenu']
-  },
+  }
+  // {
+  //   id: 'cartoes',
+  //   label: 'Cartões',
+  //   parentSidebarId: 'registos',
+  //   submenuIds: ['cartoes-submenu']
+  // },
+  // {
+  //   id: 'contas-a-ordem',
+  //   label: 'Contas à Ordem',
+  //   parentSidebarId: 'registos',
+  //   submenuIds: ['contas-a-ordem-submenu']
+  // },
+  // {
+  //   id: 'creditos',
+  //   label: 'Créditos',
+  //   parentSidebarId: 'registos',
+  //   submenuIds: ['creditos-submenu']
+  // },
+  // {
+  //   id: 'reclamacoes',
+  //   label: 'Reclamações',
+  //   parentSidebarId: 'registos',
+  //   submenuIds: ['reclamacoes-submenu']
+  // },
+  // {
+  //   id: 'outros-servicos',
+  //   label: 'Outros Serviços',
+  //   parentSidebarId: 'registos',
+  //   submenuIds: ['outros-servicos-submenu']
+  // },
 
   //menu de Documentação
-  {
-    id: 'simuladores',
-    label: 'Simuladores',
-    parentSidebarId: 'documentacao',
-    path: '/documentation/calculators'
-  },
-  {
-    id: 'impressos',
-    label: 'Impressos',
-    parentSidebarId: 'documentacao',
-    path: '/documentation/forms'
-  },
-  {
-    id: 'divulgacoes',
-    label: 'Divulgações',
-    parentSidebarId: 'documentacao',
-    path: '/documentation/disclosures'
-  },
-  {
-    id: 'campanha-de-ciclo',
-    label: 'Campanha de Ciclo',
-    parentSidebarId: 'documentacao',
-    path: '/documentation/campaigns'
-  },
-  {
-    id: 'precario',
-    label: 'Preçário',
-    parentSidebarId: 'documentacao',
-    path: '/documentation/pricing'
-  },
-  {
-    id: 'cambio',
-    label: 'Câmbio',
-    parentSidebarId: 'documentacao',
-    path: '/documentation/exchange'
-  }
+  // {
+  //   id: 'simuladores',
+  //   label: 'Simuladores',
+  //   parentSidebarId: 'documentacao',
+  //   path: '/documentation/calculators'
+  // },
+  // {
+  //   id: 'impressos',
+  //   label: 'Impressos',
+  //   parentSidebarId: 'documentacao',
+  //   path: '/documentation/forms'
+  // },
+  // {
+  //   id: 'divulgacoes',
+  //   label: 'Divulgações',
+  //   parentSidebarId: 'documentacao',
+  //   path: '/documentation/disclosures'
+  // },
+  // {
+  //   id: 'campanha-de-ciclo',
+  //   label: 'Campanha de Ciclo',
+  //   parentSidebarId: 'documentacao',
+  //   path: '/documentation/campaigns'
+  // },
+  // {
+  //   id: 'precario',
+  //   label: 'Preçário',
+  //   parentSidebarId: 'documentacao',
+  //   path: '/documentation/pricing'
+  // },
+  // {
+  //   id: 'cambio',
+  //   label: 'Câmbio',
+  //   parentSidebarId: 'documentacao',
+  //   path: '/documentation/exchange'
+  // }
 ];
 
 export const submenuMapData: SubmenuItem[] = [
@@ -278,36 +278,36 @@ export const submenuLinks: SubmenuLinkItemProps[] = [
     path: '/records/digital-channels/mobile-banking/cancels',
     parentSubmenuId: 'mobile-banking-submenu'
   },
-  {
-    id: 'limites-transaccionais',
-    label: 'Limites Transaccionais',
-    path: '/records/digital-channels/mobile-banking/limits',
-    parentSubmenuId: 'mobile-banking-submenu'
-  },
-  {
-    id: 'recargas',
-    label: 'Recargas',
-    path: '/records/digital-channels/mobile-banking/top-ups',
-    parentSubmenuId: 'mobile-banking-submenu'
-  },
-  {
-    id: 'erros-da-aplicacao',
-    label: 'Erros da Aplicação',
-    path: '/records/digital-channels/mobile-banking/errors',
-    parentSubmenuId: 'mobile-banking-submenu'
-  },
-  {
-    id: 'duvidas-de-instalacao-app-smart-izi',
-    label: 'Dúvidas de Instalação App - Smart IZI',
-    path: '/records/digital-channels/mobile-banking/doubts',
-    parentSubmenuId: 'mobile-banking-submenu'
-  },
-  {
-    id: 'libertacao-otp',
-    label: 'Libertação OTP',
-    path: '/records/digital-channels/mobile-banking/otp-release',
-    parentSubmenuId: 'mobile-banking-submenu'
-  },
+  // {
+  //   id: 'limites-transaccionais',
+  //   label: 'Limites Transaccionais',
+  //   path: '/records/digital-channels/mobile-banking/limits',
+  //   parentSubmenuId: 'mobile-banking-submenu'
+  // },
+  // {
+  //   id: 'recargas',
+  //   label: 'Recargas',
+  //   path: '/records/digital-channels/mobile-banking/top-ups',
+  //   parentSubmenuId: 'mobile-banking-submenu'
+  // },
+  // {
+  //   id: 'erros-da-aplicacao',
+  //   label: 'Erros da Aplicação',
+  //   path: '/records/digital-channels/mobile-banking/errors',
+  //   parentSubmenuId: 'mobile-banking-submenu'
+  // },
+  // {
+  //   id: 'duvidas-de-instalacao-app-smart-izi',
+  //   label: 'Dúvidas de Instalação App - Smart IZI',
+  //   path: '/records/digital-channels/mobile-banking/doubts',
+  //   parentSubmenuId: 'mobile-banking-submenu'
+  // },
+  // {
+  //   id: 'libertacao-otp',
+  //   label: 'Libertação OTP',
+  //   path: '/records/digital-channels/mobile-banking/otp-release',
+  //   parentSubmenuId: 'mobile-banking-submenu'
+  // },
   // Registos > Cartões
   {
     id: 'limites-transaccionais',
