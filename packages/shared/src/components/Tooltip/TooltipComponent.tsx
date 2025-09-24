@@ -18,7 +18,7 @@ interface TooltipProps {
 
 const variantStyles: Record<TooltipVariant, string> = {
   white: 'bg-white text-gray-800',
-  purple: 'bg-purple-400 text-white'
+  purple: 'bg-[#8B39A0] text-white'
 };
 
 const TooltipComponent: React.FC<TooltipProps> = ({
@@ -46,7 +46,7 @@ const TooltipComponent: React.FC<TooltipProps> = ({
           <TooltipArrow
             className={cn(
               '-translate-y-[2px] w-[1.5625rem] h-[0.875rem]',
-              variant === 'white' ? 'fill-white' : 'fill-purple-400'
+              variant === 'white' ? 'fill-white' : 'fill-[#8B39A0]'
             )}
             style={{
               filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))'
