@@ -2,6 +2,7 @@ import type * as React from 'react';
 import { Helmet } from 'react-helmet';
 import {
   Badge,
+  Button,
   ButtonDropdown,
   type CardTabItem,
   CardTabs,
@@ -9,7 +10,9 @@ import {
   Icon,
   PageHeader,
   ScriptDetail,
-  Table
+  Table,
+  TextArea,
+  useTextArea
 } from 'shared/components';
 import { useUserStore } from 'shared/stores';
 
@@ -197,6 +200,23 @@ const CancelsBlocked: React.FC = () => {
     accountNumber: useUserStore((u) => u.getAccountNumber())
   };
 
+  const textArea = useTextArea({
+    required: true,
+    maxLength: 200,
+    initialValue: ''
+  });
+
+  const handleSubmit = () => {
+    const isValid = textArea.validate();
+
+    if (isValid) {
+      console.log('Form submitted successfully!');
+      console.log('Text content:', textArea.value);
+    } else {
+      console.log('Form validation failed:', textArea.error);
+    }
+  };
+
   return (
     <div className="grid grid-cols-2 gap-4">
       <Helmet>
@@ -218,7 +238,12 @@ const CancelsBlocked: React.FC = () => {
             <CardTabs className="h-full" tabs={transactionHistory} />
           </div>
 
-          <div>footer/action</div>
+          <div className="p-[2.25rem] bg-white rounded-[20px]">
+            <TextArea title="Registo" placeholder="Motivo da Chamada" {...textArea.textAreaProps} />
+            <Button className="mt-[2.6875rem] ml-auto block" onClick={handleSubmit}>
+              Fechar
+            </Button>
+          </div>
         </div>
       </div>
 
