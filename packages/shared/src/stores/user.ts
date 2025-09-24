@@ -7,7 +7,7 @@ export type User = {
   accountNumber: string;
 };
 
-type UserStore = {
+export type UserStore = {
   user: User | null;
   setUser: (userData: User | null) => void;
   clearUser: () => void;

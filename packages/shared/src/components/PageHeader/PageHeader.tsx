@@ -8,10 +8,15 @@ interface PageHeaderComponentProps {
 const PageHeaderComponent: FC<PageHeaderComponentProps> = ({ leftBlock, rightBlock }) => {
   return (
     <div className="mb-2 sticky top-0 left-0 right-0 z-10">
-      <div className="relative bg-gradient-to-r from-primary-500 to-[#A03996] text-white p-1 rounded-t-[20px] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-gradient-to-r after:from-yellow-400 after:via-yellow-400 after:to-transparent">
-        <div className="flex items-start px-[1.375rem] py-[0.5rem]">
-          <div className="flex-1 text-left">{leftBlock}</div>
-          <div className="flex-1 text-right">{rightBlock}</div>
+      {/* main gradient bar with rounded top corners */}
+      <div className="relative bg-gradient-to-r from-[#D02A7B] to-[#A03996] text-white rounded-t-[20px]">
+        {/* thin gold rule at the bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-yellow-400 rounded-b-[8px]" />
+
+        <div className="flex items-start justify-between px-6 py-4">
+          <div className="min-w-0">{leftBlock}</div>
+
+          <div className="text-right flex-shrink-0">{rightBlock}</div>
         </div>
       </div>
     </div>
@@ -44,15 +49,17 @@ export default function PageHeader(props: PageHeaderProps) {
         <PageHeaderComponent
           leftBlock={
             <>
-              <p className="font-semibold pb-[0.6875rem] uppercase">{props.channelCategory}</p>
-              <h4 className="font-semibold">{props.serviceTitle}</h4>
+              <p className="text-sm font-semibold uppercase tracking-wider opacity-90 pb-1">
+                {props.channelCategory}
+              </p>
+              <h3 className="text-[1.375rem] font-extrabold leading-tight">{props.serviceTitle}</h3>
             </>
           }
           rightBlock={
             <>
               <p className="font-medium">{props.customerName}</p>
-              <p className="font-medium">CIF: {props.cif}</p>
-              <p className="font-medium">Nº Conta: {props.accountNumber}</p>
+              <p className="text-sm">CIF: {props.cif}</p>
+              <p className="text-sm">Nº Conta: {props.accountNumber}</p>
             </>
           }
         />

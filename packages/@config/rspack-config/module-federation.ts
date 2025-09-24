@@ -188,7 +188,8 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
         './components/Icon': './src/components/Icon/Icon',
         './styles/Global': './src/styles/GlobalStyles',
         './lib/utils': './src/lib/utils',
-        './queries': './src/queries'
+        './queries': './src/queries',
+        './stores': './src/stores'
       }
     }
   },

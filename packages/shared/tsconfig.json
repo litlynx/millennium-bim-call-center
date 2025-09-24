@@ -30,6 +30,7 @@
       "@hooks/*": ["./src/hooks/*"],
       "@types/*": ["./src/types/*"],
       "@assets/*": ["./src/assets/*"],
+      "@store/*": ["./src/store/*"],
       "@ui/*": ["./src/components/ui/*"]
     }
   }
