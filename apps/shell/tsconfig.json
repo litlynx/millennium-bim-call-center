@@ -10,7 +10,8 @@
         "../../packages/shared/.wp_federation/shared/*",
         "../../packages/shared/types/src/*"
       ],
-      "headerPages/*": ["../header-pages/.wp_federation/headerPages/*"]
+      "headerPages/*": ["../header-pages/.wp_federation/headerPages/*"],
+      "documentationPages/*": ["../documentation-pages/.wp_federation/documentationPages/*"]
     }
   }
 }
