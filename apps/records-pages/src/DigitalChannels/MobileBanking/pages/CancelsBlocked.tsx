@@ -16,7 +16,7 @@ import {
 } from 'shared/components';
 import { useUserStore } from 'shared/stores';
 
-const headers1 = [
+const headersTablePrimary = [
   { key: 'company-name', label: 'Operadora', boldColumn: true },
   { key: 'number-cel', label: 'N.º Telefone' },
   { key: 'type', label: 'Tipo' },
@@ -25,7 +25,7 @@ const headers1 = [
   { key: 'actions', label: '' }
 ];
 
-const data1 = [
+const dataTablePrimary = [
   {
     id: 'row-1',
     cells: [
@@ -71,7 +71,7 @@ const data1 = [
   }
 ];
 
-const headers2 = [
+const headersTableTransactions = [
   { key: 'channel', label: 'Canal' },
   { key: 'type-transaction', label: 'Tipo Transação' },
   { key: 'amount', label: 'Montante' },
@@ -80,7 +80,7 @@ const headers2 = [
   { key: 'state-transaction', label: 'Estado da Transacção' }
 ];
 
-const data2 = [
+const dataTableTransactions = [
   {
     id: 'row-1',
     cells: [
@@ -176,7 +176,7 @@ const FiltersTransctionHistory: React.FC = () => {
 };
 
 const TableTransctionHistory: React.FC = () => {
-  return <Table headers={headers2} data={data2} />;
+  return <Table headers={headersTableTransactions} data={dataTableTransactions} />;
 };
 
 const transactionHistory: CardTabItem[] = [
@@ -232,18 +232,18 @@ const CancelsBlocked: React.FC = () => {
         />
 
         <div className="mt-3 rounded-[1.25rem] bg-white py-6 px-9">
-          <Table headers={headers1} data={data1} />
+          <Table headers={headersTablePrimary} data={dataTablePrimary} />
 
           <div className="mt-6">
             <CardTabs className="h-full" tabs={transactionHistory} />
           </div>
+        </div>
 
-          <div className="p-[2.25rem] bg-white rounded-[20px]">
-            <TextArea title="Registo" placeholder="Motivo da Chamada" {...textArea.textAreaProps} />
-            <Button className="mt-[2.6875rem] ml-auto block" onClick={handleSubmit}>
-              Fechar
-            </Button>
-          </div>
+        <div className="bg-white rounded-[20px] mt-9">
+          <TextArea title="Registo" placeholder="Motivo da Chamada" {...textArea.textAreaProps} />
+          <Button className="mt-[2.6875rem] ml-auto block" onClick={handleSubmit}>
+            Fechar
+          </Button>
         </div>
       </div>
 
