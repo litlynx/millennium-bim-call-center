@@ -1,6 +1,6 @@
 import type * as React from 'react';
 import { Helmet } from 'react-helmet';
-import { PageHeader } from 'shared/components';
+import { Button, PageHeader, TextArea, useTextArea } from 'shared/components';
 import { useUserStore } from 'shared/stores';
 
 const CancelsBlocked: React.FC = () => {
@@ -8,6 +8,23 @@ const CancelsBlocked: React.FC = () => {
     customerName: useUserStore((u) => u.getCustomerName()),
     cif: useUserStore((u) => u.getCif()),
     accountNumber: useUserStore((u) => u.getAccountNumber())
+  };
+
+  const textArea = useTextArea({
+    required: true,
+    maxLength: 200,
+    initialValue: ''
+  });
+
+  const handleSubmit = () => {
+    const isValid = textArea.validate();
+
+    if (isValid) {
+      console.log('Form submitted successfully!');
+      console.log('Text content:', textArea.value);
+    } else {
+      console.log('Form validation failed:', textArea.error);
+    }
   };
 
   return (
@@ -21,7 +38,13 @@ const CancelsBlocked: React.FC = () => {
       <Helmet>
         <title>Acessos</title>
       </Helmet>
-      <h2>Acessos Mobile Banking</h2>
+
+      <div className="p-[2.25rem] bg-white rounded-[20px]">
+        <TextArea title="Registo" placeholder="Motivo da Chamada" {...textArea.textAreaProps} />
+        <Button className="mt-[2.6875rem] ml-auto block" onClick={handleSubmit}>
+          Fechar
+        </Button>
+      </div>
     </>
   );
 };

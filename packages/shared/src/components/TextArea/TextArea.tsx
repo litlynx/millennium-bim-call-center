@@ -106,6 +106,7 @@ export default function TextArea({
           value={value}
           onChange={handleChange}
           maxLength={maxLength}
+          rows={5}
         />
 
         <div className={cn('flex justify-end items-center text-2xs text-gray-500')}>
