@@ -1,7 +1,8 @@
 export enum Apps {
   shell,
   shared,
-  'header-pages'
+  'header-pages',
+  'documentation-pages'
 }
 
 export enum SharedModule {

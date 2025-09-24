@@ -6,9 +6,12 @@ import Spinner from './components';
 import { LazyErrorBoundary } from './components/ErrorBoundary';
 import { registerComponent } from './components/ErrorBoundary/ComponentRegistry';
 
-// Register the HeaderPages component in the registry
+// Register the components in the registry
 const HeaderPages = React.lazy(() => import('headerPages/App'));
 registerComponent('HeaderPages', () => import('headerPages/App'));
+
+const DocumentationPages = React.lazy(() => import('documentationPages/App'));
+registerComponent('DocumentationPages', () => import('documentationPages/App'));
 
 // Layouts
 import DashboardLayout from './layouts/DashboardLayout';
@@ -42,6 +45,28 @@ const App: React.FC = () => {
                   </LazyErrorBoundary>
                 }
               />
+              <Route
+                path="documentation/*"
+                element={
+                  <LazyErrorBoundary
+                    componentName="DocumentationPages"
+                    enableIntelligentRecovery={true}
+                    onError={(error, errorInfo) => {
+                      console.error('DocumentationPages component error:', error, errorInfo);
+                      // You can add error reporting service here (e.g., Sentry)
+                    }}
+                    onReset={() => {
+                      // Optional: Add any cleanup logic when user clicks "Try again"
+                      console.log('Resetting DocumentationPages component');
+                    }}
+                  >
+                    <React.Suspense fallback={<Spinner />}>
+                      <DocumentationPages />
+                    </React.Suspense>
+                  </LazyErrorBoundary>
+                }
+              />
+              {/* Default route */}
               <Route index element={<RootPage />} />
             </Route>
 

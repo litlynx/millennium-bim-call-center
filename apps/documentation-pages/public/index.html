@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentation pages</title>
+    <!-- Google Fonts are injected via shared webpack plugin -->
+    <meta name="description" content="Example module federated app, running on React" />
+    <!--usually all these icons are different and optimized per each use case, but we will just use the same-->
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <!--the same as in manifest-->
+    <meta name="theme-color" content="#3367D6" />
+    <!--For manifest details refer to: https://web.dev/add-manifest/-->
+    <link rel="manifest" href="/manifest.json" />
+    <!-- Resource hints for federated remotes -->
+    <link rel="dns-prefetch" href="//localhost" />
+    <link rel="preconnect" href="http://localhost" crossorigin />
+    <!-- Optional: preload critical fonts if any -->
+  </head>
+  <body>
+    <div id="app">
+      <!-- Initial Loading Screen -->
+      <div
+        id="initial-loader"
+        style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+          font-family:
+            'Inter',
+            -apple-system,
+            BlinkMacSystemFont,
+            'Segoe UI',
+            sans-serif;
+        "
+      >
+        <!-- App Title -->
+        <h1
+          style="
+            color: #1e293b;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            text-align: center;
+          "
+        >
+          Millenium BIM
+        </h1>
+
+        <!-- Subtitle -->
+        <p style="color: #64748b; font-size: 14px; margin: 0 0 32px 0; text-align: center">
+          A carregar a aplicação ...
+        </p>
+
+        <!-- Animated Spinner -->
+        <div
+          style="
+            width: 32px;
+            height: 32px;
+            border: 3px solid #e2e8f0;
+            border-top: 3px solid #d70664;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+          "
+        ></div>
+      </div>
+
+      <style>
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes pulse {
+          0%,
+          100% {
+            opacity: 0.4;
+            transform: scale(0.8);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        /* Hide loader when React takes over */
+        #initial-loader.hidden {
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+        }
+      </style>
+
+      <script>
+        // Hide loader when React app loads
+        window.addEventListener('DOMContentLoaded', function () {
+          setTimeout(function () {
+            const loader = document.getElementById('initial-loader');
+            if (loader) {
+              loader.classList.add('hidden');
+              setTimeout(() => loader.remove(), 300);
+            }
+          }, 1000); // Give React a moment to render
+        });
+      </script>
+    </div>
+  </body>
+</html>
