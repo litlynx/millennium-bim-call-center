@@ -86,6 +86,7 @@ const SidebarItem: React.FC<Omit<SidebarItemProps, 'isActive'>> = ({
         onClick={handleClick}
         className={commonClassName}
         style={{ zIndex: 1 }}
+        data-testid={`sidebar-item-${item.id}`}
       >
         {buttonContent}
       </Link>
@@ -93,7 +94,13 @@ const SidebarItem: React.FC<Omit<SidebarItemProps, 'isActive'>> = ({
   }
 
   return (
-    <button type="button" onClick={handleClick} className={commonClassName} style={{ zIndex: 1 }}>
+    <button
+      type="button"
+      onClick={handleClick}
+      className={commonClassName}
+      style={{ zIndex: 1 }}
+      data-testid={`sidebar-item-${item.id}`}
+    >
       {buttonContent}
     </button>
   );
@@ -145,9 +152,10 @@ const SideBar: React.FC = () => {
     setActiveSubmenuItem(null);
   };
 
-  function handleCloseMenuAndSidebar(): void {
-    throw new Error('Function not implemented.');
-  }
+  const handleCloseMenuAndSidebar = () => {
+    handleCloseOnlyMenu();
+    setExpanded(false);
+  };
 
   return (
     <nav
@@ -177,7 +185,7 @@ const SideBar: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full" data-testid="sidebar-bottom-section">
         {bottomSidebarMapData.map((item) => (
           <SidebarItem
             key={item.id}

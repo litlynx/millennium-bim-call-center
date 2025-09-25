@@ -1,8 +1,54 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
+
+const loggedConsoleMessages = new Set<string>();
+
+const navigateToVision360 = async (page: Page) => {
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+
+  await page.evaluate(() => {
+    window.history.pushState({}, '', '/vision-360');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  });
+
+  await page.waitForLoadState('networkidle');
+  await page.waitForSelector('[data-testid="personal-data-card"]', { timeout: 15000 });
+};
 
 test.describe('Page Vision360', () => {
+  test.beforeEach(async ({ page }) => {
+    page.on('console', (message) => {
+      const type = message.type();
+      if (type !== 'error' && type !== 'warning') {
+        return;
+      }
+
+      const key = `${type}|${message.text()}`;
+      if (loggedConsoleMessages.has(key)) {
+        return;
+      }
+      loggedConsoleMessages.add(key);
+
+      const location = message.location();
+      const locationInfo = location.url
+        ? ` @ ${location.url}:${location.lineNumber}:${location.columnNumber}`
+        : '';
+      console.log(`[console:${type}] ${message.text()}${locationInfo}`);
+    });
+
+    page.on('pageerror', (error) => {
+      console.error(`[pageerror] ${error.message}`);
+    });
+
+    page.on('requestfailed', (request) => {
+      console.error(
+        `[requestfailed] ${request.method()} ${request.url()} :: ${request.failure()?.errorText ?? 'unknown error'}`
+      );
+    });
+  });
+
   test('page displays all cards', async ({ page }) => {
-    await page.goto('/vision-360');
+    await navigateToVision360(page);
     await expect(page.getByTestId('personal-data-card')).toBeVisible();
     await expect(page.getByTestId('estate-and-products-card')).toBeVisible();
     await expect(page.getByTestId('channels-and-services-card')).toBeVisible();
@@ -12,7 +58,7 @@ test.describe('Page Vision360', () => {
   /* -------------------------------------------------------------------------- */
   test.describe('Content Sections', () => {
     test.beforeEach(async ({ page }) => {
-      await page.goto('/vision-360');
+      await navigateToVision360(page);
     });
     test('personalData displays all content', async ({ page }) => {
       await expect(page.getByTestId('personal-data-header')).toBeVisible();
@@ -99,7 +145,7 @@ test.describe('Page Vision360', () => {
   /* -------------------------------------------------------------------------- */
   test.describe('Card tabs', () => {
     test.beforeEach(async ({ page }) => {
-      await page.goto('/vision-360');
+      await navigateToVision360(page);
     });
 
     test('ComplaintsAndIncidents tabs working', async ({ page }) => {
@@ -140,7 +186,7 @@ test.describe('Page Vision360', () => {
   /* -------------------------------------------------------------------------- */
   test.describe('Header Navigation', () => {
     test.beforeEach(async ({ page }) => {
-      await page.goto('/vision-360');
+      await navigateToVision360(page);
     });
 
     test('cards allows header navigation', async ({ page }) => {
