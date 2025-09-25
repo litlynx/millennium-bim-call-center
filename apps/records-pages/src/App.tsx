@@ -9,6 +9,7 @@ export default function App() {
     <Suspense fallback={<Spinner />}>
       <Routes>
         <Route path="mobile-banking/accesses" element={<Accesses />} />
+        <Route path="*" element={<div>Records Pages - No route matched</div>} />
       </Routes>
     </Suspense>
   );
