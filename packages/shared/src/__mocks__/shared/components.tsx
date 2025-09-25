@@ -15,8 +15,12 @@ export interface CardTabsProps {
   defaultValue?: string;
 }
 
-export interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
-  size?: number | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export interface IconProps {
+  type: string;
+  rounded?: boolean;
+  size?: 'sm' | 'lg';
+  className?: string;
+  onClick?: () => void;
 }
 
 // Mock implementations
@@ -60,7 +64,15 @@ export const CardTabs: React.FC<CardTabsProps> = ({
   );
 };
 
-export const Icon: React.FC<IconProps> = (props) => <span data-testid="icon" {...props} />;
+export const Icon: React.FC<IconProps> = ({ type, size, className, onClick }) => (
+  <span
+    data-testid="icon"
+    data-type={type}
+    data-size={size}
+    className={className}
+    onClick={onClick}
+  />
+);
 
 export const Card: React.FC<{
   title?: React.ReactNode;
