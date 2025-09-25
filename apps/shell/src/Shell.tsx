@@ -9,11 +9,15 @@ import { registerComponent } from './components/ErrorBoundary/ComponentRegistry'
 // Register the HeaderPages component in the registry
 const HeaderPages = React.lazy(() => import('headerPages/App'));
 registerComponent('HeaderPages', () => import('headerPages/App'));
+// Register the HeaderPages component in the registry
+const SidebarPages = React.lazy(() => import('sidebarPages/App'));
+registerComponent('SidebarPages', () => import('sidebarPages/App'));
+// Register RecordsPages component in the registry
+const RecordsPages = React.lazy(() => import('recordsPages/App'));
+registerComponent('RecordsPages', () => import('recordsPages/App'));
 
 // Layouts
 import DashboardLayout from './layouts/DashboardLayout';
-// Pages
-import RootPage from './pages/Root/Root';
 
 const App: React.FC = () => {
   return (
@@ -23,26 +27,33 @@ const App: React.FC = () => {
           <Routes>
             {/* Dashboard routes with DashboardLayout */}
             <Route path="/" element={<DashboardLayout />}>
+              {/* make sidebar-pages the index at "/" */}
+              <Route
+                index
+                element={
+                  <LazyErrorBoundary componentName="SidebarPages" enableIntelligentRecovery>
+                    <SidebarPages />
+                  </LazyErrorBoundary>
+                }
+              />
+
+              {/* HeaderPages handles the rest of the root namespace */}
               <Route
                 path="/*"
                 element={
-                  <LazyErrorBoundary
-                    componentName="HeaderPages"
-                    enableIntelligentRecovery={true}
-                    onError={(error, errorInfo) => {
-                      console.error('HeaderPages component error:', error, errorInfo);
-                      // You can add error reporting service here (e.g., Sentry)
-                    }}
-                    onReset={() => {
-                      // Optional: Add any cleanup logic when user clicks "Try again"
-                      console.log('Resetting HeaderPages component');
-                    }}
-                  >
+                  <LazyErrorBoundary componentName="HeaderPages" enableIntelligentRecovery>
                     <HeaderPages />
                   </LazyErrorBoundary>
                 }
               />
-              <Route index element={<RootPage />} />
+              <Route
+                path="records/*"
+                element={
+                  <LazyErrorBoundary componentName="RecordsPages" enableIntelligentRecovery>
+                    <RecordsPages />
+                  </LazyErrorBoundary>
+                }
+              />
             </Route>
 
             {/* Catch-all route */}
