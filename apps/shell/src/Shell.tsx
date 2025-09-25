@@ -82,8 +82,7 @@ const App: React.FC = () => {
                 }
               />
               {/* Default route */}
-              <Route index element={<RootPage />} />
-
+              <Route index element={<div>Homepage</div>} />
             </Route>
 
             {/* Catch-all route */}

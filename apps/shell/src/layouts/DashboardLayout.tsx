@@ -14,19 +14,21 @@ export interface DashboardLayoutProps {
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
-    <>
+    <div className="flex h-screen flex-col bg-slate-50 text-slate-900 overflow-hidden">
+      {/* Header - Fixed at top */}
       <HeaderDiv />
-      <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
-        {/* Main content area - Takes remaining height between header and footer */}
-        <div className="flex flex-1 min-h-0">
-          {/* Sidebar - Fixed width, full height between header and footer, no scroll */}
-          <Sidebar />
-          {/* Main content - Scrollable area */}
-          <div className="flex-1 min-h-0 overflow-auto w-full">{children || <Outlet />}</div>
-        </div>
-        {/* Footer - Fixed at bottom */}
+
+      {/* Main content area - Takes remaining height below header */}
+      <div className="flex flex-1 min-h-0 overflow-hidden">
+        {/* Sidebar - Fixed position, positioned on the left */}
+        <Sidebar />
+
+        {/* Main content - Scrollable area, positioned to the right of sidebar with left margin to account for fixed sidebar */}
+        <div className="flex-1 min-h-0 overflow-auto ml-[6.525rem]">{children || <Outlet />}</div>
       </div>
-    </>
+
+      {/* Footer - Fixed at bottom (if needed) */}
+    </div>
   );
 };
 
