@@ -30,10 +30,10 @@ export default function ScriptsDetails({
         <h3 className="font-bold text-gray-800">{title}</h3>
         <div className="flex items-center gap-2" role="toolbar" aria-label="Window controls">
           <button type="button" aria-label="Minimize window">
-            <Icon type="minify" className="h-4" />
+            <Icon type="minify" className="h-4 p-0" />
           </button>
           <button type="button" aria-label="Maximize window">
-            <Icon type="maximize" className="h-4" />
+            <Icon type="maximize" className="h-4 p-0" />
           </button>
         </div>
       </header>
