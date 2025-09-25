@@ -86,6 +86,7 @@ const SidebarItem: React.FC<Omit<SidebarItemProps, 'isActive'>> = ({
         onClick={handleClick}
         className={commonClassName}
         style={{ zIndex: 1 }}
+        data-testid={`sidebar-item-${item.id}`}
       >
         {buttonContent}
       </Link>
@@ -93,7 +94,13 @@ const SidebarItem: React.FC<Omit<SidebarItemProps, 'isActive'>> = ({
   }
 
   return (
-    <button type="button" onClick={handleClick} className={commonClassName} style={{ zIndex: 1 }}>
+    <button
+      type="button"
+      onClick={handleClick}
+      className={commonClassName}
+      style={{ zIndex: 1 }}
+      data-testid={`sidebar-item-${item.id}`}
+    >
       {buttonContent}
     </button>
   );
@@ -145,19 +152,16 @@ const SideBar: React.FC = () => {
     setActiveSubmenuItem(null);
   };
 
-  function handleCloseMenuAndSidebar(): void {
-    setIsMenuOpen(false);
-    setActiveItem(null);
-    setIsSubmenuOpen(false);
-    setActiveSubmenuItem(null);
+  const handleCloseMenuAndSidebar = () => {
+    handleCloseOnlyMenu();
     setExpanded(false);
-  }
+  };
 
   return (
     <nav
       // h-[calc(100vh_-_122px_-_72px)]
       className={cn(
-        'fixed z-50 h-[calc(100vh_-_72px)] justify-between flex flex-col items-center py-3 gap-2 bg-white transition-all duration-300',
+        'fixed z-50 h-[calc(100vh_-_37.5px)] justify-between flex flex-col items-center py-3 gap-2 bg-white transition-all duration-300',
         expanded && 'w-72 shadow-[0_4px_4px_0_#00000040] border border-gray-100'
       )}
       onMouseEnter={handleMouseEnter}
@@ -181,7 +185,7 @@ const SideBar: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full" data-testid="sidebar-bottom-section">
         {bottomSidebarMapData.map((item) => (
           <SidebarItem
             key={item.id}
