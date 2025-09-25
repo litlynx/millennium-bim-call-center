@@ -1,4 +1,5 @@
 import type * as React from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import {
   Badge,
@@ -83,11 +84,12 @@ const headersTableTransactions = [
 const dataTableTransactions = [
   {
     id: 'row-1',
+    contact: '825816811',
     cells: [
       { content: 'Smart IZI' },
       { content: 'Transferência e-Mola' },
       { content: '123,00 MZN' },
-      { content: '02-08-2025' },
+      { content: '02-05-2025' },
       { content: '11:24:12' },
       {
         content: (
@@ -95,17 +97,19 @@ const dataTableTransactions = [
             <span>Processado</span>
             <Icon type="eye" className="p-0 cursor-pointer" />
           </div>
-        )
+        ),
+        value: 'Processado'
       }
     ]
   },
   {
     id: 'row-2',
+    contact: '845816811',
     cells: [
       { content: 'Smart IZI' },
       { content: 'Transferência BIM' },
       { content: '123,00 MZN' },
-      { content: '02-08-2025' },
+      { content: '02-06-2025' },
       { content: '11:24:12' },
       {
         content: (
@@ -113,17 +117,19 @@ const dataTableTransactions = [
             <span>Erro</span>
             <Icon type="eye" className="p-0 cursor-pointer" />
           </div>
-        )
+        ),
+        value: 'Erro'
       }
     ]
   },
   {
     id: 'row-3',
+    contact: '825816811',
     cells: [
       { content: 'Smart IZI' },
       { content: 'Transferência e-Mola' },
       { content: '123,00 MZN' },
-      { content: '02-08-2025' },
+      { content: '02-07-2025' },
       { content: '11:24:12' },
       {
         content: (
@@ -131,65 +137,131 @@ const dataTableTransactions = [
             <span>Processado</span>
             <Icon type="eye" className="p-0 cursor-pointer" />
           </div>
-        )
+        ),
+        value: 'Processado'
       }
     ]
   }
 ];
 
-const FiltersTransctionHistory: React.FC = () => {
-  return (
-    <div className="flex gap-16">
-      <div className="flex flex-col gap-[0.625rem]">
-        <p className="uppercase font-semibold text-xs text-gray-800">Contacto</p>
-        <ButtonDropdown
-          button="Contacto"
-          content={
-            <ul className="flex flex-col">
-              <li className="px-3 py-2 hover:bg-gray-100 cursor-pointer">825816811</li>
-              <li className="px-3 py-2 hover:bg-gray-100 cursor-pointer">845816811</li>
-            </ul>
-          }
-        />
-      </div>
-
-      <div className="flex flex-col gap-[0.625rem]">
-        <p className="uppercase font-semibold text-xs text-gray-800">Data</p>
-        <DatePicker />
-      </div>
-
-      <div className="flex flex-col gap-[0.625rem]">
-        <p className="uppercase font-semibold text-xs text-gray-800">Tipo de Operação</p>
-        <ButtonDropdown
-          button="Tipo Operação"
-          content={
-            <ul className="flex flex-col">
-              <li className="px-3 py-2 hover:bg-gray-100 cursor-pointer">Todas</li>
-              <li className="px-3 py-2 hover:bg-gray-100 cursor-pointer">Processado</li>
-              <li className="px-3 py-2 hover:bg-gray-100 cursor-pointer">Erro</li>
-            </ul>
-          }
-        />
-      </div>
-    </div>
-  );
+type DateRange = {
+  start: Date | null;
+  end: Date | null;
 };
 
-const TableTransctionHistory: React.FC = () => {
-  return <Table headers={headersTableTransactions} data={dataTableTransactions} />;
+const TransactionHistorySection: React.FC = () => {
+  const [dateRange, setDateRange] = useState<DateRange>({
+    start: null,
+    end: null
+  });
+  const [status, setStatus] = useState<string>('Todas');
+
+  const cancels = dataTablePrimary.map((row) => ({
+    number: row.cells[1].content as string,
+    type: row.cells[2].content as string
+  }));
+
+  const principalCancel =
+    cancels.find((c) => c.type === 'Principal')?.number.replace(/\s/g, '') ||
+    cancels[0].number.replace(/\s/g, '');
+
+  const [selectedContact, setSelectedContact] = useState<string>(principalCancel);
+
+  const parseTransactionDate = (dateStr: string): Date => {
+    const [day, month, year] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  };
+
+  const filteredData = dataTableTransactions.filter((row) => {
+    const dateCell = row.cells[3];
+    const rowDate = parseTransactionDate(dateCell.content as string);
+
+    const matchDate =
+      (!dateRange.start || rowDate >= dateRange.start) &&
+      (!dateRange.end || rowDate <= dateRange.end);
+
+    const matchStatus = status === 'Todas' || row.cells[5].value === status;
+
+    const rowContactNormalized = row.contact.replace(/\s/g, '');
+    const selectedContactNormalized = selectedContact.replace(/\s/g, '');
+
+    const matchContact = !selectedContact || rowContactNormalized === selectedContactNormalized;
+
+    return matchDate && matchStatus && matchContact;
+  });
+
+  return (
+    <div className="flex flex-col gap-7 mt-6">
+      <div className="flex justify-between">
+        <div className="flex flex-col gap-[0.625rem]">
+          <p className="uppercase font-semibold text-xs text-gray-800">Contacto</p>
+          <ButtonDropdown
+            button={selectedContact ?? 'Contacto'}
+            content={
+              <ul className="flex flex-col">
+                {cancels.map((cancel) => (
+                  <li
+                    key={cancel.number}
+                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => setSelectedContact(cancel.number)}
+                  >
+                    {cancel.number}
+                  </li>
+                ))}
+              </ul>
+            }
+          />
+        </div>
+
+        <div className="flex flex-col gap-[0.625rem]">
+          <p className="uppercase font-semibold text-xs text-gray-800">Data</p>
+          <DatePicker
+            onChange={(range: { startDate: Date | null; endDate: Date | null }) =>
+              setDateRange({ start: range.startDate, end: range.endDate })
+            }
+          />
+        </div>
+
+        <div className="flex flex-col gap-[0.625rem]">
+          <p className="uppercase font-semibold text-xs text-gray-800">Tipo de Operação</p>
+          <ButtonDropdown
+            button={status ?? 'Tipo Operação'}
+            content={
+              <ul className="flex flex-col">
+                <li
+                  className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => setStatus('Todas')}
+                >
+                  Todas
+                </li>
+                <li
+                  className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => setStatus('Processado')}
+                >
+                  Processado
+                </li>
+                <li
+                  className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => setStatus('Erro')}
+                >
+                  Erro
+                </li>
+              </ul>
+            }
+          />
+        </div>
+      </div>
+
+      <Table headers={headersTableTransactions} data={filteredData} />
+    </div>
+  );
 };
 
 const transactionHistory: CardTabItem[] = [
   {
     value: 'transactionHistory',
     label: 'Histórico de Transacções',
-    content: (
-      <div className="flex flex-col gap-7 mt-6">
-        <FiltersTransctionHistory />
-
-        <TableTransctionHistory />
-      </div>
-    )
+    content: <TransactionHistorySection />
   }
 ];
 
