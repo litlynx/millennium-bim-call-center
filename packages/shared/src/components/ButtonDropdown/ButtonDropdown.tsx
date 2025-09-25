@@ -17,7 +17,7 @@ export default function ButtonDropdown({ button, content }: ButtonDropdownProps)
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="w-[200px] justify-between font-medium text-xs rounded-2xl border border-gray-450 text-gray-450 px-3 py-1 h-fit data -[state=open]:shadow-md data-[state=open]:rounded-b-none data-[state=open]:border-b-0"
+            className="w-[200px] justify-between font-medium text-xs rounded-2xl border border-gray-450 text-gray-450 px-3 py-1 h-fit data-[state=open]:shadow-md data-[state=open]:rounded-b-none data-[state=open]:border-b-0"
           >
             {button}
             <Icon

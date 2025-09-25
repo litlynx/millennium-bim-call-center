@@ -1,6 +1,7 @@
 export * from './AlertFolderIcon';
 export * from './AnalyticsBusinessChartIcon';
 export * from './BellIcon';
+export * from './BlockIcon';
 export * from './BoxIcon';
 export * from './CalendarIcon';
 export * from './CallBackIcon';
@@ -55,5 +56,6 @@ export * from './SearchIcon';
 export * from './SendIcon';
 export * from './ShareIcon';
 export * from './ShoppingBagIcon';
+export * from './TrashBinIcon';
 export * from './UserIcon';
 
