@@ -83,7 +83,9 @@ export type IconType =
   | 'shoppingBag'
   | 'user'
   | 'block'
-  | 'trashBin';
+  | 'trashBin'
+  | 'minify'
+  | 'maximize';
 
 export interface IconProps {
   type: IconType;
