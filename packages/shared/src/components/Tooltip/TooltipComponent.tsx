@@ -1,5 +1,6 @@
 import { TooltipArrow } from '@radix-ui/react-tooltip';
 import type React from 'react';
+import { forwardRef } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
@@ -22,6 +23,16 @@ const variantStyles: Record<TooltipVariant, string> = {
   purple: 'bg-[#8B39A0] text-white'
 };
 
+const TriggerWrapper = forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(
+  ({ children, className, ...triggerProps }, ref) => (
+    <span ref={ref} {...triggerProps} className={cn('inline-flex', className)}>
+      {children}
+    </span>
+  )
+);
+
+TriggerWrapper.displayName = 'TooltipTriggerWrapper';
+
 const TooltipComponent: React.FC<TooltipProps> = ({
   title,
   content,
@@ -34,7 +45,9 @@ const TooltipComponent: React.FC<TooltipProps> = ({
   return (
     <TooltipProvider delayDuration={100}>
       <Tooltip>
-        <TooltipTrigger asChild>{children}</TooltipTrigger>
+        <TooltipTrigger asChild>
+          <TriggerWrapper>{children}</TriggerWrapper>
+        </TooltipTrigger>
         <TooltipContent side={side} align={align} className={variantStyles[variant]}>
           <p
             className={cn(
@@ -62,9 +75,6 @@ const TooltipComponent: React.FC<TooltipProps> = ({
               '-translate-y-[2px] w-[1.5625rem] h-[0.875rem]',
               variant === 'white' ? 'fill-white' : 'fill-[#8B39A0]'
             )}
-            style={{
-              filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))'
-            }}
           />
         </TooltipContent>
       </Tooltip>
