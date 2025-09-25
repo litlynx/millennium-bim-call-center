@@ -5,9 +5,9 @@ export const ExclamationIcon = () => {
         <path
           d="M9.46875 18.0326H9.45898M9.45898 12.0951L9.46875 2.19922"
           stroke="white"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </g>
       <defs>

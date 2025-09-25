@@ -11,35 +11,35 @@ export const RegisterIcon = () => {
           <path
             d="M10.5753 25.1825H1.51172V2.52344H19.639V13.853"
             stroke="currentColor"
-            stroke-width="1.79136"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.79136"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M17.0898 25.1845V17.8203"
             stroke="currentColor"
-            stroke-width="1.79136"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.79136"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M14.541 19.8031L15.3907 18.9533L17.0902 17.2539L18.7896 18.9533L19.6393 19.8031"
             stroke="currentColor"
-            stroke-width="1.79136"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.79136"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M6.04492 9.32031H15.1085"
             stroke="currentColor"
-            stroke-width="1.79136"
-            stroke-linecap="round"
+            strokeWidth="1.79136"
+            strokeLinecap="round"
           />
           <path
             d="M6.04297 13.8516H10.5748"
             stroke="currentColor"
-            stroke-width="1.79136"
-            stroke-linecap="round"
+            strokeWidth="1.79136"
+            strokeLinecap="round"
           />
         </g>
       </g>

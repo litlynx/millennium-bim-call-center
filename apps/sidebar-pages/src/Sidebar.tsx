@@ -146,7 +146,11 @@ const SideBar: React.FC = () => {
   };
 
   function handleCloseMenuAndSidebar(): void {
-    throw new Error('Function not implemented.');
+    setIsMenuOpen(false);
+    setActiveItem(null);
+    setIsSubmenuOpen(false);
+    setActiveSubmenuItem(null);
+    setExpanded(false);
   }
 
   return (
