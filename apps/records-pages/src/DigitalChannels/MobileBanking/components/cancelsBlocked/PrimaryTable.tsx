@@ -35,7 +35,7 @@ export function PrimaryTable({ data, onBlock, onDelete }: PrimaryTableProps) {
       {
         content: (
           <div className="flex justify-center">
-            <Badge variant={row.badgeText === 'Bloqueado' ? 'inactive' : 'active'}>
+            <Badge variant={row.badgeText === 'Inativo' ? 'inactive' : 'active'}>
               {row.badgeText}
             </Badge>
           </div>
