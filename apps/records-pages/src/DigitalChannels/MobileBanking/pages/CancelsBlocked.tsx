@@ -194,14 +194,18 @@ const CancelsBlocked: React.FC = () => {
           title={modalType === 'block' ? 'Bloqueio Mobile Banking' : 'Cancelamento Mobile Banking'}
           description={`Pretende mesmo ${modalType === 'block' ? 'bloquear' : 'eliminar'} o contacto mobile?`}
           icon={
-            <Icon type="danger" className="bg-primary p-2 font-bold h-[57px] w-[57px]" size="lg" />
+            <Icon
+              type="danger"
+              className="bg-primary p-2 font-bold h-[57px] w-[57px] rounded-xl"
+              size="lg"
+            />
           }
           footer={
             <div className="flex justify-end gap-3">
-              <Button variant="light" onClick={handleCancel} className="">
+              <Button variant="light" size="lg" onClick={handleCancel} className="">
                 Cancelar
               </Button>
-              <Button variant="solid" onClick={handleConfirm}>
+              <Button variant="solid" size="lg" onClick={handleConfirm}>
                 Confirmar
               </Button>
             </div>

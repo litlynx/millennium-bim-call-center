@@ -53,7 +53,7 @@ const Modal: React.FC<ModalProps> = ({
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent className={cn(sizeClasses[size], className)} hideCloseButton>
         {(icon || title || description) && (
-          <DialogHeader className={cn('space-y-3', headerClassName)}>
+          <DialogHeader className={cn('space-y-10', headerClassName)}>
             {(icon || title) && (
               <div className="flex items-center gap-3">
                 {icon && <div className="flex-shrink-0">{icon}</div>}
