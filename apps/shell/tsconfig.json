@@ -11,6 +11,8 @@
         "../../packages/shared/types/src/*"
       ],
       "headerPages/*": ["../header-pages/.wp_federation/headerPages/*"],
+      "sidebarPages/*": ["../sidebar-pages/.wp_federation/sidebarPages/*"],
+      "recordsPages/*": ["../records-pages/.wp_federation/recordsPages/*"],
       "documentationPages/*": ["../documentation-pages/.wp_federation/documentationPages/*"]
     }
   }

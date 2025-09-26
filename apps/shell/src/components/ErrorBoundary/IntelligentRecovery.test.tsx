@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, mock } from 'bun:test';
+import { afterEach, beforeEach, describe, expect, it, mock } from 'bun:test';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import type * as React from 'react';
 import { ComponentRegistry, registerComponent } from './ComponentRegistry';
@@ -6,12 +6,22 @@ import { LazyErrorBoundary } from './ErrorBoundary';
 
 describe('Intelligent Component Recovery', () => {
   let shouldThrow = true;
+  let originalConsoleError: typeof console.error;
 
   beforeEach(() => {
     // Reset state before each test
     shouldThrow = true;
     const registry = ComponentRegistry.getInstance();
     registry.clear();
+
+    // Mock console.error to suppress intentional error logs in tests
+    originalConsoleError = console.error;
+    console.error = mock(() => {});
+  });
+
+  afterEach(() => {
+    // Restore original console.error
+    console.error = originalConsoleError;
   });
 
   // Component that throws an error initially but can be "fixed"
