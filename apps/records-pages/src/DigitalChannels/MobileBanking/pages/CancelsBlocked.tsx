@@ -50,7 +50,7 @@ const CancelsBlocked: React.FC = () => {
     }
   };
 
-  const handleFraud = (isFraud: boolean) => {
+  const handleFraud = () => {
     setShowFraudModal(false);
     setLastActionType('delete');
     setShowSuccessModal(true);
