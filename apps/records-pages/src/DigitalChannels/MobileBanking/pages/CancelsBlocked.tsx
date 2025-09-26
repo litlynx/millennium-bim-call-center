@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import type * as React from 'react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
@@ -16,6 +17,8 @@ import {
   useTextArea
 } from 'shared/components';
 import { useUserStore } from 'shared/stores';
+import type { CancelsBlockedInterface } from 'src/api/CancelsBlocked/interfaces';
+import { GET } from 'src/api/CancelsBlocked/route';
 
 const headersTablePrimary = [
   { key: 'company-name', label: 'Operadora', boldColumn: true },
@@ -149,12 +152,31 @@ type DateRange = {
   end: Date | null;
 };
 
+export const ESTATE_AND_PRODUCTS_QUERY_KEY = 'cancels-blocked';
+
+async function fetchCancelsBlocked(): Promise<CancelsBlockedInterface> {
+  return await GET();
+}
+
+function useCancelsBlocked() {
+  return useQuery({
+    queryKey: ['CANCELS_BLOCKED_QUERY_KEY'],
+    queryFn: fetchCancelsBlocked,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 3
+  });
+}
+
 const TransactionHistorySection: React.FC = () => {
   const [dateRange, setDateRange] = useState<DateRange>({
     start: null,
     end: null
   });
   const [status, setStatus] = useState<string>('Todas');
+
+  const { data } = useCancelsBlocked();
+
+  console.log(data);
 
   const cancels = dataTablePrimary.map((row) => ({
     number: row.cells[1].content as string,
