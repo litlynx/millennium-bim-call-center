@@ -191,8 +191,8 @@ const TransactionHistorySection: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col gap-7 mt-6">
-      <div className="flex justify-between">
+    <div className="flex h-full min-h-0 flex-col py-6">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex flex-col gap-[0.625rem]">
           <p className="uppercase font-semibold text-xs text-gray-800">Contacto</p>
           <ButtonDropdown
@@ -252,7 +252,9 @@ const TransactionHistorySection: React.FC = () => {
         </div>
       </div>
 
-      <Table headers={headersTableTransactions} data={filteredData} />
+      <div className="flex-1 min-h-0 overflow-hidden">
+        <Table headers={headersTableTransactions} data={filteredData} />
+      </div>
     </div>
   );
 };
@@ -290,12 +292,12 @@ const CancelsBlocked: React.FC = () => {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid h-full min-h-0 grid-cols-2 gap-4 overflow-hidden">
       <Helmet>
         <title>Cancelamento/Bloqueio</title>
       </Helmet>
 
-      <div>
+      <div className="flex min-h-0 flex-col overflow-hidden">
         <PageHeader
           type="channelAndService"
           channelCategory="Canais Digitais"
@@ -303,23 +305,42 @@ const CancelsBlocked: React.FC = () => {
           user={user}
         />
 
-        <div className="mt-3 rounded-[1.25rem] bg-white py-6 px-9">
-          <Table headers={headersTablePrimary} data={dataTablePrimary} />
+        <div className="mt-3 flex flex-1 min-h-0 flex-col rounded-[1.25rem] bg-white">
+          <div className="flex flex-1 min-h-0 flex-col overflow-y-auto px-9 py-6">
+            <div className="flex flex-1 min-h-0 flex-col gap-6">
+              <div className="flex flex-1 min-h-[150px] flex-col">
+                <Table headers={headersTablePrimary} data={dataTablePrimary} />
+              </div>
 
-          <div className="mt-6">
-            <CardTabs className="h-full" tabs={transactionHistory} />
+              <div className="flex flex-1 min-h-[200px] flex-col">
+                <CardTabs
+                  className="flex h-full min-h-0 flex-col"
+                  cardContentClassName="h-full min-h-0 p-0"
+                  tabsContentClassName="h-full min-h-0"
+                  tabs={transactionHistory}
+                  enableScrollY
+                  enableScrollX
+                />
+              </div>
+            </div>
+
+            <div className="mt-auto pt-6">
+              <TextArea
+                title="Registo"
+                placeholder="Motivo da Chamada"
+                {...textArea.textAreaProps}
+              />
+              <Button className="mt-[2.6875rem] ml-auto block" onClick={handleSubmit}>
+                Fechar
+              </Button>
+            </div>
           </div>
-        </div>
-
-        <div className="bg-white rounded-[20px] mt-9">
-          <TextArea title="Registo" placeholder="Motivo da Chamada" {...textArea.textAreaProps} />
-          <Button className="mt-[2.6875rem] ml-auto block" onClick={handleSubmit}>
-            Fechar
-          </Button>
         </div>
       </div>
 
-      <ScriptDetail title="Script" />
+      <div className="flex min-h-0 flex-col">
+        <ScriptDetail title="Script" />
+      </div>
     </div>
   );
 };

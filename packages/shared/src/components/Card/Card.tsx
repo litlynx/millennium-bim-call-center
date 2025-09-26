@@ -28,6 +28,7 @@ export interface CardProps extends CardBaseProps {
   footerTestId?: string;
   contentTestId?: string;
   cardContentClassName?: string;
+  disableScrollArea?: boolean;
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
@@ -46,6 +47,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       footerTestId,
       contentTestId,
       cardContentClassName,
+      disableScrollArea = false,
       ...props
     },
     ref
@@ -82,9 +84,13 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           )}
           data-testid={contentTestId}
         >
-          <ScrollArea className="flex-1">
-            <div className="flex flex-col gap-4 min-w-max">{children}</div>
-          </ScrollArea>
+          {disableScrollArea ? (
+            <div className="flex flex-1 min-h-0 flex-col gap-4 min-w-max">{children}</div>
+          ) : (
+            <ScrollArea className="flex-1">
+              <div className="flex flex-col gap-4 min-w-max">{children}</div>
+            </ScrollArea>
+          )}
         </CardContent>
       )}
 
