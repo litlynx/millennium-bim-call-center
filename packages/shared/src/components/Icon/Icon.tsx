@@ -35,6 +35,7 @@ export type IconType =
   | 'callCenterWorker'
   | 'callDots'
   | 'cellPhone'
+  | 'check'
   | 'chevronDown'
   | 'chevronRight'
   | 'closeBlack'

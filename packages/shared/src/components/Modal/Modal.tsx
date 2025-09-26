@@ -27,10 +27,10 @@ export interface ModalProps {
 }
 
 const sizeClasses = {
-  sm: 'max-w-md',
-  md: 'max-w-lg',
-  lg: 'max-w-2xl',
-  xl: 'max-w-4xl'
+  sm: 'w-[630px]', //used
+  md: 'w-[875px]', //used
+  lg: 'w-[1024px]',
+  xl: 'w-[1280px]'
 };
 
 const Modal: React.FC<ModalProps> = ({
@@ -53,7 +53,7 @@ const Modal: React.FC<ModalProps> = ({
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent className={cn(sizeClasses[size], className)} hideCloseButton>
         {(icon || title || description) && (
-          <DialogHeader className={cn('space-y-3', headerClassName)}>
+          <DialogHeader className={cn('space-y-10', headerClassName)}>
             {(icon || title) && (
               <div className="flex items-center gap-3">
                 {icon && <div className="flex-shrink-0">{icon}</div>}

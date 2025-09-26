@@ -1,6 +1,6 @@
 import { useId } from 'react';
 
-export const TashBinIcon = () => {
+export const TrashBinIcon = () => {
   const titleId = useId();
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none" aria-labelledby={titleId}>
