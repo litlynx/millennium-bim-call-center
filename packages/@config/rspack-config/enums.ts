@@ -2,6 +2,8 @@ export enum Apps {
   shell,
   shared,
   'header-pages',
+  'sidebar-pages',
+  'records-pages',
   'documentation-pages'
 }
 

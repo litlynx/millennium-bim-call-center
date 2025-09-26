@@ -4,14 +4,14 @@ export const CloseIcon = () => {
       <path
         d="M1 17.1279L17.1277 1.00023"
         stroke="#2E3641"
-        stroke-width="1.29022"
-        stroke-linecap="round"
+        strokeWidth="1.29022"
+        strokeLinecap="round"
       />
       <path
         d="M17.1289 17.1279L1.00121 1.00023"
         stroke="#2E3641"
-        stroke-width="1.29022"
-        stroke-linecap="round"
+        strokeWidth="1.29022"
+        strokeLinecap="round"
       />
     </svg>
   );
