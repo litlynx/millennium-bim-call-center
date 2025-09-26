@@ -81,7 +81,11 @@ export type IconType =
   | 'send'
   | 'share'
   | 'shoppingBag'
-  | 'user';
+  | 'user'
+  | 'block'
+  | 'trashBin'
+  | 'minify'
+  | 'maximize';
 
 export interface IconProps {
   type: IconType;

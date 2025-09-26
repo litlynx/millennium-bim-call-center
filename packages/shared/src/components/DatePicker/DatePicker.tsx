@@ -5,7 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-export default function DatePicker() {
+interface DatePickerProps {
+  onChange?: (range: { startDate: Date | null; endDate: Date | null }) => void;
+}
+
+export default function DatePicker({ onChange }: DatePickerProps) {
   const [range, setRange] = React.useState<DateRange | undefined>(undefined);
 
   function formatDate(date: Date) {
@@ -36,8 +40,12 @@ export default function DatePicker() {
             mode="range"
             selected={range}
             captionLayout="label"
-            onSelect={(range) => {
-              setRange(range);
+            onSelect={(newRange) => {
+              setRange(newRange);
+              onChange?.({
+                startDate: newRange?.from ?? null,
+                endDate: newRange?.to ?? null
+              });
             }}
             weekStartsOn={1}
             formatters={{
