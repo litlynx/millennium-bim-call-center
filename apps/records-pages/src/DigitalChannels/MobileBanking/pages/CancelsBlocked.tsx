@@ -4,6 +4,8 @@ import { Helmet } from 'react-helmet';
 import {
   Button,
   ButtonDropdown,
+  type CardTabItem,
+  CardTabs,
   DatePicker,
   PageHeader,
   ScriptDetail,
@@ -33,7 +35,7 @@ const CancelsBlocked: React.FC = () => {
           row.id === selectedRowId
             ? {
                 ...row,
-                badgeText: 'Bloqueado'
+                badgeText: 'Inativo'
               }
             : row
         )
@@ -51,13 +53,18 @@ const CancelsBlocked: React.FC = () => {
   };
 
   const handleFraud = () => {
-    setShowFraudModal(false);
-    setLastActionType('delete');
-    setShowSuccessModal(true);
-    setPrimaryRows((rows) => rows.filter((row) => row.id !== selectedRowId));
-    setTimeout(() => setShowSuccessModal(false), 2000);
-    setSelectedRowId(null);
-    setModalType(null);
+    try {
+      setShowFraudModal(false);
+      setLastActionType('delete');
+      setShowSuccessModal(true);
+      setPrimaryRows((rows) => rows.filter((row) => row.id !== selectedRowId));
+      setTimeout(() => setShowSuccessModal(false), 2000);
+      setSelectedRowId(null);
+      setModalType(null);
+    } catch (error) {
+      console.error('Error handling fraud:', error);
+      //TODO lidar com erro
+    }
   };
 
   const handleCancel = () => {
@@ -117,6 +124,75 @@ const CancelsBlocked: React.FC = () => {
     setModalOpen(true);
   };
 
+  const transactionHistory: CardTabItem[] = [
+    {
+      value: 'transactionHistory',
+      label: 'Histórico de Transacções',
+      content: (
+        <div className="mt-6 flex flex-col gap-7">
+          <div className="flex justify-between">
+            <div className="flex flex-col gap-[0.625rem]">
+              <p className="uppercase font-semibold text-xs text-gray-800">Contacto</p>
+              <ButtonDropdown
+                button={selectedContact ?? 'Contacto'}
+                content={
+                  <ul className="flex flex-col">
+                    {cancels.map((cancel) => (
+                      <li
+                        key={cancel.number}
+                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => setSelectedContact(cancel.number)}
+                      >
+                        {cancel.number}
+                      </li>
+                    ))}
+                  </ul>
+                }
+              />
+            </div>
+            <div className="flex flex-col gap-[0.625rem]">
+              <p className="uppercase font-semibold text-xs text-gray-800">Data</p>
+              <DatePicker
+                onChange={(range: { startDate: Date | null; endDate: Date | null }) =>
+                  setDateRange({ start: range.startDate, end: range.endDate })
+                }
+              />
+            </div>
+            <div className="flex flex-col gap-[0.625rem]">
+              <p className="uppercase font-semibold text-xs text-gray-800">Tipo de Operação</p>
+              <ButtonDropdown
+                button={status ?? 'Tipo Operação'}
+                content={
+                  <ul className="flex flex-col">
+                    <li
+                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => setStatus('Todas')}
+                    >
+                      Todas
+                    </li>
+                    <li
+                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => setStatus('Processado')}
+                    >
+                      Processado
+                    </li>
+                    <li
+                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => setStatus('Erro')}
+                    >
+                      Erro
+                    </li>
+                  </ul>
+                }
+              />
+            </div>
+          </div>
+          <TransactionsTable data={filteredTransactionRows} />
+        </div>
+      )
+    }
+  ];
+
   return (
     <div className="grid grid-cols-2 gap-4">
       <Helmet>
@@ -134,66 +210,7 @@ const CancelsBlocked: React.FC = () => {
         <div className="mt-3 rounded-[1.25rem] bg-white py-6 px-9">
           <PrimaryTable data={primaryRows} onBlock={handleBlock} onDelete={handleDelete} />
 
-          <div className="mt-6 flex flex-col gap-7">
-            <div className="flex justify-between">
-              <div className="flex flex-col gap-[0.625rem]">
-                <p className="uppercase font-semibold text-xs text-gray-800">Contacto</p>
-                <ButtonDropdown
-                  button={selectedContact ?? 'Contacto'}
-                  content={
-                    <ul className="flex flex-col">
-                      {cancels.map((cancel) => (
-                        <li
-                          key={cancel.number}
-                          className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                          onClick={() => setSelectedContact(cancel.number)}
-                        >
-                          {cancel.number}
-                        </li>
-                      ))}
-                    </ul>
-                  }
-                />
-              </div>
-              <div className="flex flex-col gap-[0.625rem]">
-                <p className="uppercase font-semibold text-xs text-gray-800">Data</p>
-                <DatePicker
-                  onChange={(range: { startDate: Date | null; endDate: Date | null }) =>
-                    setDateRange({ start: range.startDate, end: range.endDate })
-                  }
-                />
-              </div>
-              <div className="flex flex-col gap-[0.625rem]">
-                <p className="uppercase font-semibold text-xs text-gray-800">Tipo de Operação</p>
-                <ButtonDropdown
-                  button={status ?? 'Tipo Operação'}
-                  content={
-                    <ul className="flex flex-col">
-                      <li
-                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() => setStatus('Todas')}
-                      >
-                        Todas
-                      </li>
-                      <li
-                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() => setStatus('Processado')}
-                      >
-                        Processado
-                      </li>
-                      <li
-                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() => setStatus('Erro')}
-                      >
-                        Erro
-                      </li>
-                    </ul>
-                  }
-                />
-              </div>
-            </div>
-            <TransactionsTable data={filteredTransactionRows} />
-          </div>
+          <CardTabs className="h-full" tabs={transactionHistory} />
         </div>
 
         <div className="bg-white rounded-[20px] mt-9">
@@ -209,7 +226,7 @@ const CancelsBlocked: React.FC = () => {
             if (!open) handleCancel();
           }}
           title={modalType === 'block' ? 'Bloqueio Mobile Banking' : 'Cancelamento Mobile Banking'}
-          description={`Pretende mesmo ${modalType === 'block' ? 'bloquear' : 'eliminar'} o contacto mobile?`}
+          description={`Pretende mesmo ${modalType === 'block' ? 'bloquear' : 'eliminar'} o contracto mobile?`}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         />
@@ -229,8 +246,8 @@ const CancelsBlocked: React.FC = () => {
           }}
           message={
             lastActionType === 'block'
-              ? 'Contrato bloqueado com sucesso'
-              : 'Contrato cancelado com sucesso'
+              ? 'Contracto bloqueado com sucesso'
+              : 'Contracto cancelado com sucesso'
           }
         />
       </div>
