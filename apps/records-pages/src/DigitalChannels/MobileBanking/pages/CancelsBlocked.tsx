@@ -5,21 +5,25 @@ import {
   Button,
   ButtonDropdown,
   DatePicker,
-  Icon,
-  Modal,
   PageHeader,
   ScriptDetail,
   TextArea,
   useTextArea
 } from 'shared/components';
 import { useUserStore } from 'shared/stores';
+import ConfirmModal from '../components/cancelsBlocked/ConfirmModal';
+import FraudModal from '../components/cancelsBlocked/FraudModal';
 import { PrimaryTable } from '../components/cancelsBlocked/PrimaryTable';
+import SuccessModal from '../components/cancelsBlocked/SuccessModal';
 import { TransactionsTable } from '../components/cancelsBlocked/TransactionsTable';
 import { useTableData } from '../hooks/useTableData';
 import { mockPrimaryRows } from '../mocks/mockPrimaryRows';
 import { mockTransactionRows } from '../mocks/mockTransactionRows';
 
 const CancelsBlocked: React.FC = () => {
+  const [showFraudModal, setShowFraudModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [lastActionType, setLastActionType] = useState<'block' | 'delete' | null>(null);
   const [primaryRows, setPrimaryRows] = useState(mockPrimaryRows);
 
   const handleConfirm = () => {
@@ -34,11 +38,24 @@ const CancelsBlocked: React.FC = () => {
             : row
         )
       );
+      setModalOpen(false);
+      setLastActionType('block');
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+      setSelectedRowId(null);
+      setModalType(null);
+    } else if (modalType === 'delete' && selectedRowId) {
+      setModalOpen(false);
+      setShowFraudModal(true);
     }
-    if (modalType === 'delete' && selectedRowId) {
-      setPrimaryRows((rows) => rows.filter((row) => row.id !== selectedRowId));
-    }
-    setModalOpen(false);
+  };
+
+  const handleFraud = (isFraud: boolean) => {
+    setShowFraudModal(false);
+    setLastActionType('delete');
+    setShowSuccessModal(true);
+    setPrimaryRows((rows) => rows.filter((row) => row.id !== selectedRowId));
+    setTimeout(() => setShowSuccessModal(false), 2000);
     setSelectedRowId(null);
     setModalType(null);
   };
@@ -186,35 +203,36 @@ const CancelsBlocked: React.FC = () => {
           </Button>
         </div>
 
-        <Modal
+        <ConfirmModal
           isOpen={modalOpen}
           onOpenChange={(open) => {
             if (!open) handleCancel();
           }}
           title={modalType === 'block' ? 'Bloqueio Mobile Banking' : 'Cancelamento Mobile Banking'}
           description={`Pretende mesmo ${modalType === 'block' ? 'bloquear' : 'eliminar'} o contacto mobile?`}
-          icon={
-            <Icon
-              type="danger"
-              className="bg-primary p-2 font-bold h-[57px] w-[57px] rounded-xl"
-              size="lg"
-            />
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+
+        <FraudModal
+          isOpen={showFraudModal}
+          onOpenChange={(open) => {
+            if (!open) setShowFraudModal(false);
+          }}
+          onChoice={handleFraud}
+        />
+
+        <SuccessModal
+          isOpen={showSuccessModal}
+          onOpenChange={(open) => {
+            if (!open) setShowSuccessModal(false);
+          }}
+          message={
+            lastActionType === 'block'
+              ? 'Contrato bloqueado com sucesso'
+              : 'Contrato cancelado com sucesso'
           }
-          footer={
-            <div className="flex justify-end gap-3">
-              <Button variant="light" size="lg" onClick={handleCancel} className="">
-                Cancelar
-              </Button>
-              <Button variant="solid" size="lg" onClick={handleConfirm}>
-                Confirmar
-              </Button>
-            </div>
-          }
-          size="sm"
-          className="bg-white"
-        >
-          {null}
-        </Modal>
+        />
       </div>
 
       <ScriptDetail title="Script" />
