@@ -27,10 +27,10 @@ export interface ModalProps {
 }
 
 const sizeClasses = {
-  sm: 'max-w-md',
-  md: 'max-w-lg',
-  lg: 'max-w-2xl',
-  xl: 'max-w-4xl'
+  sm: 'w-[630px]', //used
+  md: 'w-[875px]', //used
+  lg: 'w-[1024px]',
+  xl: 'w-[1280px]'
 };
 
 const Modal: React.FC<ModalProps> = ({
