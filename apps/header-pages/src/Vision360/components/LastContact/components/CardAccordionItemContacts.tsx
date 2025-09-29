@@ -46,7 +46,7 @@ export const CardAccordionItemContacts: React.FC<CardAccordionItemContactsProps>
       <div className="flex flex-col mb-6">
         {body.map(({ icon: itemIcon, label, value }) => (
           <div key={label} className="flex text-gray-800 items-center h-6">
-            <Icon type={itemIcon} />
+            <Icon type={itemIcon} size="sm" />
             <div className="flex justify-between items-center w-full">
               <p>{label}</p>
               {value && <span className="text-gray-600 text-right">{value}</span>}

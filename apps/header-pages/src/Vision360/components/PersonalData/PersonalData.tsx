@@ -25,7 +25,12 @@ const PersonalData: React.FC<PersonalDataProps> = ({ data }) => {
       <div className="pt-[1.5625rem]">
         {items
           ? Object.entries(items).map(([label, value], index) => (
-              <CardItemLabel key={label} title={label} text={value} dataTestId={`personal-data-item-${index}`}/>
+              <CardItemLabel
+                key={label}
+                title={label}
+                text={value}
+                dataTestId={`personal-data-item-${index}`}
+              />
             ))
           : null}
       </div>

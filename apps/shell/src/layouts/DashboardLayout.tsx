@@ -2,9 +2,6 @@ import { lazy } from 'react';
 import { Outlet } from 'react-router';
 import { registerComponent } from '../components/ErrorBoundary/ComponentRegistry';
 
-const HeaderDiv = lazy(() => import('headerPages/HeaderDiv'));
-registerComponent('HeaderDiv', () => import('headerPages/HeaderDiv'));
-
 const Sidebar = lazy(() => import('sidebarPages/Sidebar'));
 registerComponent('Sidebar', () => import('sidebarPages/Sidebar'));
 
@@ -14,20 +11,19 @@ export interface DashboardLayoutProps {
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
-    <div className="flex h-screen flex-col bg-slate-50 text-slate-900 overflow-hidden">
-      {/* Header - Fixed at top */}
-      <HeaderDiv />
-
-      {/* Main content area - Takes remaining height below header */}
+    <div className="flex min-h-screen max-h-screen flex-col overflow-hidden bg-gray-50 text-slate-900">
+      {/* Main content area - Takes remaining height between header and footer */}
       <div className="flex flex-1 min-h-0 overflow-hidden">
-        {/* Sidebar - Fixed position, positioned on the left */}
+        {/* Sidebar - Fixed width, full height between header and footer, no scroll */}
         <Sidebar />
-
-        {/* Main content - Scrollable area, positioned to the right of sidebar with left margin to account for fixed sidebar */}
-        <div className="flex-1 min-h-0 overflow-auto ml-[6.525rem]">{children || <Outlet />}</div>
+        {/* Main content - Delegates scrolling to inner sections */}
+        <div className="flex w-full flex-1 min-h-0 flex-col overflow-hidden pl-[104px]">
+          <div className="flex w-full flex-1 min-h-0 pl-4 pt-[1.375rem] pr-[1.4375rem] pb-[1.4375rem]">
+            {children || <Outlet />}
+          </div>
+        </div>
       </div>
-
-      {/* Footer - Fixed at bottom (if needed) */}
+      {/* Footer - Fixed at bottom */}
     </div>
   );
 };
