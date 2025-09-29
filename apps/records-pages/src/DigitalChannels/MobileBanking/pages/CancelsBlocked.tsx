@@ -13,10 +13,10 @@ import {
   useTextArea
 } from 'shared/components';
 import { useUserStore } from 'shared/stores';
-import ConfirmModal from '../components/cancelsBlocked/ConfirmModal';
-import FraudModal from '../components/cancelsBlocked/FraudModal';
+import ConfirmModal from 'src/DigitalChannels/MobileBanking/components/cancelsBlocked/ConfirmModal';
+import FraudModal from 'src/DigitalChannels/MobileBanking/components/cancelsBlocked/FraudModal';
+import SuccessModal from 'src/DigitalChannels/MobileBanking/components/cancelsBlocked/SuccessModal';
 import { PrimaryTable } from '../components/cancelsBlocked/PrimaryTable';
-import SuccessModal from '../components/cancelsBlocked/SuccessModal';
 import { TransactionsTable } from '../components/cancelsBlocked/TransactionsTable';
 import { useTableData } from '../hooks/useTableData';
 import { mockPrimaryRows } from '../mocks/mockPrimaryRows';
@@ -124,8 +124,8 @@ const CancelsBlocked: React.FC = () => {
       value: 'transactionHistory',
       label: 'Histórico de Transacções',
       content: (
-        <div className="mt-6 flex flex-col gap-7">
-          <div className="flex justify-between">
+        <div className="mt-6 flex flex-col">
+          <div className="flex justify-between gap-7">
             <div className="flex flex-col gap-[0.625rem]">
               <p className="uppercase font-semibold text-xs text-gray-800">Contacto</p>
               <ButtonDropdown
@@ -189,63 +189,83 @@ const CancelsBlocked: React.FC = () => {
   ];
 
   return (
-    <div className="grid h-full min-h-0 grid-cols-2 gap-4 overflow-hidden">
-      <Helmet>
-        <title>Cancelamento/Bloqueio</title>
-      </Helmet>
+    <>
+      <div className="grid h-full min-h-0 grid-cols-2 gap-4 overflow-hidden">
+        <Helmet>
+          <title>Cancelamento/Bloqueio</title>
+        </Helmet>
 
-      <div className="flex min-h-0 flex-col overflow-hidden">
-        <PageHeader
-          type="channelAndService"
-          channelCategory="Canais Digitais"
-          serviceTitle="Smart IZI - Cancelamento/Bloqueio"
-          user={user}
-        />
+        <div className="flex min-h-0 flex-col overflow-hidden">
+          <PageHeader
+            type="channelAndService"
+            channelCategory="Canais Digitais"
+            serviceTitle="Smart IZI - Cancelamento/Bloqueio"
+            user={user}
+          />
 
-        <div className="mt-3 rounded-[1.25rem] bg-white py-6 px-9">
-          <PrimaryTable data={primaryRows} onBlock={handleBlock} onDelete={handleDelete} />
+          <div className="mt-3 flex flex-1 min-h-0 flex-col rounded-[1.25rem] bg-white overflow-hidden">
+            <div className="overflow-y-auto px-9 py-6">
+              <div className="flex flex-col gap-6">
+                <div className="min-h-[150px]">
+                  <PrimaryTable data={primaryRows} onBlock={handleBlock} onDelete={handleDelete} />
+                </div>
 
-          <CardTabs className="h-full" tabs={transactionHistory} />
+                <div className="min-h-[200px]">
+                  <CardTabs
+                    className="h-full"
+                    tabs={transactionHistory}
+                    cardContentClassName="p-0"
+                    enableScrollY
+                    enableScrollX
+                  />
+                </div>
+              </div>
+
+              <div className="pt-6">
+                <TextArea
+                  title="Registo"
+                  placeholder="Motivo da Chamada"
+                  {...textArea.textAreaProps}
+                />
+                <Button className="mt-[2.6875rem] ml-auto block" onClick={handleSubmit}>
+                  Fechar
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div className="bg-white rounded-[20px] mt-9">
-          <TextArea title="Registo" placeholder="Motivo da Chamada" {...textArea.textAreaProps} />
-          <Button className="mt-[2.6875rem] ml-auto block" onClick={handleSubmit}>
-            Fechar
-          </Button>
-        </div>
-        <ConfirmModal
-          isOpen={modalOpen}
-          onOpenChange={(open) => {
-            if (!open) handleCancel();
-          }}
-          title={modalType === 'block' ? 'Bloqueio Mobile Banking' : 'Cancelamento Mobile Banking'}
-          description={`Pretende mesmo ${modalType === 'block' ? 'bloquear' : 'eliminar'} o contracto mobile?`}
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-        />
-        <FraudModal
-          isOpen={showFraudModal}
-          onOpenChange={(open) => {
-            if (!open) setShowFraudModal(false);
-          }}
-          onChoice={handleFraud}
-        />
-        <SuccessModal
-          isOpen={showSuccessModal}
-          onOpenChange={(open) => {
-            if (!open) setShowSuccessModal(false);
-          }}
-          message={
-            lastActionType === 'block'
-              ? 'Contracto bloqueado com sucesso'
-              : 'Contracto cancelado com sucesso'
-          }
-        />
+        <ScriptDetail title="Script" />
       </div>
 
-      <ScriptDetail title="Script" />
-    </div>
+      <ConfirmModal
+        isOpen={modalOpen}
+        onOpenChange={(open) => {
+          if (!open) handleCancel();
+        }}
+        title={modalType === 'block' ? 'Bloqueio Mobile Banking' : 'Cancelamento Mobile Banking'}
+        description={`Pretende mesmo ${modalType === 'block' ? 'bloquear' : 'eliminar'} o contracto mobile?`}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
+      <FraudModal
+        isOpen={showFraudModal}
+        onOpenChange={(open) => {
+          if (!open) setShowFraudModal(false);
+        }}
+        onChoice={handleFraud}
+      />
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onOpenChange={(open) => {
+          if (!open) setShowSuccessModal(false);
+        }}
+        message={
+          lastActionType === 'block'
+            ? 'Contracto bloqueado com sucesso'
+            : 'Contracto cancelado com sucesso'
+        }
+      />
+    </>
   );
 };
 
