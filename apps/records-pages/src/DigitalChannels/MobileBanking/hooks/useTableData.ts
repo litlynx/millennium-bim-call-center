@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { z } from 'zod';
 import type { PrimaryRow } from '../components/cancelsBlocked/PrimaryTable';
 import type { TransactionRow as BaseTransactionRow } from '../components/cancelsBlocked/TransactionsTable';
@@ -39,6 +39,11 @@ export function useTableData({ primaryRows, transactionRows }: UseTableDataProps
 
   const [selectedContact, setSelectedContact] = useState<string>(principalCancel);
 
+  // Auto-update selectedContact when principalCancel changes (when cancels array changes)
+  useEffect(() => {
+    setSelectedContact(principalCancel);
+  }, [principalCancel]);
+
   const filtersSchema = z.object({
     dateRange: z
       .object({
@@ -75,13 +80,22 @@ export function useTableData({ primaryRows, transactionRows }: UseTableDataProps
     return new Date(year, month - 1, day);
   }, []);
 
+  const availableTransactionTypes = useMemo(() => {
+    const uniqueTypes = new Set(
+      transactionRows
+        .map((row) => row.typeTransaction)
+        .filter((type) => type && type.trim() !== '') // Filter out empty/null values
+    );
+    return Array.from(uniqueTypes).sort(); // Sort alphabetically for consistent order
+  }, [transactionRows]);
+
   const filteredTransactionRows = useMemo(() => {
     return transactionRows.filter((row) => {
       const rowDate = parseTransactionDate(row.date);
       const matchDate =
         (!dateRange.start || rowDate >= dateRange.start) &&
         (!dateRange.end || rowDate <= dateRange.end);
-      const matchStatus = status === 'Todas' || row.stateTransaction === status;
+      const matchStatus = status === 'Todas' || row.typeTransaction === status;
       const rowContactNormalized = row.contact?.replace(/\s/g, '') || '';
       const selectedContactNormalized = selectedContact.replace(/\s/g, '');
       const matchContact = !selectedContact || rowContactNormalized === selectedContactNormalized;
@@ -92,6 +106,7 @@ export function useTableData({ primaryRows, transactionRows }: UseTableDataProps
   return {
     filteredTransactionRows,
     cancels,
+    availableTransactionTypes,
     dateRange,
     setDateRange,
     status,

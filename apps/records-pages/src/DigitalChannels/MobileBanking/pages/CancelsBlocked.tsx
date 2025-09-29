@@ -77,9 +77,10 @@ const CancelsBlocked: React.FC = () => {
     setDateRange,
     status,
     setStatus,
-    filteredTransactionRows
+    filteredTransactionRows,
+    availableTransactionTypes
   } = useTableData({
-    primaryRows: mockPrimaryRows,
+    primaryRows: primaryRows,
     transactionRows: mockTransactionRows
   });
   const user = {
@@ -126,25 +127,29 @@ const CancelsBlocked: React.FC = () => {
       content: (
         <div className="mt-6 flex flex-col">
           <div className="flex justify-between gap-7">
-            <div className="flex flex-col gap-[0.625rem]">
-              <p className="uppercase font-semibold text-xs text-gray-800">Contacto</p>
-              <ButtonDropdown
-                button={selectedContact ?? 'Contacto'}
-                content={
-                  <ul className="flex flex-col">
-                    {cancels.map((cancel) => (
-                      <li
-                        key={cancel.number}
-                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() => setSelectedContact(cancel.number)}
-                      >
-                        {cancel.number}
-                      </li>
-                    ))}
-                  </ul>
-                }
-              />
-            </div>
+            {cancels.length > 1 ? (
+              <div className="flex flex-col gap-[0.625rem]">
+                <p className="uppercase font-semibold text-xs text-gray-800">Contacto</p>
+                <ButtonDropdown
+                  button={selectedContact ?? 'Contacto'}
+                  content={
+                    <ul className="flex flex-col">
+                      {cancels.map((cancel) => (
+                        <li
+                          key={cancel.number}
+                          className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                          onClick={() => setSelectedContact(cancel.number)}
+                        >
+                          {cancel.number}
+                        </li>
+                      ))}
+                    </ul>
+                  }
+                />
+              </div>
+            ) : (
+              ''
+            )}
             <div className="flex flex-col gap-[0.625rem]">
               <p className="uppercase font-semibold text-xs text-gray-800">Data</p>
               <DatePicker
@@ -165,18 +170,15 @@ const CancelsBlocked: React.FC = () => {
                     >
                       Todas
                     </li>
-                    <li
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => setStatus('Processado')}
-                    >
-                      Processado
-                    </li>
-                    <li
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => setStatus('Erro')}
-                    >
-                      Erro
-                    </li>
+                    {availableTransactionTypes.map((type) => (
+                      <li
+                        key={type}
+                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => setStatus(type)}
+                      >
+                        {type}
+                      </li>
+                    ))}
                   </ul>
                 }
               />
@@ -206,7 +208,7 @@ const CancelsBlocked: React.FC = () => {
           <div className="mt-3 flex flex-1 min-h-0 flex-col rounded-[1.25rem] bg-white overflow-hidden">
             <div className="overflow-y-auto px-9 py-6">
               <div className="flex flex-col gap-6">
-                <div className="min-h-[150px]">
+                <div className="min-h-[100px]">
                   <PrimaryTable data={primaryRows} onBlock={handleBlock} onDelete={handleDelete} />
                 </div>
 
