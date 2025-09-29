@@ -57,13 +57,13 @@ export interface SubmenuItemProps {
 
 export const sidebarMapData: SidebarItem[] = [
   {
-    id: 'home',
+    id: '',
     icon: 'home',
     label: 'Início',
     path: '/'
   },
   {
-    id: 'registos',
+    id: 'records',
     icon: 'register',
     label: 'Registos'
   }
@@ -117,7 +117,7 @@ export const menuMapData: MenuItem[] = [
   {
     id: 'canais-digitais',
     label: 'Canais Digitais',
-    parentSidebarId: 'registos',
+    parentSidebarId: 'records',
     submenuIds: ['mobile-banking-izi-smart-izi-submenu']
   }
   // {
