@@ -11,7 +11,6 @@ export type { IconProps, IconType } from './Icon/Icon';
 export { default as Icon } from './Icon/Icon';
 export { default as Input } from './Input/Input';
 export { default as Modal } from './Modal/Modal';
-export { default as ScriptDetail } from './ScriptDetail/ScriptDetail';
 export type {
   ChannelAndServiceProps,
   PageHeaderProps
