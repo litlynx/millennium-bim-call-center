@@ -16,6 +16,7 @@ export type {
   PageHeaderProps
 } from './PageHeader/PageHeader';
 export { default as PageHeader, default as PageHeaderTemplate } from './PageHeader/PageHeader';
+export { default as Popover } from './Popover/PopoverComponent';
 export { default as ScriptDetail } from './ScriptDetail/ScriptDetail';
 export { default as Table } from './Table/Table';
 export { useTextArea } from './TextArea';
