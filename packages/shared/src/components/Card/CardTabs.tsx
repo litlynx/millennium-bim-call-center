@@ -44,7 +44,7 @@ const CardTabs: React.ForwardRefExoticComponent<
 
     const contentWrapperClasses = cn(
       'bg-white',
-      enableScrollX ? 'inline-block min-w-max' : 'block w-full',
+      enableScrollX ? 'inline-block min-w-full' : 'block w-full',
       enableScrollY ? undefined : 'h-full'
     );
 
