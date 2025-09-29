@@ -275,7 +275,7 @@ export const submenuLinks: SubmenuLinkItemProps[] = [
   {
     id: 'cancelamento-bloqueio',
     label: 'Cancelamento/Bloqueio',
-    path: '/records/digital-channels/mobile-banking/cancels',
+    path: '/records/digital-channels/mobile-banking/cancels-blocked',
     parentSubmenuId: 'mobile-banking-submenu'
   },
   // {
