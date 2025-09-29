@@ -17,6 +17,9 @@ export interface TransactionRow {
   date: string;
   hour: string;
   stateTransaction: string;
+  accountDestination: string;
+  accountOrigin: string;
+  error: string;
 }
 
 interface TransactionsTableProps {
@@ -43,18 +46,15 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
                 <div>
                   <p>
                     <span className="font-semibold">Conta Destino: </span>
-                    <span>1226144894</span>
+                    <span>{row.accountDestination}</span>
                   </p>
                   <p>
                     <span className="font-semibold">Conta Origem: </span>
-                    <span>764682235</span>
+                    <span>{row.accountOrigin}</span>
                   </p>
                   <p>
                     <span className="font-semibold">Erro: </span>
-                    <span>
-                      O sistema levou muito tempo a processar o seu pedido. Por favor tente mais
-                      tarde. Gratos pela preferência
-                    </span>
+                    <span>{row.error}</span>
                   </p>
                 </div>
               }
