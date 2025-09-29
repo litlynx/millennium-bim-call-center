@@ -1,7 +1,4 @@
-
 import type React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import type * as React from 'react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import {
@@ -24,15 +21,12 @@ import { TransactionsTable } from '../components/cancelsBlocked/TransactionsTabl
 import { useTableData } from '../hooks/useTableData';
 import { mockPrimaryRows } from '../mocks/mockPrimaryRows';
 import { mockTransactionRows } from '../mocks/mockTransactionRows';
-import type { CancelsBlockedInterface } from 'src/api/CancelsBlocked/interfaces';
-import { GET } from 'src/api/CancelsBlocked/route';
 
 const CancelsBlocked: React.FC = () => {
   const [showFraudModal, setShowFraudModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [lastActionType, setLastActionType] = useState<'block' | 'delete' | null>(null);
   const [primaryRows, setPrimaryRows] = useState(mockPrimaryRows);
-
   const handleConfirm = () => {
     if (modalType === 'block' && selectedRowId) {
       setPrimaryRows((rows) =>
@@ -55,133 +49,7 @@ const CancelsBlocked: React.FC = () => {
       setModalOpen(false);
       setShowFraudModal(true);
     }
-      },
-      {
-        content: <div></div>
-      }
-    ]
-  }
-];
-
-const headersTableTransactions = [
-  { key: 'channel', label: 'Canal' },
-  { key: 'type-transaction', label: 'Tipo Transação' },
-  { key: 'amount', label: 'Montante' },
-  { key: 'date', label: 'Data', className: 'text-right' },
-  { key: 'hour', label: 'Hora' },
-  { key: 'state-transaction', label: 'Estado da Transacção' }
-];
-
-const dataTableTransactions = [
-  {
-    id: 'row-1',
-    contact: '825816811',
-    cells: [
-      { content: 'Smart IZI' },
-      { content: 'Transferência e-Mola' },
-      { content: '123,00 MZN' },
-      { content: '02-05-2025' },
-      { content: '11:24:12' },
-      {
-        content: (
-          <div className="flex items-center gap-2">
-            <span>Processado</span>
-            <Icon type="eye" className="p-0 cursor-pointer" />
-          </div>
-        ),
-        value: 'Processado'
-      }
-    ]
-  },
-  {
-    id: 'row-2',
-    contact: '845816811',
-    cells: [
-      { content: 'Smart IZI' },
-      { content: 'Transferência BIM' },
-      { content: '123,00 MZN' },
-      { content: '02-06-2025' },
-      { content: '11:24:12' },
-      {
-        content: (
-          <div className="flex items-center gap-2">
-            <span>Erro</span>
-            <Icon type="eye" className="p-0 cursor-pointer" />
-          </div>
-        ),
-        value: 'Erro'
-      }
-    ]
-  },
-  {
-    id: 'row-3',
-    contact: '825816811',
-    cells: [
-      { content: 'Smart IZI' },
-      { content: 'Transferência e-Mola' },
-      { content: '123,00 MZN' },
-      { content: '02-07-2025' },
-      { content: '11:24:12' },
-      {
-        content: (
-          <div className="flex items-center gap-2">
-            <span>Processado</span>
-            <Icon type="eye" className="p-0 cursor-pointer" />
-          </div>
-        ),
-        value: 'Processado'
-      }
-    ]
-  }
-];
-
-type DateRange = {
-  start: Date | null;
-  end: Date | null;
-};
-
-export const ESTATE_AND_PRODUCTS_QUERY_KEY = 'cancels-blocked';
-
-async function fetchCancelsBlocked(): Promise<CancelsBlockedInterface> {
-  return await GET();
-}
-
-function useCancelsBlocked() {
-  return useQuery({
-    queryKey: ['CANCELS_BLOCKED_QUERY_KEY'],
-    queryFn: fetchCancelsBlocked,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: 3
-  });
-}
-
-const TransactionHistorySection: React.FC = () => {
-  const [dateRange, setDateRange] = useState<DateRange>({
-    start: null,
-    end: null
-  });
-  const [status, setStatus] = useState<string>('Todas');
-
-  const { data } = useCancelsBlocked();
-
-  console.log(data);
-
-  const cancels = dataTablePrimary.map((row) => ({
-    number: row.cells[1].content as string,
-    type: row.cells[2].content as string
-  }));
-
-  const principalCancel =
-    cancels.find((c) => c.type === 'Principal')?.number.replace(/\s/g, '') ||
-    cancels[0].number.replace(/\s/g, '');
-
-  const [selectedContact, setSelectedContact] = useState<string>(principalCancel);
-
-  const parseTransactionDate = (dateStr: string): Date => {
-    const [day, month, year] = dateStr.split('-').map(Number);
-    return new Date(year, month - 1, day);
   };
-
   const handleFraud = () => {
     try {
       setShowFraudModal(false);
@@ -214,19 +82,16 @@ const TransactionHistorySection: React.FC = () => {
     primaryRows: mockPrimaryRows,
     transactionRows: mockTransactionRows
   });
-
   const user = {
     customerName: useUserStore((u) => u.getCustomerName()),
     cif: useUserStore((u) => u.getCif()),
     accountNumber: useUserStore((u) => u.getAccountNumber())
   };
-
   const textArea = useTextArea({
     required: true,
     maxLength: 200,
     initialValue: ''
   });
-
   const handleSubmit = () => {
     const isValid = textArea.validate();
 
