@@ -1,12 +1,15 @@
 export * from './AlertFolderIcon';
 export * from './AnalyticsBusinessChartIcon';
 export * from './BellIcon';
+export * from './BlockIcon';
 export * from './BoxIcon';
 export * from './CalendarIcon';
 export * from './CallBackIcon';
 export * from './CallCenterWorkerIcon';
 export * from './CallDotsIcon';
 export * from './CellPhoneIcon';
+export * from './CheckIcon';
+export * from './ChevronDownIcon';
 export * from './ChevronRightIcon';
 export * from './CloseBlackIcon';
 export * from './CloseIcon';
@@ -54,5 +57,6 @@ export * from './SearchIcon';
 export * from './SendIcon';
 export * from './ShareIcon';
 export * from './ShoppingBagIcon';
+export * from './TrashBinIcon';
 export * from './UserIcon';
 

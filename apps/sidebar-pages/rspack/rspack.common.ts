@@ -1,4 +1,4 @@
-/* Header-Pages rspack config */
+/* Sidebar-Pages rspack config */
 
 import * as path from 'node:path';
 import { Apps } from '@config/rspack-config/enums';

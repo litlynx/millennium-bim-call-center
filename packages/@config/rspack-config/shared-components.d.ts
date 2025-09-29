@@ -4,7 +4,7 @@
  */
 
 declare module 'shared/components' {
-  import type { ComponentType, ReactNode, MouseEventHandler } from 'react';
+  import type { ComponentType, MouseEventHandler, ReactNode } from 'react';
 
   // Common UI components
   export interface ButtonProps {
@@ -20,7 +20,13 @@ declare module 'shared/components' {
   export const Card: ComponentType<unknown>;
   export const CardTabs: ComponentType<unknown>;
   export const CardItemLabel: ComponentType<unknown>;
-  export const Icon: ComponentType<unknown>;
+  export const Icon: ComponentType<{
+    type: string;
+    rounded?: boolean;
+    size?: 'sm' | 'lg';
+    className?: string;
+    onClick?: () => void;
+  }>;
   export const LineBreak: ComponentType<unknown>;
   export const TableComponent: ComponentType<unknown>;
   export const Breadcrumbs: ComponentType<unknown>;
@@ -65,7 +71,7 @@ declare module 'shared/components' {
 
 // Individual component declarations for backward compatibility
 declare module 'shared/components/Button' {
-  import type { ComponentType, ReactNode, MouseEventHandler } from 'react';
+  import type { ComponentType, MouseEventHandler, ReactNode } from 'react';
   export interface ButtonProps {
     variant?: 'solid' | 'outline';
     children: ReactNode;
@@ -96,11 +102,17 @@ declare module 'shared/components/CardItemLabel' {
 
 declare module 'shared/components/Icon' {
   import type { ComponentType } from 'react';
+
+  export type IconType = string; // This will be automatically inferred from the actual icons map
+
   export interface IconProps {
-    name?: string;
-    size?: number | string;
+    type: IconType;
+    rounded?: boolean;
+    size?: 'sm' | 'lg';
     className?: string;
+    onClick?: () => void;
   }
+
   const IconComponent: ComponentType<IconProps>;
   export default IconComponent;
 }

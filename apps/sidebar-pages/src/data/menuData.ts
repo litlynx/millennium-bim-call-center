@@ -57,13 +57,13 @@ export interface SubmenuItemProps {
 
 export const sidebarMapData: SidebarItem[] = [
   {
-    id: 'home',
+    id: '',
     icon: 'home',
     label: 'Início',
-    path: '/home'
+    path: '/'
   },
   {
-    id: 'registos',
+    id: 'records',
     icon: 'register',
     label: 'Registos'
   }
@@ -117,7 +117,7 @@ export const menuMapData: MenuItem[] = [
   {
     id: 'canais-digitais',
     label: 'Canais Digitais',
-    parentSidebarId: 'registos',
+    parentSidebarId: 'records',
     submenuIds: ['mobile-banking-izi-smart-izi-submenu']
   }
   // {
@@ -275,7 +275,7 @@ export const submenuLinks: SubmenuLinkItemProps[] = [
   {
     id: 'cancelamento-bloqueio',
     label: 'Cancelamento/Bloqueio',
-    path: '/records/digital-channels/mobile-banking/cancels',
+    path: '/records/digital-channels/mobile-banking/cancels-blocked',
     parentSubmenuId: 'mobile-banking-submenu'
   },
   // {

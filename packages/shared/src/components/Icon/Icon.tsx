@@ -24,27 +24,102 @@ const buildIconsMap = (
 
 const iconsMap = buildIconsMap({ ...Icons });
 
-export type IconType = keyof typeof iconsMap;
+// Generate a union type of all available icon names for better type safety
+export type IconType =
+  | 'alertFolder'
+  | 'analyticsBusinessChart'
+  | 'bell'
+  | 'box'
+  | 'calendar'
+  | 'callBack'
+  | 'callCenterWorker'
+  | 'callDots'
+  | 'cellPhone'
+  | 'check'
+  | 'chevronDown'
+  | 'chevronRight'
+  | 'closeBlack'
+  | 'close'
+  | 'complains'
+  | 'config'
+  | 'contact'
+  | 'contacts'
+  | 'danger'
+  | 'dialPad'
+  | 'documentation'
+  | 'documentLayout'
+  | 'email'
+  | 'exclamation'
+  | 'eye'
+  | 'files'
+  | 'graph2'
+  | 'graph'
+  | 'history'
+  | 'home'
+  | 'info'
+  | 'location'
+  | 'logo'
+  | 'makePhoneCall'
+  | 'messageCircleDots'
+  | 'message'
+  | 'packageWarning'
+  | 'pause'
+  | 'personal'
+  | 'personalQuestion'
+  | 'person'
+  | 'personMale'
+  | 'personMalePolygon'
+  | 'phone2'
+  | 'phoneCall'
+  | 'phoneDots'
+  | 'pieChart'
+  | 'pin'
+  | 'play'
+  | 'register'
+  | 'ringCall'
+  | 'risk'
+  | 'search'
+  | 'send'
+  | 'share'
+  | 'shoppingBag'
+  | 'user'
+  | 'block'
+  | 'trashBin'
+  | 'minify'
+  | 'maximize';
 
 export interface IconProps {
-  type: keyof typeof iconsMap;
+  type: IconType;
   rounded?: boolean;
-  size?: 'sm' | 'lg';
+  size?: 'sm' | 'lg' | 'md';
   className?: string;
   onClick?: () => void;
 }
 
-const Icon: React.FC<IconProps> = ({ type, rounded, size = 'sm', className = '', onClick }) => {
+const Icon: React.FC<IconProps> = ({ type, rounded, size, className = '', onClick }) => {
   const IconComponent = iconsMap[type];
   if (!IconComponent) return null;
-  const sizeClasses = size === 'lg' ? 'w-10 h-10' : 'w-8 h-8';
+  let sizeClasses: string;
+  switch (size) {
+    case 'sm':
+      sizeClasses = 'w-7 h-7';
+      break;
+    case 'md':
+      sizeClasses = 'w-10 h-10';
+      break;
+    case 'lg':
+      sizeClasses = 'w-12 h-12';
+      break;
+    default:
+      sizeClasses = 'w-10 h-10';
+  }
   const radiusClasses = rounded ? 'rounded-full' : 'rounded-md';
 
   return (
     <span
       onClick={onClick}
       className={cn(
-        'inline-flex items-center justify-center p-[6px] h-fit',
+        'inline-flex items-center justify-center p-[6px] aspect-square [&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain',
         sizeClasses,
         radiusClasses,
         className

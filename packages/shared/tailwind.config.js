@@ -29,7 +29,7 @@ module.exports = {
       },
       colors: {
         primary: {
-          50: '#ffe6f1',
+          50: '#FDF5FF', //used
           100: '#ffb3d2',
           200: '#ff80b3',
           300: '#ff4d94',
