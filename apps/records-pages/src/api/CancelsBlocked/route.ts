@@ -1,10 +1,11 @@
+import type { CancelsBlockedInterface } from 'src/api/CancelsBlocked/interfaces';
 import {
   GetCancelsBlockedScripts,
   GetCancelsBlockedTable,
   GetCancelsBlockedTransactionHistory
 } from 'src/api/CancelsBlocked/service';
 
-export async function GET() {
+export async function GET(): Promise<CancelsBlockedInterface> {
   const [tableRes, transactionHistoryRes, scriptRes] = await Promise.all([
     GetCancelsBlockedTable(),
     GetCancelsBlockedTransactionHistory(),

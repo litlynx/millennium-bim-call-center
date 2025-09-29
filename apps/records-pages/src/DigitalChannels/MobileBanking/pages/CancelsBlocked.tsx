@@ -152,7 +152,7 @@ type DateRange = {
   end: Date | null;
 };
 
-export const ESTATE_AND_PRODUCTS_QUERY_KEY = 'cancels-blocked';
+export const CANCELS_BLOCKED_QUERY_KEY = 'cancels-blocked';
 
 async function fetchCancelsBlocked(): Promise<CancelsBlockedInterface> {
   return await GET();
@@ -160,7 +160,7 @@ async function fetchCancelsBlocked(): Promise<CancelsBlockedInterface> {
 
 function useCancelsBlocked() {
   return useQuery({
-    queryKey: ['CANCELS_BLOCKED_QUERY_KEY'],
+    queryKey: [CANCELS_BLOCKED_QUERY_KEY],
     queryFn: fetchCancelsBlocked,
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 3
@@ -173,10 +173,6 @@ const TransactionHistorySection: React.FC = () => {
     end: null
   });
   const [status, setStatus] = useState<string>('Todas');
-
-  const { data } = useCancelsBlocked();
-
-  console.log(data);
 
   const cancels = dataTablePrimary.map((row) => ({
     number: row.cells[1].content as string,
@@ -288,6 +284,8 @@ const transactionHistory: CardTabItem[] = [
 ];
 
 const CancelsBlocked: React.FC = () => {
+  const { data, isLoading } = useCancelsBlocked();
+
   const user = {
     customerName: useUserStore((u) => u.getCustomerName()),
     cif: useUserStore((u) => u.getCif()),
@@ -310,6 +308,16 @@ const CancelsBlocked: React.FC = () => {
       console.log('Form validation failed:', textArea.error);
     }
   };
+
+  if (!data && !isLoading) {
+    return (
+      <div>
+        <div className="mt-3 rounded-[1.25rem] bg-white py-6 px-9">
+          <span className="text-gray-500">Dados não disponíveis</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-2 gap-4">
