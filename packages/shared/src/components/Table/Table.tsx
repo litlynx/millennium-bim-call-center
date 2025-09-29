@@ -60,15 +60,15 @@ const TableComponent: React.FC<TableComponentProps> = ({ headers, data }) => {
   }, [updateHeight]);
 
   return (
-    <div className="mt-6 h-full flex flex-col" ref={containerRef}>
+    <div className="flex flex-col h-full" ref={containerRef}>
       <div className="flex-1 min-h-0">
         <ScrollArea
-          className="pr-4 h-full"
+          className="h-full"
           style={{
             height: tableHeight !== null ? `${tableHeight}px` : 'fit-content'
           }}
         >
-          <Table className="w-full mb-3">
+          <Table className="w-full mb-3 mt-3">
             <TableHeader>
               <TableRow>
                 {headers.map((header, index) => (

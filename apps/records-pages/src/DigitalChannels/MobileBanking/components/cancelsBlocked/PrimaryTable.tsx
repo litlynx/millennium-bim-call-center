@@ -5,7 +5,7 @@ const headersTablePrimary = [
   { key: 'number-cel', label: 'N.º Telefone' },
   { key: 'type', label: 'Tipo' },
   { key: 'state-sim-swap', label: 'Estado SIM Swap' },
-  { key: 'state-contract', label: 'Estado Contrato' },
+  { key: 'state-contract', label: 'Estado Contracto' },
   { key: 'actions', label: '' }
 ];
 
