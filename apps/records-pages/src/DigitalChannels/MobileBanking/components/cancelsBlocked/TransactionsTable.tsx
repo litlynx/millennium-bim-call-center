@@ -1,4 +1,4 @@
-import { Icon, Table } from 'shared/components';
+import { Icon, Table, Tooltip } from 'shared/components';
 
 const headersTableTransactions = [
   { key: 'channel', label: 'Canal' },
@@ -36,7 +36,34 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
         content: (
           <div className="flex items-center gap-2">
             <span>{row.stateTransaction}</span>
-            <Icon type="eye" className="p-0 h-[11px] w-[18px] cursor-pointer" />
+
+            <Tooltip
+              title="Detalhes"
+              content={
+                <div>
+                  <p>
+                    <span className="font-semibold">Conta Destino: </span>
+                    <span>1226144894</span>
+                  </p>
+                  <p>
+                    <span className="font-semibold">Conta Origem: </span>
+                    <span>764682235</span>
+                  </p>
+                  <p>
+                    <span className="font-semibold">Erro: </span>
+                    <span>
+                      O sistema levou muito tempo a processar o seu pedido. Por favor tente mais
+                      tarde. Gratos pela preferência
+                    </span>
+                  </p>
+                </div>
+              }
+              side="right"
+              variant="purple"
+              button="Fechar"
+            >
+              <Icon type="eye" className="p-0 h-[11px] w-[18px] cursor-pointer" />
+            </Tooltip>
           </div>
         )
       }
