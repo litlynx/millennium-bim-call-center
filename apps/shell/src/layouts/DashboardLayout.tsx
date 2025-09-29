@@ -17,8 +17,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         {/* Sidebar - Fixed width, full height between header and footer, no scroll */}
         <Sidebar />
         {/* Main content - Delegates scrolling to inner sections */}
-        <div className="flex w-full flex-1 min-h-0 flex-col overflow-hidden pt-[1.3125rem] pb-[1.4375rem] pr-[1.4375rem] pl-[104px]">
-          <div className="flex w-full flex-1 min-h-0">{children || <Outlet />}</div>
+        <div className="flex w-full flex-1 min-h-0 flex-col overflow-hidden pl-[104px]">
+          <div className="flex w-full flex-1 min-h-0 pl-4 pt-[1.375rem] pr-[1.4375rem] pb-[1.4375rem]">
+            {children || <Outlet />}
+          </div>
         </div>
       </div>
       {/* Footer - Fixed at bottom */}
