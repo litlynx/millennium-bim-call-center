@@ -55,6 +55,22 @@ const recordsPagesHostBaseUrl = resolveRemoteBaseUrl(
   parseInt(process.env.RECORDS_PAGES_PREVIEW_PORT || '8084', 10)
 );
 
+const sidebarPagesHostBaseUrl = resolveRemoteBaseUrl(
+  process.env.SIDEBAR_PAGES_HOST_BASE_URL,
+  'apps/sidebar-pages/dist/',
+  parseInt(process.env.SIDEBAR_PAGES_PREVIEW_PORT || '8083', 10)
+);
+const recordsPagesHostBaseUrl = resolveRemoteBaseUrl(
+  process.env.RECORDS_PAGES_HOST_BASE_URL,
+  'apps/records-pages/dist/',
+  parseInt(process.env.RECORDS_PAGES_PREVIEW_PORT || '8084', 10)
+);
+const documentationPagesHostBaseUrl = resolveRemoteBaseUrl(
+  process.env.DOCUMENTATION_PAGES_HOST_BASE_URL,
+  'apps/documentation-pages/dist/',
+  parseInt(process.env.DOCUMENTATION_PAGES_PREVIEW_PORT || '8085', 10)
+);
+
 /**
  * Configuration for port ranges and base ports
  */
@@ -156,6 +172,10 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
         // Exposes from apps/records-pages
         recordsPages: `recordsPages@http://localhost:${
           mapPorts[Apps['records-pages']].devPort
+        }/remoteEntry.js?cb=${DEV_BUILD_ID}`,
+        // Exposes from apps/documentation-pages
+        documentationPages: `documentationPages@http://localhost:${
+          mapPorts[Apps['documentation-pages']].devPort
         }/remoteEntry.js?cb=${DEV_BUILD_ID}`
       },
       prod: {
@@ -172,6 +192,10 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
         // Assuming production assets are served from apps/records-pages/dist; adjust if deploy layout differs
         recordsPages: `recordsPages@${withLocalhostCacheBust(
           `${recordsPagesHostBaseUrl}remoteEntry.js`
+        )}`,
+        // Exposes from apps/documentation-pages/dist
+        documentationPages: `documentationPages@${withLocalhostCacheBust(
+          `${documentationPagesHostBaseUrl}remoteEntry.js`
         )}`
       }
     }
@@ -202,7 +226,75 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
       exposes: {
         './App': './src/App',
         './ChannelAndServicesPage': './src/ChannelsAndServices/pages/ChannelAndServicesPage',
-        './Vision360Page': './src/Vision360/pages/Vision360Page'
+        './Vision360Page': './src/Vision360/pages/Vision360Page',
+        './HeaderDiv': './src/HeaderDiv'
+      }
+    },
+    remotes: {
+      dev: {
+        // Add cache-busting query so Firefox doesn't serve a cached remoteEntry in dev
+        shared: `shared@http://localhost:${
+          mapPorts[Apps.shared].devPort
+        }/remoteEntry.js?cb=${DEV_BUILD_ID}`
+      },
+      prod: {
+        shared: `shared@${withLocalhostCacheBust(`${sharedHostBaseUrl}remoteEntry.js`)}`
+      }
+    }
+  },
+  [Apps['sidebar-pages']]: {
+    devPort: mapPorts[Apps['sidebar-pages']].devPort,
+    analyzerPort: mapPorts[Apps['sidebar-pages']].analyzerPort,
+    baseConfig: {
+      name: 'sidebarPages',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './App': './src/App',
+        './Sidebar': './src/Sidebar'
+      }
+    },
+    remotes: {
+      dev: {
+        // Add cache-busting query so Firefox doesn't serve a cached remoteEntry in dev
+        shared: `shared@http://localhost:${
+          mapPorts[Apps.shared].devPort
+        }/remoteEntry.js?cb=${DEV_BUILD_ID}`
+      },
+      prod: {
+        shared: `shared@${withLocalhostCacheBust(`${sharedHostBaseUrl}remoteEntry.js`)}`
+      }
+    }
+  },
+  [Apps['records-pages']]: {
+    devPort: mapPorts[Apps['records-pages']].devPort,
+    analyzerPort: mapPorts[Apps['records-pages']].analyzerPort,
+    baseConfig: {
+      name: 'recordsPages',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './App': './src/App'
+      }
+    },
+    remotes: {
+      dev: {
+        // Add cache-busting query so Firefox doesn't serve a cached remoteEntry in dev
+        shared: `shared@http://localhost:${
+          mapPorts[Apps.shared].devPort
+        }/remoteEntry.js?cb=${DEV_BUILD_ID}`
+      },
+      prod: {
+        shared: `shared@${withLocalhostCacheBust(`${sharedHostBaseUrl}remoteEntry.js`)}`
+      }
+    }
+  },
+  [Apps['documentation-pages']]: {
+    devPort: mapPorts[Apps['documentation-pages']].devPort,
+    analyzerPort: mapPorts[Apps['documentation-pages']].analyzerPort,
+    baseConfig: {
+      name: 'documentationPages',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './App': './src/App'
       }
     },
     remotes: {

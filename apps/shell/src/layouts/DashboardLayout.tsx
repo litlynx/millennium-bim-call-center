@@ -22,6 +22,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         </div>
       </div>
       {/* Footer - Fixed at bottom */}
+
     </div>
   );
 };

@@ -5,14 +5,14 @@ export const CloseBlackIcon = () => {
       <path
         d="M4.67529 10.5352L11.3564 3.85407"
         stroke="white"
-        stroke-width="1.77718"
-        stroke-linecap="round"
+        strokeWidth="1.77718"
+        strokeLinecap="round"
       />
       <path
         d="M11.356 10.9375L4.67488 4.25642"
         stroke="white"
-        stroke-width="1.77718"
-        stroke-linecap="round"
+        strokeWidth="1.77718"
+        strokeLinecap="round"
       />
     </svg>
   );

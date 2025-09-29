@@ -3,7 +3,8 @@ export enum Apps {
   shared,
   'header-pages',
   'sidebar-pages',
-  'records-pages'
+  'records-pages',
+  'documentation-pages'
 }
 
 export enum SharedModule {

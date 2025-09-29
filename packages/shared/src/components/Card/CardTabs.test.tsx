@@ -1,4 +1,5 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: needed for mocking data */
+import '@config/bun-test-config/setup-tests';
 import { describe, expect, it, mock } from 'bun:test';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
@@ -33,7 +34,7 @@ mock.module('@ui/tabs', () => ({
       {children}
     </div>
   ),
-  TabsTrigger: ({ children, ...props }: any) => (
+  TabsTrigger: ({ children, 'data-testid': dataTestId, ...props }: any) => (
     <button data-testid="mock-tabs-trigger" {...props}>
       {children}
     </button>

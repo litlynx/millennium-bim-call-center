@@ -1,3 +1,4 @@
+
 /* Records-Pages rspack config */
 
 import * as path from 'node:path';
