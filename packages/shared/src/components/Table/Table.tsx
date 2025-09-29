@@ -68,7 +68,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ headers, data }) => {
             height: tableHeight !== null ? `${tableHeight}px` : 'fit-content'
           }}
         >
-          <Table className="w-full mb-3">
+          <Table className="w-full mb-3 mt-3">
             <TableHeader>
               <TableRow>
                 {headers.map((header, index) => (

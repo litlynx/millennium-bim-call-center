@@ -3,24 +3,62 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+type ScrollAreaRootProps = React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>;
+type ScrollBarComponentProps = React.ComponentPropsWithoutRef<
+  typeof ScrollAreaPrimitive.ScrollAreaScrollbar
+>;
+type ScrollBarWithoutOrientation = Omit<ScrollBarComponentProps, 'orientation'>;
+
+interface ExtendedScrollAreaProps extends ScrollAreaRootProps {
+  viewportClassName?: string;
+  showScrollX?: boolean;
+  showScrollY?: boolean;
+  verticalScrollBarProps?: ScrollBarWithoutOrientation;
+  horizontalScrollBarProps?: ScrollBarWithoutOrientation;
+}
+
 const ScrollArea = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
->(({ className, style, children, ...props }, ref) => (
-  <ScrollAreaPrimitive.Root
-    ref={ref}
-    className={cn('relative overflow-hidden', className)}
-    style={style}
-    {...props}
-  >
-    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
-      {children}
-    </ScrollAreaPrimitive.Viewport>
-    <ScrollBar orientation="vertical" />
-    <ScrollBar orientation="horizontal" />
-    <ScrollAreaPrimitive.Corner />
-  </ScrollAreaPrimitive.Root>
-));
+  ExtendedScrollAreaProps
+>(({
+  className,
+  style,
+  children,
+  viewportClassName,
+  showScrollX = true,
+  showScrollY = true,
+  verticalScrollBarProps,
+  horizontalScrollBarProps,
+  ...props
+}, ref) => {
+  const mergedVerticalProps: ScrollBarWithoutOrientation = {
+    forceMount: true,
+    ...verticalScrollBarProps
+  };
+
+  const mergedHorizontalProps: ScrollBarWithoutOrientation = {
+    forceMount: true,
+    ...horizontalScrollBarProps
+  };
+
+  return (
+    <ScrollAreaPrimitive.Root
+      ref={ref}
+      className={cn('relative overflow-hidden', className)}
+      style={style}
+      {...props}
+    >
+      <ScrollAreaPrimitive.Viewport
+        className={cn('h-full w-full rounded-[inherit]', viewportClassName)}
+      >
+        {children}
+      </ScrollAreaPrimitive.Viewport>
+      {showScrollY && <ScrollBar orientation="vertical" {...mergedVerticalProps} />}
+      {showScrollX && <ScrollBar orientation="horizontal" {...mergedHorizontalProps} />}
+      {showScrollX && showScrollY && <ScrollAreaPrimitive.Corner />}
+    </ScrollAreaPrimitive.Root>
+  );
+});
 ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName;
 
 const ScrollBar = React.forwardRef<

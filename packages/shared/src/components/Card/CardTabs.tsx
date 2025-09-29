@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/correctness/useUniqueElementIds: is is being used statically */
 
-import { ScrollArea, ScrollBar } from '@ui/scroll-area';
+import { ScrollArea } from '@ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs';
 import * as React from 'react';
 import { cn } from '@/lib/utils';
@@ -34,7 +34,7 @@ const CardTabs: React.ForwardRefExoticComponent<
       tabsListClassName,
       tabsTriggerClassName,
       tabsContentClassName,
-      enableScrollX = true,
+      enableScrollX = false,
       enableScrollY = true,
       ...cardProps
     },
@@ -42,29 +42,31 @@ const CardTabs: React.ForwardRefExoticComponent<
   ) => {
     const defaultTab = defaultValue || (tabs.length > 0 ? tabs[0].value : '');
 
+    const contentWrapperClasses = cn(
+      'bg-white',
+      enableScrollX ? 'inline-block min-w-max' : 'block w-full',
+      enableScrollY ? undefined : 'h-full'
+    );
+
+    const contentClasses = cn('h-full w-full min-h-0 min-w-0', tabsContentClassName);
+
     const tabsContents = tabs.map((tab) => (
-      <TabsContent
-        key={tab.value}
-        value={tab.value}
-        className={cn(`bg-white`, tabsContentClassName)}
-      >
-        {tab.content}
+      <TabsContent key={tab.value} value={tab.value} className={contentClasses}>
+        <div className={contentWrapperClasses}>{tab.content}</div>
       </TabsContent>
     ));
 
     const hasScrollableAxis = enableScrollX || enableScrollY;
 
-    const scrollAreaClassName = cn(
-      'h-full flex-1',
-      !enableScrollX &&
-        '[&_[data-radix-scroll-area-viewport]]:overflow-x-hidden [&_[data-orientation="horizontal"]]:hidden [&_[data-orientation="horizontal"]]:pointer-events-none',
-      !enableScrollY &&
-        '[&_[data-radix-scroll-area-viewport]]:overflow-y-hidden [&_[data-orientation="vertical"]]:hidden [&_[data-orientation="vertical"]]:pointer-events-none'
+    const viewportClassName = cn(
+      'h-full w-full min-h-0 min-w-0',
+      enableScrollX ? 'overflow-x-auto' : 'overflow-x-hidden',
+      enableScrollY ? 'overflow-y-auto' : 'overflow-y-hidden'
     );
 
     return (
       <Card ref={ref} {...cardProps} disableScrollArea>
-        <Tabs defaultValue={defaultTab} className="w-full h-full flex flex-col">
+        <Tabs defaultValue={defaultTab} className="w-full h-full min-h-0 flex flex-col">
           <TabsList className={tabsListClassName}>
             {tabs.map((tab) => (
               <TabsTrigger
@@ -79,25 +81,24 @@ const CardTabs: React.ForwardRefExoticComponent<
           </TabsList>
 
           {hasScrollableAxis ? (
-            <ScrollArea className={scrollAreaClassName}>
+            <ScrollArea
+              className="flex-1 h-full min-h-0 min-w-0"
+              viewportClassName={viewportClassName}
+              showScrollX={enableScrollX}
+              showScrollY={enableScrollY}
+              verticalScrollBarProps={{
+                className:
+                  'w-2 p-0 rounded-full bg-gray-300/35 [&>div]:bg-primary-500 [&>div]:rounded-full mt-4 h-[calc(100%_-_1rem)]'
+              }}
+              horizontalScrollBarProps={{
+                className:
+                  'h-2 p-0 rounded-full bg-gray-300/35 [&>div]:bg-primary-500 [&>div]:rounded-full'
+              }}
+            >
               {tabsContents}
-              {enableScrollY && (
-                <ScrollBar
-                  id="scroll-bar"
-                  forceMount
-                  className="w-2 p-0 rounded-full bg-gray-300/35 [&>div]:bg-primary-500 [&>div]:rounded-full mt-4 h-[calc(100%_-_1rem)]"
-                />
-              )}
-              {enableScrollX && (
-                <ScrollBar
-                  orientation="horizontal"
-                  forceMount
-                  className="h-2 p-0 rounded-full bg-gray-300/35 [&>div]:bg-primary-500 [&>div]:rounded-full ml-4 w-[calc(100%_-_1rem)]"
-                />
-              )}
             </ScrollArea>
           ) : (
-            <div className="flex-1 h-full overflow-hidden">{tabsContents}</div>
+            <div className="flex-1 h-full min-h-0 min-w-0 overflow-hidden">{tabsContents}</div>
           )}
         </Tabs>
       </Card>

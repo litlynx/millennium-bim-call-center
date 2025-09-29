@@ -95,22 +95,22 @@ export interface IconProps {
   onClick?: () => void;
 }
 
-const Icon: React.FC<IconProps> = ({ type, rounded, size = 'sm', className = '', onClick }) => {
+const Icon: React.FC<IconProps> = ({ type, rounded, size, className = '', onClick }) => {
   const IconComponent = iconsMap[type];
   if (!IconComponent) return null;
   let sizeClasses: string;
   switch (size) {
     case 'sm':
-      sizeClasses = 'w-3 h-3';
+      sizeClasses = 'w-5 h-5';
       break;
     case 'md':
-      sizeClasses = 'w-5 h-5';
+      sizeClasses = 'w-6 h-6';
       break;
     case 'lg':
       sizeClasses = 'w-7 h-7';
       break;
     default:
-      sizeClasses = 'w-3 h-3';
+      sizeClasses = 'w-10';
   }
   const radiusClasses = rounded ? 'rounded-full' : 'rounded-md';
 
@@ -118,7 +118,7 @@ const Icon: React.FC<IconProps> = ({ type, rounded, size = 'sm', className = '',
     <span
       onClick={onClick}
       className={cn(
-        'inline-flex items-center justify-center p-[6px] [&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain',
+        'inline-flex items-center justify-center p-[6px] aspect-square [&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain',
         sizeClasses,
         radiusClasses,
         className

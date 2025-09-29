@@ -95,7 +95,7 @@ const dataTableTransactions = [
         content: (
           <div className="flex items-center gap-2">
             <span>Processado</span>
-            <Icon type="eye" className="p-0 cursor-pointer" />
+            <Icon type="eye" size="sm" className="p-0 cursor-pointer" />
           </div>
         ),
         value: 'Processado'
@@ -115,7 +115,7 @@ const dataTableTransactions = [
         content: (
           <div className="flex items-center gap-2">
             <span>Erro</span>
-            <Icon type="eye" className="p-0 cursor-pointer" />
+            <Icon type="eye" size="sm" className="p-0 cursor-pointer" />
           </div>
         ),
         value: 'Erro'
@@ -135,7 +135,7 @@ const dataTableTransactions = [
         content: (
           <div className="flex items-center gap-2">
             <span>Processado</span>
-            <Icon type="eye" className="p-0 cursor-pointer" />
+            <Icon type="eye" size="sm" className="p-0 cursor-pointer" />
           </div>
         ),
         value: 'Processado'
@@ -305,14 +305,14 @@ const CancelsBlocked: React.FC = () => {
           user={user}
         />
 
-        <div className="mt-3 flex flex-1 min-h-0 flex-col rounded-[1.25rem] bg-white">
-          <div className="flex flex-1 min-h-0 flex-col overflow-y-auto px-9 py-6">
-            <div className="flex flex-1 min-h-0 flex-col gap-6">
-              <div className="flex flex-1 min-h-[150px] flex-col">
+        <div className="mt-3 flex flex-1 min-h-0 flex-col rounded-[1.25rem] bg-white overflow-hidden">
+          <div className="overflow-y-auto px-9 py-6">
+            <div className="flex flex-col gap-6">
+              <div className="min-h-[150px]">
                 <Table headers={headersTablePrimary} data={dataTablePrimary} />
               </div>
 
-              <div className="flex flex-1 min-h-[200px] flex-col">
+              <div className="min-h-[200px]">
                 <CardTabs
                   className="flex h-full min-h-0 flex-col"
                   cardContentClassName="h-full min-h-0 p-0"
@@ -324,7 +324,7 @@ const CancelsBlocked: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-auto pt-6">
+            <div className="pt-6">
               <TextArea
                 title="Registo"
                 placeholder="Motivo da Chamada"
@@ -338,9 +338,7 @@ const CancelsBlocked: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex min-h-0 flex-col">
-        <ScriptDetail title="Script" />
-      </div>
+      <ScriptDetail title="Script" />
     </div>
   );
 };

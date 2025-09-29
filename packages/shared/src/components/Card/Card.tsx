@@ -85,7 +85,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           data-testid={contentTestId}
         >
           {disableScrollArea ? (
-            <div className="flex flex-1 min-h-0 flex-col gap-4 min-w-max">{children}</div>
+            <div className="flex flex-1 min-h-0 flex-col gap-4 min-w-0">{children}</div>
           ) : (
             <ScrollArea className="flex-1">
               <div className="flex flex-col gap-4 min-w-max">{children}</div>
