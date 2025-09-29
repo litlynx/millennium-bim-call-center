@@ -102,16 +102,16 @@ const Icon: React.FC<IconProps> = ({ type, rounded, size, className = '', onClic
   let sizeClasses: string;
   switch (size) {
     case 'sm':
-      sizeClasses = 'w-5 h-5';
-      break;
-    case 'md':
-      sizeClasses = 'w-6 h-6';
-      break;
-    case 'lg':
       sizeClasses = 'w-7 h-7';
       break;
+    case 'md':
+      sizeClasses = 'w-10 h-10';
+      break;
+    case 'lg':
+      sizeClasses = 'w-12 h-12';
+      break;
     default:
-      sizeClasses = 'w-10';
+      sizeClasses = 'w-10 h-10';
   }
   const radiusClasses = rounded ? 'rounded-full' : 'rounded-md';
 

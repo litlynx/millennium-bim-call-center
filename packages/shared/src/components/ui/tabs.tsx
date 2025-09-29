@@ -12,7 +12,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      'inline-flex gap-2 items-center justify-start w-full bg-muted text-muted-foreground border-b border-b-gray-100',
+      'inline-flex gap-2 items-center justify-start w-full bg-muted text-muted-foreground border-b-2 border-b-gray-300',
       className
     )}
     {...props}
@@ -23,17 +23,21 @@ TabsList.displayName = TabsPrimitive.List.displayName;
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => (
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      // Do not stretch to full width so the underline matches label width
-      // Rounded underline via pseudo-element
-      'relative inline-flex w-full items-center justify-start whitespace-nowrap py-1 text-sm text-gray-500 font-semibold transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 after:absolute after:left-0 after:bottom-[-1px] after:h-[5px] after:w-full after:rounded-full after:bg-primary-500 after:content-[""] after:opacity-0 after:transition after:duration-200 data-[state=active]:text-primary-500 data-[state=active]:after:opacity-100',
+      // Flex-1 to occupy equal width, full space distribution
+      // Text aligned to left, no border on trigger itself
+      'group/trigger relative flex flex-1 items-center justify-start whitespace-nowrap py-1 px-3 text-sm text-gray-500 font-semibold transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-primary-500',
       className
     )}
     {...props}
-  />
+  >
+    <span className="relative after:absolute after:left-0 after:bottom-[-6px] after:h-1 after:w-0 after:bg-primary-500 after:rounded-full after:content-[''] after:transition-all after:duration-200 group-data-[state=active]/trigger:after:w-full">
+      {children}
+    </span>
+  </TabsPrimitive.Trigger>
 ));
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
