@@ -1,4 +1,4 @@
-import { Icon, Table, Tooltip } from 'shared/components';
+import { Icon, Popover, Table } from 'shared/components';
 
 const headersTableTransactions = [
   { key: 'channel', label: 'Canal' },
@@ -37,7 +37,7 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
           <div className="flex items-center gap-2">
             <span>{row.stateTransaction}</span>
 
-            <Tooltip
+            <Popover
               title="Detalhes"
               content={
                 <div>
@@ -63,7 +63,7 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
               button="Fechar"
             >
               <Icon type="eye" className="p-0 h-[11px] w-[18px] cursor-pointer" />
-            </Tooltip>
+            </Popover>
           </div>
         )
       }
