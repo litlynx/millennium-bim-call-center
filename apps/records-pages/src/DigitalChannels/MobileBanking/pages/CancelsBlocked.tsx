@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import type React from 'react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
@@ -13,6 +14,8 @@ import {
   useTextArea
 } from 'shared/components';
 import { useUserStore } from 'shared/stores';
+import type { CancelsBlockedInterface } from 'src/api/CancelsBlocked/interfaces';
+import { GET } from 'src/api/CancelsBlocked/route';
 import ConfirmModal from 'src/DigitalChannels/MobileBanking/components/cancelsBlocked/ConfirmModal';
 import FraudModal from 'src/DigitalChannels/MobileBanking/components/cancelsBlocked/FraudModal';
 import SuccessModal from 'src/DigitalChannels/MobileBanking/components/cancelsBlocked/SuccessModal';
@@ -22,11 +25,29 @@ import { useTableData } from '../hooks/useTableData';
 import { mockPrimaryRows } from '../mocks/mockPrimaryRows';
 import { mockTransactionRows } from '../mocks/mockTransactionRows';
 
+export const CANCELS_BLOCKED_QUERY_KEY = 'cancels-blocked';
+
+async function fetchCancelsBlocked(): Promise<CancelsBlockedInterface> {
+  return await GET();
+}
+
+function useCancelsBlocked() {
+  return useQuery({
+    queryKey: [CANCELS_BLOCKED_QUERY_KEY],
+    queryFn: fetchCancelsBlocked,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 3
+  });
+}
+
 const CancelsBlocked: React.FC = () => {
   const [showFraudModal, setShowFraudModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [lastActionType, setLastActionType] = useState<'block' | 'delete' | null>(null);
   const [primaryRows, setPrimaryRows] = useState(mockPrimaryRows);
+
+  const { data, isLoading } = useCancelsBlocked();
+
   const handleConfirm = () => {
     if (modalType === 'block' && selectedRowId) {
       setPrimaryRows((rows) =>
@@ -50,6 +71,7 @@ const CancelsBlocked: React.FC = () => {
       setShowFraudModal(true);
     }
   };
+
   const handleFraud = () => {
     try {
       setShowFraudModal(false);
@@ -70,6 +92,7 @@ const CancelsBlocked: React.FC = () => {
     setSelectedRowId(null);
     setModalType(null);
   };
+
   const {
     cancels,
     selectedContact,
@@ -83,16 +106,19 @@ const CancelsBlocked: React.FC = () => {
     primaryRows: primaryRows,
     transactionRows: mockTransactionRows
   });
+
   const user = {
     customerName: useUserStore((u) => u.getCustomerName()),
     cif: useUserStore((u) => u.getCif()),
     accountNumber: useUserStore((u) => u.getAccountNumber())
   };
+
   const textArea = useTextArea({
     required: true,
     maxLength: 200,
     initialValue: ''
   });
+
   const handleSubmit = () => {
     const isValid = textArea.validate();
 
@@ -189,6 +215,14 @@ const CancelsBlocked: React.FC = () => {
       )
     }
   ];
+
+  if (!data && !isLoading) {
+    return (
+      <div className="mt-3 rounded-[1.25rem] bg-white py-6 px-9">
+        <span className="text-gray-500">Dados não disponíveis</span>
+      </div>
+    );
+  }
 
   return (
     <>

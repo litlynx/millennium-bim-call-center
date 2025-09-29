@@ -11,7 +11,6 @@ export type { IconProps, IconType } from './Icon/Icon';
 export { default as Icon } from './Icon/Icon';
 export { default as Input } from './Input/Input';
 export { default as Modal } from './Modal/Modal';
-export { default as Tooltip } from './Tooltip/TooltipComponent';
 export type {
   ChannelAndServiceProps,
   PageHeaderProps
@@ -21,5 +20,6 @@ export { default as ScriptDetail } from './ScriptDetail/ScriptDetail';
 export { default as Table } from './Table/Table';
 export { useTextArea } from './TextArea';
 export { default as TextArea } from './TextArea/TextArea';
+export { default as Tooltip } from './Tooltip/TooltipComponent';
 // ShadCN UI components
 export * from './ui';
