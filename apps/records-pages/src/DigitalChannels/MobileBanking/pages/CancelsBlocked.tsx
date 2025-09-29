@@ -219,7 +219,6 @@ const CancelsBlocked: React.FC = () => {
             Fechar
           </Button>
         </div>
-
         <ConfirmModal
           isOpen={modalOpen}
           onOpenChange={(open) => {
@@ -230,7 +229,6 @@ const CancelsBlocked: React.FC = () => {
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         />
-
         <FraudModal
           isOpen={showFraudModal}
           onOpenChange={(open) => {
@@ -238,7 +236,6 @@ const CancelsBlocked: React.FC = () => {
           }}
           onChoice={handleFraud}
         />
-
         <SuccessModal
           isOpen={showSuccessModal}
           onOpenChange={(open) => {
