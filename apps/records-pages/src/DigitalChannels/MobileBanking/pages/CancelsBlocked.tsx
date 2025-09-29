@@ -226,7 +226,7 @@ const CancelsBlocked: React.FC = () => {
 
   return (
     <>
-      <div className="grid h-full min-h-0 grid-cols-2 gap-4 overflow-hidden">
+      <div className="grid h-full min-h-0 grid-cols-2 gap-4 overflow-hidden w-full">
         <Helmet>
           <title>Cancelamento/Bloqueio</title>
         </Helmet>
