@@ -3,9 +3,6 @@
   "workspaces": {
     "": {
       "name": "millenium-bim-call-center",
-      "dependencies": {
-        "@radix-ui/react-tooltip": "^1.2.8",
-      },
       "devDependencies": {
         "@biomejs/biome": "^2.2.4",
         "@commitlint/config-conventional": "^19.8.1",
