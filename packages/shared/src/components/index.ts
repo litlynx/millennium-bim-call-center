@@ -20,6 +20,6 @@ export { default as ScriptDetail } from './ScriptDetail/ScriptDetail';
 export { default as Table } from './Table/Table';
 export { useTextArea } from './TextArea';
 export { default as TextArea } from './TextArea/TextArea';
-
+export { default as Tooltip } from './Tooltip/TooltipComponent';
 // ShadCN UI components
 export * from './ui';
