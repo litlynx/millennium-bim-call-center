@@ -60,7 +60,7 @@ export const sidebarMapData: SidebarItem[] = [
     id: 'home',
     icon: 'home',
     label: 'Início',
-    path: '/home'
+    path: '/'
   },
   {
     id: 'registos',
