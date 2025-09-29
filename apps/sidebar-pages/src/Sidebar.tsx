@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import { Icon } from 'shared/components';
 import { cn } from 'shared/lib/utils';
@@ -27,12 +27,29 @@ const SidebarItem: React.FC<Omit<SidebarItemProps, 'isActive'>> = ({
 }) => {
   const location = useLocation();
 
-  const checkRouteMatch = () => {
+  const isRouteMatch = useMemo(() => {
     const currentPath = location.pathname;
-    return item.id && currentPath.startsWith(`/${item.id}`);
-  };
 
-  const isItemActive = item.path ? checkRouteMatch() : checkRouteMatch();
+    // Special case: root path with empty id (e.g., localhost:3000 with id="")
+    if (currentPath === '/' && (!item.id || item.id === '')) {
+      return true;
+    }
+
+    // Handle edge cases: empty id or empty path (but not both root + empty id)
+    if (!item.id || item.id === '') {
+      return false;
+    }
+
+    // Normalize paths by removing trailing slashes
+    const normalizedCurrentPath = currentPath.replace(/\/+$/, '') || '/';
+    const normalizedItemPath = `/${item.id}`.replace(/\/+$/, '') || '/';
+
+    // Exact match for root level items or startsWith for nested routes
+    return (
+      normalizedCurrentPath === normalizedItemPath ||
+      normalizedCurrentPath.startsWith(`${normalizedItemPath}/`)
+    );
+  }, [location.pathname, item.id]);
 
   const handleClick = () => {
     if (hasMenu) {
@@ -49,14 +66,14 @@ const SidebarItem: React.FC<Omit<SidebarItemProps, 'isActive'>> = ({
         type={item.icon}
         className={cn(
           'p-0 w-[25px] h-[25px] transition-all duration-300',
-          isItemActive || isPendingActive ? 'text-white' : 'text-gray-700 group-hover:text-white'
+          isRouteMatch || isPendingActive ? 'text-white' : 'text-gray-700 group-hover:text-white'
         )}
         size="sm"
       />
       <span
         className={cn(
           'transition-all duration-300 whitespace-nowrap font-medium text-xl',
-          isItemActive || isPendingActive ? 'text-white' : 'text-gray-800 group-hover:text-white',
+          isRouteMatch || isPendingActive ? 'text-white' : 'text-gray-800 group-hover:text-white',
           expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
         )}
         style={{
@@ -73,7 +90,7 @@ const SidebarItem: React.FC<Omit<SidebarItemProps, 'isActive'>> = ({
   const commonClassName = cn(
     'flex items-center gap-3 pl-10 pr-7 min-h-[4rem] max-h-[4rem] transition-all duration-300 relative rounded-r-[20px] group text-left cursor-pointer',
     expanded ? 'w-full' : 'w-fit',
-    isItemActive || isPendingActive
+    isRouteMatch || isPendingActive
       ? 'bg-primary-500 text-white'
       : 'text-gray-700 hover:bg-primary-500 hover:text-white',
     className
@@ -161,7 +178,7 @@ const SideBar: React.FC = () => {
     <nav
       // h-[calc(100vh_-_122px_-_72px)]
       className={cn(
-        'fixed z-50 h-[calc(100vh_-_37.5px)] justify-between flex flex-col items-center py-3 gap-2 bg-white transition-all duration-300',
+        'fixed z-50 h-full justify-between flex flex-col items-center py-3 gap-2 bg-white transition-all duration-300',
         expanded && 'w-72 shadow-[0_4px_4px_0_#00000040] border border-gray-100'
       )}
       onMouseEnter={handleMouseEnter}
