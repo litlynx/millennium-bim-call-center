@@ -8,6 +8,7 @@ export * from './CallBackIcon';
 export * from './CallCenterWorkerIcon';
 export * from './CallDotsIcon';
 export * from './CellPhoneIcon';
+export * from './CheckIcon';
 export * from './ChevronDownIcon';
 export * from './ChevronRightIcon';
 export * from './CloseBlackIcon';
