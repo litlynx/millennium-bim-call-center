@@ -26,6 +26,7 @@ import { mockPrimaryRows } from '../mocks/mockPrimaryRows';
 import { mockTransactionRows } from '../mocks/mockTransactionRows';
 
 export const CANCELS_BLOCKED_QUERY_KEY = 'cancels-blocked';
+const TITLE = 'Smart IZI - Cancelamento/Bloqueio';
 
 async function fetchCancelsBlocked(): Promise<CancelsBlockedInterface> {
   return await GET();
@@ -235,7 +236,7 @@ const CancelsBlocked: React.FC = () => {
           <PageHeader
             type="channelAndService"
             channelCategory="Canais Digitais"
-            serviceTitle="Smart IZI - Cancelamento/Bloqueio"
+            serviceTitle={TITLE}
             user={user}
           />
 
@@ -270,7 +271,7 @@ const CancelsBlocked: React.FC = () => {
             </div>
           </div>
         </div>
-        <ScriptDetail title="Script" />
+        <ScriptDetail title="Script" breadcrumbs={[{ label: TITLE }]} />
       </div>
 
       <ConfirmModal
