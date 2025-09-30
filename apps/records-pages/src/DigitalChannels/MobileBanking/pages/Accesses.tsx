@@ -43,7 +43,7 @@ const Accesses: React.FC = () => {
         />
 
         <div className="mt-3 flex flex-1 min-h-0 flex-col rounded-[1.25rem] bg-white overflow-hidden">
-          <div className="overflow-y-auto px-9 py-6">
+          <div className="overflow-y-auto px-9 py-6 flex flex-col h-full justify-between">
             <div className="flex flex-col gap-6">
               <div className="min-h-[100px]">
                 <PrimaryTable data={mockPrimaryRows} />
