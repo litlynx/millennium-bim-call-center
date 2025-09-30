@@ -38,7 +38,7 @@ const Accesses: React.FC = () => {
         <PageHeader
           type="channelAndService"
           channelCategory="Canais Digitais"
-          serviceTitle="Smart IZI - Cancelamento/Bloqueio"
+          serviceTitle="Smart IZI - Acessos"
           user={user}
         />
 
