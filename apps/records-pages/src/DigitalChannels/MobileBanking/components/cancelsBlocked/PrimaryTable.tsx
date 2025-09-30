@@ -1,4 +1,5 @@
-import { Badge, Icon, Table } from 'shared/components';
+import { Icon, Table } from 'shared/components';
+import { StateBadge } from './StateBadge';
 
 const headersTablePrimary = [
   { key: 'company-name', label: 'Operadora', boldColumn: true },
@@ -35,9 +36,7 @@ export function PrimaryTable({ data, onBlock, onDelete }: PrimaryTableProps) {
       {
         content: (
           <div className="flex justify-center">
-            <Badge variant={row.badgeText === 'Inativo' ? 'inactive' : 'active'}>
-              {row.badgeText}
-            </Badge>
+            <StateBadge state={row.badgeText} />
           </div>
         )
       },
