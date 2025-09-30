@@ -1,5 +1,5 @@
-import { mockTransactionRows } from 'src/DigitalChannels/mocks/mockTransactionRows';
-import { mockPrimaryRows } from '../../DigitalChannels/mocks/mockPrimaryRows';
+import { mockTransactionRows } from 'src/DigitalChannels/__mocks__/mockTransactionRows';
+import { mockPrimaryRows } from '../../DigitalChannels/__mocks__/mockPrimaryRows';
 
 import { getValidationErrorResponse } from '../errors';
 import {
