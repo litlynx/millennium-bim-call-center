@@ -1,4 +1,6 @@
 // Common UI components
+
+export { default as Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
 export { default as Button } from './Button/Button';
 export { default as ButtonDropdown } from './ButtonDropdown/ButtonDropdown';
 export { default as Card } from './Card/Card';

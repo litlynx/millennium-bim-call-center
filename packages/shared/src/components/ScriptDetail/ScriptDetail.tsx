@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import Icon from '@/components/Icon';
 import { cn } from '@/lib/utils';
+import Breadcrumbs, { type BreadcrumbItemType } from '../Breadcrumbs/Breadcrumbs';
 
 interface ScriptsDetailsProps {
   title: string;
@@ -8,11 +9,13 @@ interface ScriptsDetailsProps {
   headerClassName?: string;
   bodyClassName?: string;
   className?: string;
+  breadcrumbs: BreadcrumbItemType[];
 }
 
 export default function ScriptsDetails({
   title,
   children,
+  breadcrumbs,
   headerClassName = '',
   bodyClassName = '',
   className = ''
@@ -38,6 +41,7 @@ export default function ScriptsDetails({
         </div>
       </header>
 
+      <Breadcrumbs items={breadcrumbs} className="pl-[1.6875rem] pt-[0.25rem]" />
       <main className={cn(`p-[1.6875rem]`, bodyClassName)}>{children}</main>
     </article>
   );
