@@ -36,7 +36,7 @@ const Accesses: React.FC = () => {
 
   const textArea = useTextArea({
     required: true,
-    maxLength: 200,
+    maxLength: 2000,
     initialValue: ''
   });
 
@@ -51,6 +51,7 @@ const Accesses: React.FC = () => {
     }
   };
 
+
   if (!data && !isLoading) {
     return (
       <div className="mt-3 rounded-[1.25rem] bg-white py-6 px-9">
@@ -58,6 +59,15 @@ const Accesses: React.FC = () => {
       </div>
     );
   }
+
+  const handleSendEmail = () => {
+    if (textArea.value.trim() === '') {
+      console.log('Cannot send email: Text area is empty.');
+      return;
+    }
+    console.log('Sending email to bocanaisremotos@bim.co.mz', textArea.value);
+  };
+
 
   return (
     <div className="grid h-full min-h-0 grid-cols-2 gap-4 overflow-hidden w-full">
@@ -87,9 +97,12 @@ const Accesses: React.FC = () => {
                 placeholder="Motivo da Chamada"
                 {...textArea.textAreaProps}
               />
-              <Button className="mt-[2.6875rem] ml-auto block" onClick={handleSubmit}>
-                Fechar
-              </Button>
+              <div className="mt-[2.6875rem] flex justify-end gap-3">
+                <Button variant="outline" onClick={handleSendEmail}>
+                  Encaminhar
+                </Button>
+                <Button onClick={handleSubmit}>Fechar</Button>
+              </div>
             </div>
           </div>
         </div>
