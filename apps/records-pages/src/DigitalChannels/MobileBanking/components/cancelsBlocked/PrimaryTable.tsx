@@ -56,6 +56,7 @@ export function PrimaryTable({ data, onBlock, onDelete }: PrimaryTableProps) {
             )}
             {onDelete && (
               <button type="button" onClick={() => onDelete(row.id)}>
+
                 <Icon type="trashBin" className="h-[17px] w-[17px] p-0 cursor-pointer" />
               </button>
             )}
