@@ -10,6 +10,7 @@ import { PrimaryTable } from '../components/cancelsBlocked/PrimaryTable';
 import { mockPrimaryRows } from '../mocks/mockPrimaryRows';
 
 export const ACCESSES_QUERY_KEY = 'accesses';
+const TITLE = 'Smart IZI - Acessos';
 
 async function fetchAccesses(): Promise<AccessesInterface> {
   return await GET();
@@ -51,7 +52,6 @@ const Accesses: React.FC = () => {
     }
   };
 
-
   if (!data && !isLoading) {
     return (
       <div className="mt-3 rounded-[1.25rem] bg-white py-6 px-9">
@@ -68,14 +68,13 @@ const Accesses: React.FC = () => {
     console.log('Sending email to bocanaisremotos@bim.co.mz', textArea.value);
   };
 
-
   return (
     <div className="grid h-full min-h-0 grid-cols-2 gap-4 overflow-hidden w-full">
       <Helmet>
         <title>Acessos</title>
       </Helmet>
 
-      <div className="flex min-h-0 flex-col overflow-hidden">
+      <div className="flex min-h-0 flex-col overflow-hidden" data-testid="accesses-page-data">
         <PageHeader
           type="channelAndService"
           channelCategory="Canais Digitais"
@@ -86,12 +85,12 @@ const Accesses: React.FC = () => {
         <div className="mt-3 flex flex-1 min-h-0 flex-col rounded-[1.25rem] bg-white overflow-hidden">
           <div className="overflow-y-auto px-9 py-6 flex flex-col h-full justify-between">
             <div className="flex flex-col gap-6">
-              <div className="min-h-[100px]">
+              <div className="min-h-[100px]" data-testid="primary-table-component">
                 <PrimaryTable data={primaryRows} />
               </div>
             </div>
 
-            <div className="pt-6">
+            <div className="pt-6" data-testid="accesses-footer-section">
               <TextArea
                 title="Registo"
                 placeholder="Motivo da Chamada"
@@ -107,7 +106,7 @@ const Accesses: React.FC = () => {
           </div>
         </div>
       </div>
-      <ScriptDetail title="Script" />
+      <ScriptDetail title="Script" breadcrumbs={[{ label: TITLE }]} />
     </div>
   );
 };
