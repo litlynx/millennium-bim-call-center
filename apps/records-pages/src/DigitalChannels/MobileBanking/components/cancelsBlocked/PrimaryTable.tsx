@@ -21,8 +21,8 @@ export interface PrimaryRow {
 
 interface PrimaryTableProps {
   data: PrimaryRow[];
-  onBlock: (id: string) => void;
-  onDelete: (id: string) => void;
+  onBlock?: (id: string) => void;
+  onDelete?: (id: string) => void;
 }
 
 export function PrimaryTable({ data, onBlock, onDelete }: PrimaryTableProps) {
@@ -44,10 +44,10 @@ export function PrimaryTable({ data, onBlock, onDelete }: PrimaryTableProps) {
         content:
           row.type === 'Principal' ? (
             <div className="flex items-center gap-4">
-              <button type="button" onClick={() => onBlock(row.id)}>
+              <button type="button" onClick={() => onBlock?.(row.id)}>
                 <Icon type="block" className="h-[17px] w-[17px] p-0 cursor-pointer" />
               </button>
-              <button type="button" onClick={() => onDelete(row.id)}>
+              <button type="button" onClick={() => onDelete?.(row.id)}>
                 <Icon type="trashBin" className="h-[17px] w-[17px] p-0 cursor-pointer" />
               </button>
             </div>
