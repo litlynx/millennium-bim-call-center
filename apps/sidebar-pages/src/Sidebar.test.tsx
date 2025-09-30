@@ -32,9 +32,39 @@ const mockBottomSidebarMapData = [
   }
 ];
 
+const mockMenuMapData = [
+  {
+    id: 'canais-digitais',
+    label: 'Canais Digitais',
+    parentSidebarId: 'registos',
+    submenuIds: ['mobile-banking-submenu']
+  }
+];
+
+const mockSubmenuMapData = [
+  {
+    id: 'mobile-banking-submenu',
+    label: 'Mobile Banking (IZI/SMART IZI)',
+    parentMenuId: 'canais-digitais',
+    submenuLinksIds: ['acessos']
+  }
+];
+
+const mockSubmenuLinks = [
+  {
+    id: 'acessos',
+    label: 'Acessos',
+    path: '/registos/canais-digitais/acessos',
+    parentSubmenuId: 'mobile-banking-submenu'
+  }
+];
+
 mock.module('./data/menuData', () => ({
   sidebarMapData: mockSidebarMapData,
-  bottomSidebarMapData: mockBottomSidebarMapData
+  bottomSidebarMapData: mockBottomSidebarMapData,
+  menuMapData: mockMenuMapData,
+  submenuMapData: mockSubmenuMapData,
+  submenuLinks: mockSubmenuLinks
 }));
 
 // Mock shared components
