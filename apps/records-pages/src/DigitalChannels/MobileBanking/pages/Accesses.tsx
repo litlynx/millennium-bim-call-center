@@ -1,21 +1,27 @@
 import type * as React from 'react';
 import { Helmet } from 'react-helmet';
-import { StateBadge } from '../components/accesses/StateBadge';
+import { PageHeader } from 'shared/components';
+import { useUserStore } from 'shared/stores';
 
 const Accesses: React.FC = () => {
+  const user = {
+    customerName: useUserStore((u) => u.getCustomerName()),
+    cif: useUserStore((u) => u.getCif()),
+    accountNumber: useUserStore((u) => u.getAccountNumber())
+  };
+
   return (
     <>
       <Helmet>
         <title>Acessos</title>
       </Helmet>
-      <div className="flex flex-col gap-4 p-4">
-        <h2>Acessos Mobile Banking</h2>
-        <div className="flex flex-col gap-2">
-          <StateBadge state="Activo" />
-          <StateBadge state="Inativo" />
-          <StateBadge state="Activo para consultas" />
-        </div>
-      </div>
+      <PageHeader
+        type="channelAndService"
+        channelCategory="Canais Digitais"
+        serviceTitle="Smart IZI - Cancelamento/Bloqueio"
+        user={user}
+      />
+      <h2>Acessos Mobile Banking</h2>
     </>
   );
 };
