@@ -1,8 +1,15 @@
 import type * as React from 'react';
 import { Helmet } from 'react-helmet';
 import { PageHeader } from 'shared/components';
+import { useUserStore } from 'shared/stores';
 
 const Accesses: React.FC = () => {
+  const user = {
+    customerName: useUserStore((u) => u.getCustomerName()),
+    cif: useUserStore((u) => u.getCif()),
+    accountNumber: useUserStore((u) => u.getAccountNumber())
+  };
+
   return (
     <>
       <Helmet>
@@ -12,11 +19,7 @@ const Accesses: React.FC = () => {
         type="channelAndService"
         channelCategory="Canais Digitais"
         serviceTitle="Smart IZI - Cancelamento/Bloqueio"
-        user={{
-          customerName: 'Jacinto Fazenda',
-          cif: '123456789',
-          accountNumber: '12345-6'
-        }}
+        user={user}
       />
       <h2>Acessos Mobile Banking</h2>
     </>
