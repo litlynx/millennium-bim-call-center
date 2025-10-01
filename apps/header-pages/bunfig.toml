@@ -6,6 +6,8 @@ coveragePathIgnorePatterns = [
   "**/@config/**",
   "**/types/**",
   "**/__mocks__/**",
+  "**/components/ui/**",
+  "**/assets/**",
   "**/e2e/**",
 ]
 
