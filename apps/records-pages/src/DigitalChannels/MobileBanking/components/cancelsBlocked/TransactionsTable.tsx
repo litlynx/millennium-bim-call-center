@@ -27,14 +27,7 @@ interface TransactionsTableProps {
 }
 
 export function TransactionsTable({ data }: TransactionsTableProps) {
-  const sortedData = [...data].sort((a, b) => {
-    const toDate = (date: string, hour: string) => {
-      const [d, m, y] = date.split('-').map(Number);
-      const [h, min, s] = hour.split(':').map(Number);
-      return new Date(y, m - 1, d, h, min, s).getTime();
-    };
-    return toDate(b.date, b.hour) - toDate(a.date, a.hour);
-  });
+  const sortedData = [...data].sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)));
 
   const tableData = sortedData.map((row: TransactionRow) => ({
     ...row,
