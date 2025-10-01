@@ -521,7 +521,7 @@ type CardProps = {
   cardContentClassName?: string;
   disableScrollArea?: boolean;
   titleAriaLabel?: string;
-  ['data-testid']?: string;
+  'data-testid'?: string;
 };
 
 const tryExtractNavigatePath = (handler?: () => void): string | null => {
@@ -550,7 +550,7 @@ const Card = ({
   cardContentClassName,
   disableScrollArea,
   titleAriaLabel,
-  ['data-testid']: dataTestId,
+  'data-testid': dataTestId,
   ...rest
 }: CardProps) => {
   const resolvedDataTestId = dataTestId ?? 'card-wrapper';
@@ -674,10 +674,26 @@ const Popover = ({ title, content, children, side, variant, button }: PopoverPro
 
 const CardTabsScrollArea = ({ children }: { children: ReactNode }) => <div>{children}</div>;
 
-const ScriptDetail = ({ title, content }: { title?: ReactNode; content?: ReactNode }) => (
-  <section data-testid="script-detail">
-    <header data-testid="script-detail-title">{normalizeNode(title)}</header>
-    <article data-testid="script-detail-content">{normalizeNode(content)}</article>
+const ScriptDetail = ({
+  title,
+  children,
+  headerClassName,
+  bodyClassName,
+  className
+}: {
+  title?: ReactNode;
+  children?: ReactNode;
+  headerClassName?: string;
+  bodyClassName?: string;
+  className?: string;
+}) => (
+  <section data-testid="script-detail" data-class-name={className}>
+    <header data-testid="script-detail-title" data-class-name={headerClassName}>
+      {normalizeNode(title)}
+    </header>
+    <article data-testid="script-detail-content" data-class-name={bodyClassName}>
+      {normalizeNode(children)}
+    </article>
   </section>
 );
 
