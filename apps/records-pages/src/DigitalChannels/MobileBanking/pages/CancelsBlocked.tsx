@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import type React from 'react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { useNavigate } from 'react-router';
 import {
   Button,
   ButtonDropdown,
@@ -45,6 +46,7 @@ const CancelsBlocked: React.FC = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [lastActionType, setLastActionType] = useState<'block' | 'delete' | null>(null);
   const [primaryRows, setPrimaryRows] = useState(mockPrimaryRows);
+  const navigate = useNavigate();
 
   const { data, isLoading } = useCancelsBlocked();
 
@@ -125,6 +127,8 @@ const CancelsBlocked: React.FC = () => {
     if (isValid) {
       console.log('Form submitted successfully!');
       console.log('Text content:', textArea.value);
+
+      navigate('/vision-360');
     } else {
       console.log('Form validation failed:', textArea.error);
     }
