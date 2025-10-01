@@ -13,16 +13,57 @@ mock.module('./Card', () => ({
     </div>
   ))
 }));
-mock.module('@ui/scroll-area', () => ({
-  ScrollArea: ({ children, className }: any) => (
-    <div data-testid="mock-scroll-area" className={className}>
-      {children}
-    </div>
-  ),
-  ScrollBar: ({ forceMount, ...props }: any) => (
-    <div data-testid="mock-scroll-bar" data-forcemount={forceMount} {...props} />
-  )
-}));
+mock.module('@ui/scroll-area', () => {
+  const ScrollBar = ({
+    orientation = 'vertical',
+    forceMount = true,
+    className,
+    'data-testid': dataTestId,
+    ...props
+  }: any) => (
+    <div
+      data-testid={dataTestId ?? `mock-scroll-bar-${orientation}`}
+      data-orientation={orientation}
+      data-forcemount={forceMount}
+      className={className}
+      {...props}
+    />
+  );
+
+  const ScrollArea = ({
+    children,
+    className,
+    viewportClassName,
+    showScrollX = true,
+    showScrollY = true,
+    verticalScrollBarProps,
+    horizontalScrollBarProps
+  }: any) => {
+    const verticalProps = {
+      forceMount: true,
+      'data-testid': 'mock-scroll-bar',
+      ...(verticalScrollBarProps ?? {})
+    };
+
+    const horizontalProps = {
+      forceMount: true,
+      'data-testid': 'mock-scroll-bar-horizontal',
+      ...(horizontalScrollBarProps ?? {})
+    };
+
+    return (
+      <div data-testid="mock-scroll-area" className={className}>
+        <div data-testid="mock-scroll-viewport" className={viewportClassName}>
+          {children}
+        </div>
+        {showScrollY ? <ScrollBar orientation="vertical" {...verticalProps} /> : null}
+        {showScrollX ? <ScrollBar orientation="horizontal" {...horizontalProps} /> : null}
+      </div>
+    );
+  };
+
+  return { ScrollArea, ScrollBar };
+});
 mock.module('@ui/tabs', () => ({
   Tabs: ({ children, defaultValue, ...props }: any) => (
     <div data-testid="mock-tabs" data-defaultvalue={defaultValue} {...props}>
@@ -150,7 +191,7 @@ describe('CardTabs', () => {
 
     const scrollBar = screen.getByTestId('mock-scroll-bar');
     expect(scrollBar).toBeInTheDocument();
-    expect(scrollBar.getAttribute('id')).toBe('scroll-bar');
+    expect(scrollBar.getAttribute('data-orientation')).toBe('vertical');
     expect(scrollBar.getAttribute('data-forcemount')).toBe('true');
     // Check that the scrollBar contains expected classes
     const classNames = scrollBar.className;
