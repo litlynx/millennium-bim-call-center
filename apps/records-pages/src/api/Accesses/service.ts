@@ -4,7 +4,7 @@ import {
   AccessesTableResponseDTO,
   type AccessesTableResponseType
 } from 'src/api/Accesses/validator';
-import { mockPrimaryRows } from '../../DigitalChannels/mocks/mockPrimaryRows';
+import { mockPrimaryRows } from '../../DigitalChannels/__mocks__/mockPrimaryRows';
 import { getValidationErrorResponse } from '../errors';
 
 const mockScripts = {

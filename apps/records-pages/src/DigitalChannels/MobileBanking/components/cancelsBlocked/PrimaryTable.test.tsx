@@ -1,27 +1,55 @@
-import { describe, expect, it } from 'bun:test';
-import { render, screen } from '@testing-library/react';
+import { describe, expect, it, mock } from 'bun:test';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  createSharedComponentsMock,
+  registerSharedComponentsMock
+} from '../../../__mocks__/sharedComponents';
 
-import { PrimaryTable } from 'src/DigitalChannels/MobileBanking/components/cancelsBlocked/PrimaryTable';
+const sharedComponentsMock = createSharedComponentsMock();
 
-const mockData = [
-  {
-    id: '1',
-    operatorName: 'TMcel',
-    phoneNumber: '825 816 811',
-    type: 'Principal',
-    stateSimSwap: 'Desbloqueado',
-    badgeText: 'Activo'
-  }
-];
+registerSharedComponentsMock(() => sharedComponentsMock);
+
+import type { PrimaryRow } from './PrimaryTable';
+
+const { PrimaryTable } = await import('./PrimaryTable');
 
 describe('PrimaryTable', () => {
-  it('renders table', () => {
-    render(<PrimaryTable data={mockData} />);
-    expect(screen.getByTestId('table')).toBeTruthy();
-  });
+  it('should render rows with badges and trigger block/delete actions', () => {
+    const rows: PrimaryRow[] = [
+      {
+        id: 'row-1',
+        operatorName: 'TMcel',
+        phoneNumber: '825 816 811',
+        type: 'Principal',
+        stateSimSwap: 'Desbloqueado',
+        badgeText: 'Activo'
+      },
+      {
+        id: 'row-2',
+        operatorName: 'Vodacom',
+        phoneNumber: '845 816 811',
+        type: 'Secundário',
+        stateSimSwap: 'Desbloqueado',
+        badgeText: 'Inativo'
+      }
+    ];
 
-  it('renders with actions', () => {
-    render(<PrimaryTable data={mockData} onBlock={() => {}} onDelete={() => {}} />);
-    expect(screen.getByTestId('table')).toBeTruthy();
+    const onBlock = mock(() => {});
+    const onDelete = mock(() => {});
+
+    render(<PrimaryTable data={rows} onBlock={onBlock} onDelete={onDelete} />);
+
+    expect(screen.getByTestId('badge-active').textContent).toContain('Activo');
+    expect(screen.getByTestId('badge-inactive').textContent).toContain('Inativo');
+
+    const firstRow = screen.getAllByTestId('table-row')[0];
+    const actionButtons = within(firstRow).getAllByRole('button');
+    expect(actionButtons).toHaveLength(2);
+
+    fireEvent.click(actionButtons[0]);
+    expect(onBlock).toHaveBeenCalledWith('row-1');
+
+    fireEvent.click(actionButtons[1]);
+    expect(onDelete).toHaveBeenCalledWith('row-1');
   });
 });

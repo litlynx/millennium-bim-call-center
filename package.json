@@ -23,7 +23,7 @@
     "biome:staged": "turbo run biome:check:apply -- --staged",
     "biome:lint": "turbo run biome:lint",
     "biome:format": "turbo run biome:format",
-    "test": "turbo run test",
+    "test": "turbo run test --summarize --continue=always",
     "test:ci": "turbo run test:ci",
     "test:watch": "turbo run test:watch",
     "e2e": "turbo run e2e --filter=e2e",
