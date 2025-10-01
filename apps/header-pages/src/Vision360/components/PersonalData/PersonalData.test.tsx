@@ -4,8 +4,11 @@ import PersonalData from 'src/Vision360/components/PersonalData/PersonalData';
 
 describe('PersonalData', () => {
   test('renders Card with title and icon', async () => {
+    const mockNavigate = mock((_path: string) => {});
+    mock.module('react-router', () => ({
+      useNavigate: () => mockNavigate
+    }));
     render(<PersonalData />);
-
     expect(screen.getByTestId('card')).toBeTruthy();
     expect(screen.getByText('Dados Pessoais')).toBeTruthy();
     expect(screen.getByTestId('icon')).toBeTruthy();

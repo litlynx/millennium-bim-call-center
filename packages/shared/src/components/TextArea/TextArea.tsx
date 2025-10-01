@@ -5,9 +5,6 @@ import Icon from '@/components/Icon';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 
-// Zod schema for textarea validation
-const textAreaSchema = z.string().max(200, 'Text must not exceed 200 characters').optional();
-
 const IconHeader: FC<{ className?: string; title: string }> = ({ className, title }) => {
   return (
     <div className={cn(`flex items-center justify-start rounded-full`, className)}>
@@ -28,6 +25,7 @@ interface TextAreaProps {
   value?: string;
   onChange?: (value: string) => void;
   onValidationChange?: (isValid: boolean, error?: string) => void;
+  onClear?: () => void;
   maxLength?: number;
 }
 
@@ -40,6 +38,7 @@ export default function TextArea({
   value: controlledValue,
   onChange,
   onValidationChange,
+  onClear,
   maxLength = 200
 }: TextAreaProps) {
   const [internalValue, setInternalValue] = useState('');
@@ -51,6 +50,11 @@ export default function TextArea({
   const validateText = useCallback(
     (text: string) => {
       try {
+        // Create dynamic schema based on maxLength prop
+        const textAreaSchema = z
+          .string()
+          .max(maxLength, `Text must not exceed ${maxLength} characters`)
+          .optional();
         textAreaSchema.parse(text);
         setValidationError(null);
         onValidationChange?.(true);
@@ -65,30 +69,37 @@ export default function TextArea({
         return false;
       }
     },
-    [onValidationChange]
+    [onValidationChange, maxLength]
   );
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const newValue = e.target.value;
 
-      // Don't allow input if it exceeds the max length
-      if (newValue.length > maxLength) {
-        return;
-      }
+      // For clearing, always allow empty value
+      if (newValue === '' || newValue.length <= maxLength) {
+        // Update value
+        if (controlledValue !== undefined) {
+          onChange?.(newValue);
+        } else {
+          setInternalValue(newValue);
+        }
 
-      // Update value
-      if (controlledValue !== undefined) {
-        onChange?.(newValue);
-      } else {
-        setInternalValue(newValue);
+        // Validate
+        validateText(newValue);
       }
-
-      // Validate
-      validateText(newValue);
     },
     [controlledValue, onChange, validateText, maxLength]
   );
+
+  const handleClear = useCallback(() => {
+    // Clear validation state immediately
+    setValidationError(null);
+    onValidationChange?.(true);
+
+    // Call the external clear handler if provided (from useTextArea hook)
+    onClear?.();
+  }, [onValidationChange, onClear]);
 
   const isOverLimit = charCount > maxLength;
 
@@ -105,6 +116,7 @@ export default function TextArea({
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
+          onClear={handleClear}
           maxLength={maxLength}
           rows={5}
         />
