@@ -27,28 +27,36 @@ describe('Icon', () => {
   });
 
   describe('Size Variants', () => {
-    it('applies small size classes by default', () => {
+    it('applies medium size classes by default', () => {
       const { container } = render(<Icon type={validIconType} />);
 
       const spanElement = container.querySelector('span') as HTMLSpanElement;
-      expect(spanElement).toHaveClass('w-8');
-      expect(spanElement).toHaveClass('h-8');
+      expect(spanElement).toHaveClass('w-10');
+      expect(spanElement).toHaveClass('h-10');
     });
 
     it('applies small size classes when size prop is "sm"', () => {
       const { container } = render(<Icon type={validIconType} size="sm" />);
 
       const spanElement = container.querySelector('span') as HTMLSpanElement;
-      expect(spanElement).toHaveClass('w-8');
-      expect(spanElement).toHaveClass('h-8');
+      expect(spanElement).toHaveClass('w-7');
+      expect(spanElement).toHaveClass('h-7');
+    });
+
+    it('applies medium size classes when size prop is "md"', () => {
+      const { container } = render(<Icon type={validIconType} size="md" />);
+
+      const spanElement = container.querySelector('span') as HTMLSpanElement;
+      expect(spanElement).toHaveClass('w-10');
+      expect(spanElement).toHaveClass('h-10');
     });
 
     it('applies large size classes when size prop is "lg"', () => {
       const { container } = render(<Icon type={validIconType} size="lg" />);
 
       const spanElement = container.querySelector('span') as HTMLSpanElement;
-      expect(spanElement).toHaveClass('w-10');
-      expect(spanElement).toHaveClass('h-10');
+      expect(spanElement).toHaveClass('w-12');
+      expect(spanElement).toHaveClass('h-12');
     });
   });
 
@@ -87,7 +95,7 @@ describe('Icon', () => {
       expect(spanElement).toHaveClass('items-center');
       expect(spanElement).toHaveClass('justify-center');
       expect(spanElement).toHaveClass('p-[6px]');
-      // Note: h-fit might be overridden by size classes (w-8 h-8)
+      // Note: size-specific classes override intrinsic width/height (w-10 h-10 by default)
     });
   });
 
@@ -107,7 +115,7 @@ describe('Icon', () => {
       expect(spanElement).toHaveClass('bg-blue-500');
       expect(spanElement).toHaveClass('border-2');
       expect(spanElement).toHaveClass('inline-flex'); // default class
-      expect(spanElement).toHaveClass('w-8'); // size class
+      expect(spanElement).toHaveClass('w-10'); // size class
     });
 
     it('handles empty className gracefully', () => {
@@ -190,8 +198,8 @@ describe('Icon', () => {
       const spanElement = container.querySelector('span') as HTMLSpanElement;
 
       // Check all classes are applied
-      expect(spanElement).toHaveClass('w-10'); // lg size
-      expect(spanElement).toHaveClass('h-10'); // lg size
+      expect(spanElement).toHaveClass('w-12'); // lg size
+      expect(spanElement).toHaveClass('h-12'); // lg size
       expect(spanElement).toHaveClass('rounded-full'); // rounded
       expect(spanElement).toHaveClass('custom-class'); // custom class
       expect(spanElement).toHaveClass('inline-flex'); // base class
@@ -221,9 +229,9 @@ describe('Icon', () => {
       const { container } = render(<Icon type={validIconType} size={'invalid' as 'sm' | 'lg'} />);
 
       const spanElement = container.querySelector('span') as HTMLSpanElement;
-      // Should default to small size since invalid size is provided
-      expect(spanElement).toHaveClass('w-8');
-      expect(spanElement).toHaveClass('h-8');
+      // Should default to medium size since invalid size is provided
+      expect(spanElement).toHaveClass('w-10');
+      expect(spanElement).toHaveClass('h-10');
     });
   });
 

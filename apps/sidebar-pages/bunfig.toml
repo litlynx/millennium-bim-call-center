@@ -5,6 +5,8 @@ coverageReporter = [ "text", "lcov", ]
 coveragePathIgnorePatterns = [
   "**/@config/**",
   "**/types/**",
+  "**/components/ui/**",
+  "**/assets/**",
   "**/__mocks__/**",
   "**/e2e/**",
 ]

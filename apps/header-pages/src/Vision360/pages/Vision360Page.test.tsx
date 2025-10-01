@@ -70,7 +70,7 @@ describe('Vision360Page', () => {
     expect(gridContainer?.className).toContain('rounded-lg');
     expect(gridContainer?.className).toContain('bg-gray-100');
     expect(gridContainer?.className).toContain('w-full');
-    expect(gridContainer?.className).toContain('h-screen');
+    expect(gridContainer?.className).toContain('h-full');
     expect(gridContainer?.className).toContain('overflow-y-auto');
   });
 
@@ -167,7 +167,7 @@ describe('Vision360Page', () => {
     expect(mainGrid?.className).toContain('rounded-lg');
     expect(mainGrid?.className).toContain('bg-gray-100');
     expect(mainGrid?.className).toContain('w-full');
-    expect(mainGrid?.className).toContain('h-screen');
+    expect(mainGrid?.className).toContain('h-full');
     expect(mainGrid?.className).toContain('overflow-y-auto');
   });
 
