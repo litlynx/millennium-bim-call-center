@@ -67,6 +67,11 @@ export const useTextArea = ({
   const wordCount = value.trim() === '' ? 0 : value.trim().split(/\s+/).length;
   const charCount = value.length;
 
+  const clear = useCallback(() => {
+    // Use handleChange to ensure validation and state updates happen correctly
+    handleChange('');
+  }, [handleChange]);
+
   return {
     value,
     setValue: handleChange,
@@ -76,6 +81,7 @@ export const useTextArea = ({
     charCount,
     maxLength,
     reset,
+    clear,
     validate: () => validate(value),
     onValidationChange: handleValidationChange,
     // For use with TextArea component
@@ -83,7 +89,8 @@ export const useTextArea = ({
       value,
       onChange: handleChange,
       onValidationChange: handleValidationChange,
-      maxLength
+      maxLength,
+      onClear: clear
     }
   };
 };
