@@ -129,4 +129,146 @@ export const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (pro
   <input data-testid="input" {...props} />
 );
 
-export default { CardTabs, Icon, Card, CardAccordion, CardItemLabel, Button, Input };
+export const Badge: React.FC<{
+  variant?: string;
+  className?: string;
+  children?: React.ReactNode;
+}> = ({ variant, className, children }) => (
+  <span data-testid="badge" data-variant={variant} className={className}>
+    {children}
+  </span>
+);
+
+export const TextArea: React.FC<{
+  title?: string;
+  placeholder?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
+  error?: string;
+  maxLength?: number;
+}> = ({ title, placeholder, value, onChange, onBlur, error, maxLength }) => (
+  <div data-testid="textarea-container">
+    {title && <div data-testid="textarea-title">{title}</div>}
+    <textarea
+      data-testid="textarea"
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+      maxLength={maxLength}
+    />
+    {error && <span data-testid="textarea-error">{error}</span>}
+  </div>
+);
+
+export const PageHeader: React.FC<{
+  type?: string;
+  channelCategory?: string;
+  serviceTitle?: string;
+  user?: {
+    customerName?: string;
+    cif?: string;
+    accountNumber?: string;
+  };
+}> = ({ channelCategory, serviceTitle }) => (
+  <div data-testid="page-header">
+    <h1>{serviceTitle}</h1>
+    <div>{channelCategory}</div>
+  </div>
+);
+
+export const ScriptDetail: React.FC<{
+  title?: string;
+}> = ({ title }) => (
+  <div data-testid="script-detail">
+    <h2>{title}</h2>
+  </div>
+);
+
+export const Table: React.FC<{
+  headers?: Array<{ key: string; label: string; boldColumn?: boolean }>;
+  data?: Array<{ cells: Array<{ content: React.ReactNode }> }>;
+}> = ({ headers = [], data = [] }) => (
+  <div data-testid="table">
+    <table>
+      <thead>
+        <tr>
+          {headers.map((header) => (
+            <th key={header.key} data-testid={`header-${header.key}`}>
+              {header.label}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((row, rowIndex) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: Mock component for testing
+          <tr key={rowIndex} data-testid={`row-${rowIndex}`}>
+            {row.cells.map((cell, cellIndex) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: Mock component for testing
+              <td key={cellIndex} data-testid={`cell-${rowIndex}-${cellIndex}`}>
+                {cell.content}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
+
+export const useTextArea = ({
+  required,
+  maxLength,
+  initialValue
+}: {
+  required?: boolean;
+  maxLength?: number;
+  initialValue?: string;
+}) => {
+  const React = require('react');
+  const [value, setValue] = React.useState(initialValue || '');
+  const [error, setError] = React.useState('');
+
+  const validate = () => {
+    if (required && !value.trim()) {
+      setError('Este campo é obrigatório');
+      return false;
+    }
+    if (maxLength && value.length > maxLength) {
+      setError(`Máximo ${maxLength} caracteres`);
+      return false;
+    }
+    setError('');
+    return true;
+  };
+
+  return {
+    value,
+    error,
+    validate,
+    textAreaProps: {
+      value,
+      onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => setValue(e.target.value),
+      onBlur: validate,
+      error
+    }
+  };
+};
+
+export default {
+  CardTabs,
+  Icon,
+  Card,
+  CardAccordion,
+  CardItemLabel,
+  Button,
+  Input,
+  Badge,
+  TextArea,
+  PageHeader,
+  ScriptDetail,
+  Table,
+  useTextArea
+};
