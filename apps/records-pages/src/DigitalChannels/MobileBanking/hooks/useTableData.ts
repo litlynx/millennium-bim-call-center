@@ -21,6 +21,30 @@ export function useTableData({ primaryRows, transactionRows }: UseTableDataProps
   const [dateRange, setDateRange] = useState<DateRange>({ start: null, end: null });
   const [status, setStatus] = useState<string>('Todas');
 
+  const normalizeType = useCallback((value: unknown) => {
+    if (typeof value === 'string') {
+      return value.trim();
+    }
+
+    if (value === undefined || value === null) {
+      return '';
+    }
+
+    return String(value).trim();
+  }, []);
+
+  const normalizeContact = useCallback((value: unknown) => {
+    if (typeof value === 'string') {
+      return value.replace(/\s/g, '');
+    }
+
+    if (typeof value === 'number') {
+      return String(value);
+    }
+
+    return '';
+  }, []);
+
   const cancels = useMemo(
     () =>
       primaryRows.map((row) => ({
@@ -30,12 +54,18 @@ export function useTableData({ primaryRows, transactionRows }: UseTableDataProps
     [primaryRows]
   );
 
-  const principalCancel = useMemo(
-    () =>
-      cancels.find((c) => c.type === 'Principal')?.number.replace(/\s/g, '') ||
-      (cancels[0]?.number ? cancels[0].number.replace(/\s/g, '') : ''),
-    [cancels]
-  );
+  const principalCancel = useMemo(() => {
+    const formatNumber = (value: unknown) =>
+      typeof value === 'string' ? value.replace(/\s/g, '') : String(value ?? '');
+
+    const principalNumber = cancels.find((c) => c.type === 'Principal')?.number;
+    if (principalNumber) {
+      return formatNumber(principalNumber);
+    }
+
+    const fallbackNumber = cancels[0]?.number;
+    return fallbackNumber ? formatNumber(fallbackNumber) : '';
+  }, [cancels]);
 
   const [selectedContact, setSelectedContact] = useState<string>(principalCancel);
 
@@ -75,33 +105,48 @@ export function useTableData({ primaryRows, transactionRows }: UseTableDataProps
     }
   }, [dateRange, status, selectedContact, filtersSchema]);
 
-  const parseTransactionDate = useCallback((dateStr: string): Date => {
+  const parseTransactionDate = useCallback((dateInput: unknown): Date => {
+    const dateStr = typeof dateInput === 'string' ? dateInput : String(dateInput ?? '');
     const [day, month, year] = dateStr.split('-').map(Number);
+
+    if ([day, month, year].some((part) => Number.isNaN(part))) {
+      return new Date(NaN);
+    }
+
     return new Date(year, month - 1, day);
   }, []);
 
   const availableTransactionTypes = useMemo(() => {
     const uniqueTypes = new Set(
       transactionRows
-        .map((row) => row.typeTransaction)
-        .filter((type) => type && type.trim() !== '') // Filter out empty/null values
+        .map((row) => normalizeType(row.typeTransaction))
+        .filter((type) => type !== '') // Filter out empty/null values
     );
     return Array.from(uniqueTypes).sort(); // Sort alphabetically for consistent order
-  }, [transactionRows]);
+  }, [transactionRows, normalizeType]);
 
   const filteredTransactionRows = useMemo(() => {
     return transactionRows.filter((row) => {
       const rowDate = parseTransactionDate(row.date);
+      const rowType = normalizeType(row.typeTransaction);
       const matchDate =
         (!dateRange.start || rowDate >= dateRange.start) &&
         (!dateRange.end || rowDate <= dateRange.end);
-      const matchStatus = status === 'Todas' || row.typeTransaction === status;
-      const rowContactNormalized = row.contact?.replace(/\s/g, '') || '';
-      const selectedContactNormalized = selectedContact.replace(/\s/g, '');
+      const matchStatus = status === 'Todas' || rowType === status;
+      const rowContactNormalized = normalizeContact(row.contact);
+      const selectedContactNormalized = normalizeContact(selectedContact);
       const matchContact = !selectedContact || rowContactNormalized === selectedContactNormalized;
       return matchDate && matchStatus && matchContact;
     });
-  }, [transactionRows, dateRange, status, selectedContact, parseTransactionDate]);
+  }, [
+    transactionRows,
+    dateRange,
+    status,
+    selectedContact,
+    parseTransactionDate,
+    normalizeType,
+    normalizeContact
+  ]);
 
   return {
     filteredTransactionRows,
