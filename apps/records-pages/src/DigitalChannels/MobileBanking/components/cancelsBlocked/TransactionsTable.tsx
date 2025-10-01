@@ -27,7 +27,9 @@ interface TransactionsTableProps {
 }
 
 export function TransactionsTable({ data }: TransactionsTableProps) {
-  const tableData = data.map((row: TransactionRow) => ({
+  const sortedData = [...data].sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)));
+
+  const tableData = sortedData.map((row: TransactionRow) => ({
     ...row,
     cells: [
       { content: row.channel },
