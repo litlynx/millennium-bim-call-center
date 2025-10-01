@@ -78,7 +78,7 @@ const Accesses: React.FC = () => {
         <PageHeader
           type="channelAndService"
           channelCategory="Canais Digitais"
-          serviceTitle="Smart IZI - Acessos"
+          serviceTitle={TITLE}
           user={user}
         />
 
@@ -106,7 +106,7 @@ const Accesses: React.FC = () => {
           </div>
         </div>
       </div>
-      <ScriptDetail title="Script" breadcrumbs={[{ label: TITLE }]} />
+      <ScriptDetail title="Script" />
     </div>
   );
 };

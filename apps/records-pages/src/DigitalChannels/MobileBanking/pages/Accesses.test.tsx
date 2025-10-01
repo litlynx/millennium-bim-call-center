@@ -75,6 +75,6 @@ describe('Accesses Page', () => {
   it('validates empty form', () => {
     render(<Accesses />);
     fireEvent.click(screen.getByRole('button', { name: /Fechar/i }));
-    expect(consoleSpy).toHaveBeenCalledWith('Form validation failed:', '');
+    expect(consoleSpy).toHaveBeenCalledWith('Form validation failed:', null);
   });
 });
