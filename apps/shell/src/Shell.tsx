@@ -18,7 +18,6 @@ registerComponent('RecordsPages', () => import('recordsPages/App'));
 const DocumentationPages = React.lazy(() => import('documentationPages/App'));
 registerComponent('DocumentationPages', () => import('documentationPages/App'));
 
-
 // Layouts
 import DashboardLayout from './layouts/DashboardLayout';
 
