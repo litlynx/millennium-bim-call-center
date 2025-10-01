@@ -1,10 +1,19 @@
 import type React from 'react';
-import { useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { Icon } from 'shared/components';
 import { cn } from 'shared/lib/utils';
+import type { BreadcrumbSegment, NavigationRoutes } from 'shared/stores';
+import { navigationStore, useNavigationStore } from 'shared/stores';
 import Menu from './components/Sidebar/Menu';
 import { bottomSidebarMapData, type SidebarItemProps, sidebarMapData } from './data/menuData';
+import { buildNavigationRoutes } from './utils/navigationMap';
+
+type NavigationSubscriptionPayload = {
+  currentPath: string;
+  breadcrumbs: BreadcrumbSegment[];
+  routes: NavigationRoutes;
+};
 
 declare global {
   interface Window {
@@ -12,6 +21,10 @@ declare global {
       navigateTo: (path: string) => void;
       getRouteFromTab?: (tab: string) => string;
       getTabFromRoute?: (route: string) => string;
+      getAvailableRoutes?: () => NavigationRoutes;
+      getCurrentRoute?: () => string;
+      getBreadcrumbs?: (path?: string) => BreadcrumbSegment[];
+      subscribe?: (listener: (payload: NavigationSubscriptionPayload) => void) => () => void;
     };
   }
 }
@@ -124,11 +137,68 @@ const SidebarItem: React.FC<Omit<SidebarItemProps, 'isActive'>> = ({
 };
 
 const SideBar: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [expanded, setExpanded] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const [activeSubmenuItem, setActiveSubmenuItem] = useState<string | null>(null);
+  const setAvailableRoutes = useNavigationStore((state) => state.setAvailableRoutes);
+  const setCurrentPath = useNavigationStore((state) => state.setCurrentPath);
+  const navigationRoutes = useMemo(() => buildNavigationRoutes(), []);
+
+  useEffect(() => {
+    setAvailableRoutes(navigationRoutes);
+  }, [navigationRoutes, setAvailableRoutes]);
+
+  useEffect(() => {
+    setCurrentPath(location.pathname);
+  }, [location.pathname, setCurrentPath]);
+
+  useEffect(() => {
+    const getState = () => navigationStore.getState();
+
+    const subscribe = (listener: (payload: NavigationSubscriptionPayload) => void) => {
+      const emit = (path: string) => {
+        const state = getState();
+        listener({
+          currentPath: path,
+          breadcrumbs: state.getBreadcrumbs(path),
+          routes: state.availableRoutes
+        });
+      };
+
+      emit(getState().currentPath);
+
+      const unsubscribe = navigationStore.subscribe((state) => {
+        emit(state.currentPath);
+      });
+
+      return unsubscribe;
+    };
+
+    window.microFrontendNavigation = {
+      ...window.microFrontendNavigation,
+      navigateTo: (path: string) => navigate(path),
+      getAvailableRoutes: () => getState().availableRoutes,
+      getCurrentRoute: () => getState().currentPath,
+      getBreadcrumbs: (path?: string) => getState().getBreadcrumbs(path),
+      subscribe
+    };
+
+    return () => {
+      if (window.microFrontendNavigation?.subscribe === subscribe) {
+        const { microFrontendNavigation } = window;
+        if (microFrontendNavigation) {
+          microFrontendNavigation.subscribe = undefined;
+          microFrontendNavigation.getAvailableRoutes = undefined;
+          microFrontendNavigation.getCurrentRoute = undefined;
+          microFrontendNavigation.getBreadcrumbs = undefined;
+        }
+      }
+    };
+  }, [navigate]);
 
   const handleMouseEnter = () => setExpanded(true);
 

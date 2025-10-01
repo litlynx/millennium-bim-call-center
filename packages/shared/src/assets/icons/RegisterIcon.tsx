@@ -6,7 +6,7 @@ export const RegisterIcon = () => {
           <path
             d="M24.1713 0.257812H-3.01953V27.4487H24.1713V0.257812Z"
             fill="currentColor"
-            fill-opacity="0.01"
+            fillOpacity="0.01"
           />
           <path
             d="M10.5753 25.1825H1.51172V2.52344H19.639V13.853"

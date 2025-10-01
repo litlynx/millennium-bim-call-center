@@ -7,11 +7,15 @@ interface PageHeaderComponentProps {
 
 const PageHeaderComponent: FC<PageHeaderComponentProps> = ({ leftBlock, rightBlock }) => {
   return (
-    <div className="mb-2 z-10">
+    <div className="mb-2 z-10" data-testid="page-header-component">
       <div className="relative bg-gradient-to-r from-primary-500 to-[#A03996] text-white p-1 rounded-t-[20px] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-gradient-to-r after:from-yellow-400 after:via-yellow-400 after:to-transparent">
         <div className="flex items-start px-[1.375rem] py-[0.5rem]">
-          <div className="flex-1 text-left">{leftBlock}</div>
-          <div className="flex-1 text-right">{rightBlock}</div>
+          <div className="flex-1 text-left" data-testid="page-header-left">
+            {leftBlock}
+          </div>
+          <div className="flex-1 text-right" data-testid="page-header-right">
+            {rightBlock}
+          </div>
         </div>
       </div>
     </div>
