@@ -271,7 +271,7 @@ const CancelsBlocked: React.FC = () => {
             </div>
           </div>
         </div>
-        <ScriptDetail title="Script" breadcrumbs={[{ label: TITLE }]} />
+        <ScriptDetail title="Script" />
       </div>
 
       <ConfirmModal

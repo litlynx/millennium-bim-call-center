@@ -8,6 +8,9 @@ mock.module('shared/lib/utils', () => import('../../../shared/src/__mocks__/shar
 // Mock shared/components globally
 mock.module('shared/components', () => import('../../../shared/src/__mocks__/shared/components'));
 
+// Mock shared/stores globally
+mock.module('shared/stores', () => import('../../../shared/src/__mocks__/shared/stores'));
+
 // Avoid globally mocking 'react-router' to prevent circular/partial init issues.
 // Individual tests that need navigation spying should locally
 // mock 'react-router' and/or import navigateSpy from the shared mock.

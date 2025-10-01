@@ -17,13 +17,11 @@ interface ScriptsDetailsProps {
   headerClassName?: string;
   bodyClassName?: string;
   className?: string;
-  breadcrumbs: BreadcrumbItemType[];
 }
 
 export default function ScriptsDetails({
   title,
   children,
-  breadcrumbs,
   headerClassName = '',
   bodyClassName = '',
   className = ''
