@@ -253,7 +253,7 @@ const CancelsBlocked: React.FC = () => {
 
                 <div className="min-h-[200px]">
                   <CardTabs
-                    className="h-full"
+                    className="h-full overflow-visible"
                     tabs={transactionHistory}
                     cardContentClassName="p-0"
                     enableScrollY

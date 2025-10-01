@@ -92,7 +92,7 @@ const CardTabs: React.ForwardRefExoticComponent<
               }}
               horizontalScrollBarProps={{
                 className:
-                  'h-2 p-0 rounded-full bg-gray-300/35 [&>div]:bg-primary-500 [&>div]:rounded-full'
+                  'h-1.5 p-0 rounded-full bg-gray-300/35 [&>div]:bg-primary-500 [&>div]:rounded-full'
               }}
             >
               {tabsContents}
