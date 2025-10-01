@@ -17,11 +17,13 @@ interface ScriptsDetailsProps {
   headerClassName?: string;
   bodyClassName?: string;
   className?: string;
+  breadcrumbs: BreadcrumbItemType[];
 }
 
 export default function ScriptsDetails({
   title,
   children,
+  breadcrumbs,
   headerClassName = '',
   bodyClassName = '',
   className = ''
@@ -39,6 +41,7 @@ export default function ScriptsDetails({
   return (
     <article
       className={cn(`rounded-[20px] bg-white shadow-sm border overflow-auto h-full`, className)}
+      data-testid="script-detail-component"
     >
       <header
         className={cn(
