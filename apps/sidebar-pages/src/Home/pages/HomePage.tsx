@@ -19,6 +19,9 @@ const HomePage: React.FC = () => {
         >
           Go to Cancels Page
         </Button>
+        <Button onClick={() => navigate('/records/digital-channels/mobile-banking/accesses')}>
+          Go to Accesses Page
+        </Button>
       </div>
     </>
   );
