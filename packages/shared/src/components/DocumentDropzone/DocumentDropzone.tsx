@@ -7,21 +7,15 @@ import { ProgressBar } from '@/components/ui/progress-bar';
 const mockFiles = [
   {
     id: 1,
-    name: 'Contrato_Cliente_A.docx',
-    size: '1.2MB',
+    name: 'Prints ICBS do Cliente.png',
+    size: '321KB',
     progress: 50
   },
   {
     id: 2,
-    name: 'Prints_ICBS_Cliente.png',
-    size: '321KB',
+    name: 'Bilhete_de_ Id.Pdf',
+    size: '2MB',
     progress: 90
-  },
-  {
-    id: 3,
-    name: 'Imagem_Assinatura.jpeg',
-    size: '210KB',
-    progress: 70
   }
 ];
 
@@ -76,7 +70,11 @@ const DocumentDropzone: React.FC<DocumentDropzoneProps> = ({
                   <ProgressBar value={file.progress} />
                 </div>
 
-                <Icon className="w-3 h-3 p-0 cursor-pointer" type="crossRibbon" size="sm" />
+                <Icon
+                  className="w-3 h-3 p-0 cursor-pointer color-primary-500"
+                  type="deleteRed"
+                  size="sm"
+                />
               </div>
             ))}
           </div>

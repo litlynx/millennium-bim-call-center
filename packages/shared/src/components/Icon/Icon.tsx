@@ -47,6 +47,7 @@ export type IconType =
   | 'contacts'
   | 'crossRibbon'
   | 'danger'
+  | 'deleteRed'
   | 'dialPad'
   | 'docFile'
   | 'documentation'
