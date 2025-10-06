@@ -85,7 +85,7 @@ const TransactionalLimits: React.FC = () => {
           <div className="overflow-y-auto px-9 py-6">
             <div className="flex flex-col gap-10">
               {operatorStateMocks.map(({ operator, contractState, pin2State }) => (
-                <div key={operator} className="flex gap-4">
+                <div key={operator} className="flex gap-4 overflow-auto pb-2">
                   <div className="flex flex-col gap-2 min-w-[150px]">
                     <p className="text-gray-800 uppercase font-semibold text-xs">Operadora</p>
                     <span className="text-xs font-medium text-gray-600">{operator}</span>
