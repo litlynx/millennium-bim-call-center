@@ -109,6 +109,27 @@ export function useDocumentDropzone() {
     [processFiles]
   );
 
+  const validateFiles = useCallback(() => {
+    // Check if there are any validation errors
+    if (errors.length > 0) {
+      return false;
+    }
+
+    // Validate all current files against the schema
+    for (const file of files) {
+      const result = fileSchema.safeParse({
+        name: file.name,
+        type: file.type,
+        size: file.size
+      });
+      if (!result.success) {
+        return false;
+      }
+    }
+
+    return true;
+  }, [files, errors]);
+
   return {
     files,
     dragActive,
@@ -119,6 +140,7 @@ export function useDocumentDropzone() {
     onDragLeave,
     onClick,
     onFileChange,
-    acceptedFileExtensions: ACCEPTED_FILE_EXTENSIONS
+    acceptedFileExtensions: ACCEPTED_FILE_EXTENSIONS,
+    validateFiles
   };
 }

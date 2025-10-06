@@ -1,8 +1,35 @@
-import { ACCEPTED_FILE_EXTENSIONS, useDocumentDropzone } from './hooks/useDocumentDropzone';
+import { type DocumentFile, useDocumentDropzone } from './hooks/useDocumentDropzone';
 
-export default function DocumentDropzone() {
-  const { files, dragActive, inputRef, onDrop, onDragOver, onDragLeave, onClick, onFileChange } =
-    useDocumentDropzone();
+interface DocumentDropzoneProps {
+  files?: DocumentFile[];
+  dragActive?: boolean;
+  errors?: string[];
+  inputRef?: React.RefObject<HTMLInputElement>;
+  onDrop?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragLeave?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onClick?: () => void;
+  onFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  acceptedFileExtensions?: string;
+}
+
+export default function DocumentDropzone(props?: DocumentDropzoneProps) {
+  // Use internal hook if no props provided (uncontrolled)
+  const internalDropzone = useDocumentDropzone();
+
+  // Use props if provided (controlled), otherwise use internal hook
+  const {
+    files = internalDropzone.files,
+    dragActive = internalDropzone.dragActive,
+    errors = internalDropzone.errors,
+    inputRef = internalDropzone.inputRef,
+    onDrop = internalDropzone.onDrop,
+    onDragOver = internalDropzone.onDragOver,
+    onDragLeave = internalDropzone.onDragLeave,
+    onClick = internalDropzone.onClick,
+    onFileChange = internalDropzone.onFileChange,
+    acceptedFileExtensions = internalDropzone.acceptedFileExtensions
+  } = props || {};
 
   return (
     <div
@@ -17,7 +44,7 @@ export default function DocumentDropzone() {
         ref={inputRef}
         type="file"
         multiple
-        accept={ACCEPTED_FILE_EXTENSIONS}
+        accept={acceptedFileExtensions}
         className="hidden"
         onChange={onFileChange}
       />
@@ -52,6 +79,18 @@ export default function DocumentDropzone() {
                     className="w-8 h-8 object-cover rounded ml-2"
                   />
                 )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {errors.length > 0 && (
+        <div className="mt-4">
+          <div className="font-medium mb-2 text-red-600">Upload Errors:</div>
+          <ul className="space-y-1">
+            {errors.map((error) => (
+              <li key={error} className="text-sm text-red-600">
+                {error}
               </li>
             ))}
           </ul>

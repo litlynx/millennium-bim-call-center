@@ -28,6 +28,25 @@ interface TextAreaProps {
   onValidationChange?: (isValid: boolean, error?: string) => void;
   onClear?: () => void;
   maxLength?: number;
+  enableDocuments?: boolean;
+  dropzoneProps?: {
+    inputRef: React.RefObject<HTMLInputElement>;
+    onDrop: (e: React.DragEvent<HTMLDivElement>) => void;
+    onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
+    onDragLeave: (e: React.DragEvent<HTMLDivElement>) => void;
+    onClick: () => void;
+    onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    acceptedFileExtensions: string;
+  };
+  files?: Array<{
+    name: string;
+    type: string;
+    size: number;
+    blob: Blob;
+    base64: string;
+  }>;
+  dragActive?: boolean;
+  errors?: string[];
 }
 
 export type { TextAreaProps };
@@ -40,7 +59,12 @@ export default function TextArea({
   onChange,
   onValidationChange,
   onClear,
-  maxLength = 200
+  maxLength = 200,
+  enableDocuments = false,
+  dropzoneProps,
+  files = [],
+  dragActive = false,
+  errors = []
 }: TextAreaProps) {
   const [internalValue, setInternalValue] = useState('');
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -51,11 +75,11 @@ export default function TextArea({
   const validateText = useCallback(
     (text: string) => {
       try {
-        // Create dynamic schema based on maxLength prop
+        // Zod schema: required, non-empty, max length
         const textAreaSchema = z
           .string()
-          .max(maxLength, `Text must not exceed ${maxLength} characters`)
-          .optional();
+          .min(1, 'Campo de texto tem que estar preenchido')
+          .max(maxLength, `O texto não deve exceder os ${maxLength} caracteres`);
         textAreaSchema.parse(text);
         setValidationError(null);
         onValidationChange?.(true);
@@ -130,7 +154,16 @@ export default function TextArea({
 
         {validationError && <div className="text-red-500 text-sm mt-1">{validationError}</div>}
 
-        <DocumentDropzone />
+        {enableDocuments && dropzoneProps && (
+          <div className="mt-3">
+            <DocumentDropzone
+              files={files}
+              dragActive={dragActive}
+              errors={errors}
+              {...dropzoneProps}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
