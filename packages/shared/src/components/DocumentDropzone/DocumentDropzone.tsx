@@ -1,51 +1,96 @@
 import { ContextMenuTrigger } from '@radix-ui/react-context-menu';
 import type React from 'react';
-import Icon from '@/components/Icon';
+import Icon, { type IconType } from '@/components/Icon';
 import { ContextMenu, ContextMenuContent, ContextMenuItem } from '@/components/ui/context-menu';
+import { ProgressBar } from '@/components/ui/progress-bar';
 
-const DocumentDropzone: React.FC = () => {
+const mockFiles = [
+  {
+    id: 1,
+    name: 'Contrato_Cliente_A.docx',
+    size: '1.2MB',
+    progress: 50
+  },
+  {
+    id: 2,
+    name: 'Prints_ICBS_Cliente.png',
+    size: '321KB',
+    progress: 90
+  },
+  {
+    id: 3,
+    name: 'Imagem_Assinatura.jpeg',
+    size: '210KB',
+    progress: 70
+  }
+];
+
+interface DocumentDropzoneProps {
+  className?: string;
+}
+
+const DocumentDropzone: React.FC<DocumentDropzoneProps> = ({
+  className
+}: DocumentDropzoneProps) => {
+  function getFileIconType(fileName: string): IconType {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    if (!extension) return 'docFile';
+
+    const imageExtensions = ['jpg', 'jpeg', 'png'];
+    const docExtensions = ['doc', 'docx', 'pdf', 'txt'];
+
+    if (imageExtensions.includes(extension)) return 'imgFile';
+    if (docExtensions.includes(extension)) return 'docFile';
+
+    return 'docFile';
+  }
+
   return (
-    <ContextMenu>
-      <ContextMenuTrigger className="flex flex-col gap-6 rounded-lg border-2 border-dashed border-[#AAADB8] p-8 lg:flex-row lg:gap-14">
-        <div className="flex space-x-6">
-          <Icon type="block" />
-          <div className="flex flex-col gap-2">
-            <p className="font-bold">Anexar documento ou imagem</p>
-            <span className="text-sm">Arraste ou cole o ficheiro a carregar</span>
-            <span className="text-xs text-[#767676]">
-              Apenas ficheiros JPEG, PNG e DOCX, até 4MB no total
-            </span>
-          </div>
-        </div>
-        <div className="flex flex-col gap-4">
-          <div className="flex gap-6">
-            <div className="flex flex-col gap-3 lg:min-w-80">
-              <div className="flex gap-2 items-center">
-                <Icon className="w-4 h-4 p-0" type="block" />
-                <p className="text-sm">Prints ICBS do Cliente.png</p>
-                <span className="text-[#767676] font-light text-xs">(321KB)</span>
-              </div>
-              <div className="w-full h-1 bg-primary-500 rounded-full"></div>
+    <>
+      <ContextMenu>
+        <ContextMenuTrigger
+          className={`flex flex-col gap-6 rounded-lg border-2 border-dashed border-gray-400 p-8 2xl:flex-row 2xl:gap-8 ${className}`}
+        >
+          <div className="flex space-x-6">
+            <Icon type="upload" className="p-0" />
+
+            <div className="flex flex-col gap-2">
+              <p className="font-bold">Anexar documento ou imagem</p>
+              <span className="text-sm">Arraste ou cole o ficheiro a carregar</span>
+              <span className="text-xs text-gray-400">
+                Apenas ficheiros JPEG, PNG e DOCX, até 4MB no total
+              </span>
             </div>
-            <Icon className="w-3 h-3 p-0" type="block" size="sm" />
           </div>
-          <div className="flex gap-6">
-            <div className="flex flex-col gap-3 lg:min-w-80">
-              <div className="flex gap-2 items-center">
-                <Icon className="w-4 h-4 p-0" type="block" />
-                <p className="text-sm">Prints ICBS do Cliente.png</p>
-                <span className="text-[#767676] font-light text-xs">(321KB)</span>
+
+          <div className="flex flex-col gap-4">
+            {mockFiles.map((file) => (
+              <div key={file.id} className="flex gap-6">
+                <div className="flex flex-col gap-3 lg:min-w-80">
+                  <div className="flex gap-2 items-center">
+                    <Icon className="w-4 h-4 p-0" type={getFileIconType(file.name)} />
+                    <p className="text-sm">{file.name}</p>
+                    <span className="text-gray-400 font-light text-xs">({file.size})</span>
+                  </div>
+
+                  <ProgressBar value={file.progress} />
+                </div>
+
+                <Icon className="w-3 h-3 p-0 cursor-pointer" type="crossRibbon" size="sm" />
               </div>
-              <div className="w-full h-1 bg-primary-500 rounded-full"></div>
-            </div>
-            <Icon className="w-3 h-3 p-0" type="block" size="sm" />
+            ))}
           </div>
-        </div>
-      </ContextMenuTrigger>
-      <ContextMenuContent className="w-fit bg-white">
-        <ContextMenuItem inset>Colar</ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
+        </ContextMenuTrigger>
+
+        <ContextMenuContent className="w-fit bg-white">
+          <ContextMenuItem inset>Colar</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
+
+      <div className="text-red-500 text-sm mt-1">
+        Ocorreu um erro ao anexar um arquivo. Tente novamente
+      </div>
+    </>
   );
 };
 
