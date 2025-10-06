@@ -3,28 +3,35 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { Icon } from 'shared/components';
 import { cn } from 'shared/lib/utils';
-import type { BreadcrumbSegment, NavigationRoutes } from 'shared/stores';
-import { navigationStore, useNavigationStore } from 'shared/stores';
+import type {
+  BreadcrumbSegment,
+  MenuItemInterface,
+  SidebarItemInterface,
+  SubmenuItemInterface,
+  SubmenuLinkItemInterface
+} from 'shared/types';
 import Menu from './components/Sidebar/Menu';
-import { bottomSidebarMapData, type SidebarItemProps, sidebarMapData } from './data/menuData';
-import { buildNavigationRoutes } from './utils/navigationMap';
+import {
+  bottomSidebarMapData,
+  menuMapData,
+  type SidebarItemProps,
+  sidebarMapData,
+  submenuLinks,
+  submenuMapData
+} from './data/menuData';
 
-type NavigationSubscriptionPayload = {
-  currentPath: string;
-  breadcrumbs: BreadcrumbSegment[];
-  routes: NavigationRoutes;
-};
-
+interface MenuData {
+  sidebarItems: Array<SidebarItemInterface>;
+  menuItems: Array<MenuItemInterface>;
+  submenuItems: Array<SubmenuItemInterface>;
+  submenuLinks: Array<SubmenuLinkItemInterface>;
+}
 declare global {
   interface Window {
     microFrontendNavigation?: {
       navigateTo: (path: string) => void;
-      getRouteFromTab?: (tab: string) => string;
-      getTabFromRoute?: (route: string) => string;
-      getAvailableRoutes?: () => NavigationRoutes;
-      getCurrentRoute?: () => string;
       getBreadcrumbs?: (path?: string) => BreadcrumbSegment[];
-      subscribe?: (listener: (payload: NavigationSubscriptionPayload) => void) => () => void;
+      getMenuData?: () => MenuData;
     };
   }
 }
@@ -138,64 +145,47 @@ const SidebarItem: React.FC<Omit<SidebarItemProps, 'isActive'>> = ({
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [expanded, setExpanded] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const [activeSubmenuItem, setActiveSubmenuItem] = useState<string | null>(null);
-  const setAvailableRoutes = useNavigationStore((state) => state.setAvailableRoutes);
-  const setCurrentPath = useNavigationStore((state) => state.setCurrentPath);
-  const navigationRoutes = useMemo(() => buildNavigationRoutes(), []);
 
   useEffect(() => {
-    setAvailableRoutes(navigationRoutes);
-  }, [navigationRoutes, setAvailableRoutes]);
-
-  useEffect(() => {
-    setCurrentPath(location.pathname);
-  }, [location.pathname, setCurrentPath]);
-
-  useEffect(() => {
-    const getState = () => navigationStore.getState();
-
-    const subscribe = (listener: (payload: NavigationSubscriptionPayload) => void) => {
-      const emit = (path: string) => {
-        const state = getState();
-        listener({
-          currentPath: path,
-          breadcrumbs: state.getBreadcrumbs(path),
-          routes: state.availableRoutes
-        });
-      };
-
-      emit(getState().currentPath);
-
-      const unsubscribe = navigationStore.subscribe((state) => {
-        emit(state.currentPath);
-      });
-
-      return unsubscribe;
-    };
-
+    // Set up basic micro frontend navigation API
     window.microFrontendNavigation = {
       ...window.microFrontendNavigation,
       navigateTo: (path: string) => navigate(path),
-      getAvailableRoutes: () => getState().availableRoutes,
-      getCurrentRoute: () => getState().currentPath,
-      getBreadcrumbs: (path?: string) => getState().getBreadcrumbs(path),
-      subscribe
+      getMenuData: (): MenuData => ({
+        sidebarItems: [...sidebarMapData, ...bottomSidebarMapData].map((item) => ({
+          id: item.id,
+          label: item.label,
+          path: item.path
+        })),
+        menuItems: menuMapData.map((item) => ({
+          id: item.id,
+          label: item.label,
+          parentSidebarId: item.parentSidebarId,
+          path: item.path
+        })),
+        submenuItems: submenuMapData.map((item) => ({
+          id: item.id,
+          label: item.label,
+          parentMenuId: item.parentMenuId
+        })),
+        submenuLinks: submenuLinks.map((item) => ({
+          id: item.id,
+          label: item.label,
+          path: item.path,
+          parentSubmenuId: item.parentSubmenuId
+        }))
+      })
     };
 
     return () => {
-      if (window.microFrontendNavigation?.subscribe === subscribe) {
-        const { microFrontendNavigation } = window;
-        if (microFrontendNavigation) {
-          microFrontendNavigation.subscribe = undefined;
-          microFrontendNavigation.getAvailableRoutes = undefined;
-          microFrontendNavigation.getCurrentRoute = undefined;
-          microFrontendNavigation.getBreadcrumbs = undefined;
-        }
+      // Cleanup - set to undefined to clear the reference
+      if (window.microFrontendNavigation) {
+        window.microFrontendNavigation = undefined;
       }
     };
   }, [navigate]);
