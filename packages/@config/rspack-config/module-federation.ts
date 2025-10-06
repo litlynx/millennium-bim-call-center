@@ -54,17 +54,6 @@ const recordsPagesHostBaseUrl = resolveRemoteBaseUrl(
   'apps/records-pages/dist/',
   parseInt(process.env.RECORDS_PAGES_PREVIEW_PORT || '8084', 10)
 );
-
-const sidebarPagesHostBaseUrl = resolveRemoteBaseUrl(
-  process.env.SIDEBAR_PAGES_HOST_BASE_URL,
-  'apps/sidebar-pages/dist/',
-  parseInt(process.env.SIDEBAR_PAGES_PREVIEW_PORT || '8083', 10)
-);
-const recordsPagesHostBaseUrl = resolveRemoteBaseUrl(
-  process.env.RECORDS_PAGES_HOST_BASE_URL,
-  'apps/records-pages/dist/',
-  parseInt(process.env.RECORDS_PAGES_PREVIEW_PORT || '8084', 10)
-);
 const documentationPagesHostBaseUrl = resolveRemoteBaseUrl(
   process.env.DOCUMENTATION_PAGES_HOST_BASE_URL,
   'apps/documentation-pages/dist/',
@@ -213,7 +202,8 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
         './styles/Global': './src/styles/GlobalStyles',
         './lib/utils': './src/lib/utils',
         './queries': './src/queries',
-        './stores': './src/stores'
+        './stores': './src/stores',
+        './types': './src/types'
       }
     }
   },
