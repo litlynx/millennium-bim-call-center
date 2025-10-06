@@ -1,3 +1,9 @@
+import Icon, { type IconType } from '@/components/Icon';
+import { ContextMenu, ContextMenuContent, ContextMenuItem } from '@/components/ui/context-menu';
+import { ProgressBar } from '@/components/ui/progress-bar';
+import { cn } from '@/lib/utils';
+import { ContextMenuTrigger } from '@radix-ui/react-context-menu';
+import type React from 'react';
 import { type DocumentFile, useDocumentDropzone } from './hooks/useDocumentDropzone';
 
 interface DocumentDropzoneProps {
@@ -11,9 +17,10 @@ interface DocumentDropzoneProps {
   onClick?: () => void;
   onFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   acceptedFileExtensions?: string;
+  className?: string;
 }
 
-export default function DocumentDropzone(props?: DocumentDropzoneProps) {
+export default function DocumentDropzone({ className, ...props }: DocumentDropzoneProps) {
   // Use internal hook if no props provided (uncontrolled)
   const internalDropzone = useDocumentDropzone();
 
@@ -31,62 +38,91 @@ export default function DocumentDropzone(props?: DocumentDropzoneProps) {
     acceptedFileExtensions = internalDropzone.acceptedFileExtensions
   } = props || {};
 
+  function getFileIconType(fileName: string): IconType {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    if (!extension) return 'docFile';
+
+    const imageExtensions = ['jpg', 'jpeg', 'png'];
+    const docExtensions = ['doc', 'docx', 'pdf', 'txt'];
+
+    if (imageExtensions.includes(extension)) return 'imgFile';
+    if (docExtensions.includes(extension)) return 'docFile';
+
+    return 'docFile';
+  }
+
   return (
-    <div
-      className={`border-2 border-dashed p-4 rounded transition-colors ${
-        dragActive ? 'border-blue-400 bg-blue-50' : 'border-red-100 bg-white'
-      }`}
-      onDrop={onDrop}
-      onDragOver={onDragOver}
-      onDragLeave={onDragLeave}
-    >
-      <input
-        ref={inputRef}
-        type="file"
-        multiple
-        accept={acceptedFileExtensions}
-        className="hidden"
-        onChange={onFileChange}
-      />
-      <button
-        type="button"
-        onClick={onClick}
-        className="w-full flex flex-col items-center justify-center min-h-[100px] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 rounded"
-      >
-        <span className="font-semibold text-gray-700">
-          Drag & drop files here, or click to select
-        </span>
-        <span className="text-xs text-gray-400 mt-1">Allowed: PNG, JPEG, JPG, PDF, DOCX, TXT</span>
-      </button>
-      {files.length > 0 && (
-        <div className="mt-4">
-          <div className="font-medium mb-2">Uploaded Files:</div>
-          <ul className="space-y-1">
-            {files.map((file) => (
-              <li
-                key={`${file.name}-${file.size}`}
-                className="text-sm text-gray-600 flex items-center gap-2"
-              >
-                <span className="font-semibold">{file.name}</span>
+    <>
+      <ContextMenu>
+        <ContextMenuTrigger
+          className={cn(
+            `flex flex-col gap-6 rounded-lg border-2 border-dashed p-8 2xl:flex-row 2xl:gap-8`,
+            dragActive ? 'border-primary-500 bg-primary-100' : 'border-gray-400 bg-white',
+            className
+          )}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+        >
+          <div className="flex space-x-6">
+            <Icon type="upload" className="p-0" />
+
+            <input
+              ref={inputRef}
+              type="file"
+              multiple
+              accept={acceptedFileExtensions}
+              className="hidden"
+              onChange={onFileChange}
+            />
+            <button
+              type="button"
+              onClick={onClick}
+              className="w-full flex flex-col items-center justify-center min-h-[100px] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 rounded"
+            >
+              <div className="flex flex-col gap-2">
+                <p className="font-bold">Anexar documento ou imagem</p>
+                <span className="text-sm">Arraste ou cole o ficheiro a carregar</span>
                 <span className="text-xs text-gray-400">
-                  ({file.type}, {(file.size / (1024 * 1024)).toFixed(2)} MB)
+                  Apenas ficheiros JPEG, PNG e DOCX, até 4MB no total
                 </span>
-                {/* Optionally show preview for images */}
-                {file.type.startsWith('image/') && (
-                  <img
-                    src={file.base64}
-                    alt={file.name}
-                    className="w-8 h-8 object-cover rounded ml-2"
-                  />
-                )}
-              </li>
+              </div>
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            {files.map((file) => (
+              <div key={file.name} className="flex gap-6">
+                <div className="flex flex-col gap-3 lg:min-w-80">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Icon className="w-4 h-4 p-0" type={getFileIconType(file.name)} />
+                      <p className="text-sm">{file.name}</p>
+                      <span className="text-gray-400 font-light text-xs">({file.size})</span>
+                    </div>
+
+                    <Icon
+                      className="w-3 h-3 p-0 cursor-pointer color-primary-500"
+                      type="deleteRed"
+                      size="sm"
+                    />
+                  </div>
+
+                  <ProgressBar value={100} />
+                </div>
+              </div>
             ))}
-          </ul>
-        </div>
-      )}
+          </div>
+        </ContextMenuTrigger>
+
+        <ContextMenuContent className="w-fit bg-white">
+          <ContextMenuItem inset>Colar</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
+
       {errors.length > 0 && (
         <div className="mt-4">
-          <div className="font-medium mb-2 text-red-600">Upload Errors:</div>
+          <div className="font-medium mb-2 text-red-500">Upload Errors:</div>
           <ul className="space-y-1">
             {errors.map((error) => (
               <li key={error} className="text-sm text-red-600">
@@ -96,6 +132,6 @@ export default function DocumentDropzone(props?: DocumentDropzoneProps) {
           </ul>
         </div>
       )}
-    </div>
+    </>
   );
 }

@@ -1,10 +1,10 @@
-import type { FC } from 'react';
-import { useCallback, useState } from 'react';
-import { z } from 'zod';
+import DocumentDropzone from '@/components/DocumentDropzone';
 import Icon from '@/components/Icon';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import DocumentDropzone from '../DocumentDropzone/DocumentDropzone';
+import type { FC } from 'react';
+import { useCallback, useState } from 'react';
+import { z } from 'zod';
 
 const IconHeader: FC<{ className?: string; title: string }> = ({ className, title }) => {
   return (
