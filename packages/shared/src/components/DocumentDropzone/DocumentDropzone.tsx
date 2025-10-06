@@ -61,20 +61,22 @@ const DocumentDropzone: React.FC<DocumentDropzoneProps> = ({
             {mockFiles.map((file) => (
               <div key={file.id} className="flex gap-6">
                 <div className="flex flex-col gap-3 lg:min-w-80">
-                  <div className="flex gap-2 items-center">
-                    <Icon className="w-4 h-4 p-0" type={getFileIconType(file.name)} />
-                    <p className="text-sm">{file.name}</p>
-                    <span className="text-gray-400 font-light text-xs">({file.size})</span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Icon className="w-4 h-4 p-0" type={getFileIconType(file.name)} />
+                      <p className="text-sm">{file.name}</p>
+                      <span className="text-gray-400 font-light text-xs">({file.size})</span>
+                    </div>
+
+                    <Icon
+                      className="w-3 h-3 p-0 cursor-pointer color-primary-500"
+                      type="deleteRed"
+                      size="sm"
+                    />
                   </div>
 
                   <ProgressBar value={file.progress} />
                 </div>
-
-                <Icon
-                  className="w-3 h-3 p-0 cursor-pointer color-primary-500"
-                  type="deleteRed"
-                  size="sm"
-                />
               </div>
             ))}
           </div>
