@@ -14,7 +14,8 @@ const badgeVariants = cva(
         inactive:
           'border-transparent bg-red-500 text-white shadow hover:bg-red-500/80 rounded-[11px]',
         blocked:
-          'border-transparent bg-orange-500 text-white shadow hover:bg-orange-500/80 rounded-[11px]'
+          'border-transparent bg-orange-500 text-white shadow hover:bg-orange-500/80 rounded-[11px]',
+        white: 'border-transparent bg-white rounded-[11px] text-green',
       }
     },
     defaultVariants: {
