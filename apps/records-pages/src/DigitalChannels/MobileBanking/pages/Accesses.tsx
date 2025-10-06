@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import type React from 'react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { useNavigate } from 'react-router';
 import {
   Button,
   PageHeader,
@@ -34,6 +35,7 @@ function useAccesses() {
 const Accesses: React.FC = () => {
   const { data, isLoading } = useAccesses();
   const [primaryRows] = useState(mockPrimaryRows);
+  const navigate = useNavigate();
 
   const user = {
     customerName: useUserStore((u) => u.getCustomerName()),
@@ -55,6 +57,8 @@ const Accesses: React.FC = () => {
       console.log('Form submitted successfully!');
       console.log('Text content:', textAreaWithDocs.value);
       console.log('Uploaded files:', textAreaWithDocs.files);
+
+      navigate('/vision-360');
     } else {
       console.log('Form validation failed:', textAreaWithDocs.error);
     }

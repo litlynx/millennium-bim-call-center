@@ -1,24 +1,23 @@
+import type { ClipboardEvent } from 'react';
 import { useCallback, useRef, useState } from 'react';
 import { z } from 'zod';
 
 export const ACCEPTED_FILE_EXTENSIONS = '.png,.jpeg,.jpg,.pdf,.docx,.txt';
+export const ACCEPTED_MIME_TYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'text/plain'
+] as const;
 const FILE_UPLOAD_MAX_SIZE = 4 * 1024 * 1024; // 4MB
 
 const fileSchema = z.object({
   name: z.string(),
-  type: z.enum(
-    [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'application/pdf',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'text/plain'
-    ],
-    {
-      errorMap: () => ({ message: 'Unsupported file type' })
-    }
-  ),
+  type: z.enum(ACCEPTED_MIME_TYPES, {
+    errorMap: () => ({ message: 'Unsupported file type' })
+  }),
   size: z
     .number()
     .max(
@@ -45,6 +44,9 @@ function fileToBase64(file: File): Promise<string> {
 }
 
 export function useDocumentDropzone() {
+  const removeFile = useCallback((fileToRemove: DocumentFile) => {
+    setFiles((prev) => prev.filter((file) => file.name !== fileToRemove.name));
+  }, []);
   const [files, setFiles] = useState<DocumentFile[]>([]);
   const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
@@ -71,7 +73,14 @@ export function useDocumentDropzone() {
         base64: await fileToBase64(file)
       }))
     );
-    setFiles((prev) => [...prev, ...processed]);
+    setFiles((prev) => {
+      // Filter out duplicates based on name and size
+      const existingFileKeys = new Set(prev.map((f) => `${f.name}-${f.size}`));
+      const uniqueNewFiles = processed.filter(
+        (file) => !existingFileKeys.has(`${file.name}-${file.size}`)
+      );
+      return [...prev, ...uniqueNewFiles];
+    });
   }, []);
 
   const onDrop = useCallback(
@@ -109,26 +118,76 @@ export function useDocumentDropzone() {
     [processFiles]
   );
 
-  const validateFiles = useCallback(() => {
-    // Check if there are any validation errors
-    if (errors.length > 0) {
-      return false;
-    }
+  const onPaste = useCallback(
+    async (event: ClipboardEvent<HTMLDivElement>) => {
+      event.preventDefault();
 
-    // Validate all current files against the schema
-    for (const file of files) {
-      const result = fileSchema.safeParse({
-        name: file.name,
-        type: file.type,
-        size: file.size
-      });
-      if (!result.success) {
-        return false;
+      const clipboardData = event.clipboardData;
+      if (!clipboardData) return;
+
+      const collectedFiles: File[] = [];
+
+      if (clipboardData.files?.length) {
+        collectedFiles.push(...Array.from(clipboardData.files));
       }
-    }
 
-    return true;
-  }, [files, errors]);
+      if (clipboardData.items?.length) {
+        for (const item of Array.from(clipboardData.items)) {
+          if (item.kind !== 'file') continue;
+
+          const file = item.getAsFile();
+          if (!file) continue;
+
+          const alreadyCollected = collectedFiles.some(
+            (existing) => existing.name === file.name && existing.size === file.size
+          );
+
+          if (!alreadyCollected) {
+            collectedFiles.push(file);
+          }
+        }
+      }
+
+      if (collectedFiles.length > 0) {
+        await processFiles(collectedFiles);
+      }
+    },
+    [processFiles]
+  );
+
+  const validateFiles = useCallback(
+    ({ required = false }: { required?: boolean } = {}) => {
+      const validationErrors: string[] = [];
+
+      if (required && files.length === 0) {
+        validationErrors.push('É necessário anexar pelo menos um ficheiro.');
+      }
+
+      for (const file of files) {
+        const result = fileSchema.safeParse({
+          name: file.name,
+          type: file.type,
+          size: file.size
+        });
+
+        if (!result.success) {
+          validationErrors.push(
+            `${file.name}: ${result.error.errors.map((error) => error.message).join(', ')}`
+          );
+        }
+      }
+
+      for (const error of errors) {
+        if (!validationErrors.includes(error)) {
+          validationErrors.push(error);
+        }
+      }
+
+      setErrors(validationErrors);
+      return validationErrors.length === 0;
+    },
+    [errors, files]
+  );
 
   return {
     files,
@@ -141,6 +200,9 @@ export function useDocumentDropzone() {
     onClick,
     onFileChange,
     acceptedFileExtensions: ACCEPTED_FILE_EXTENSIONS,
-    validateFiles
+    validateFiles,
+    removeFile,
+    onPaste,
+    processFiles
   };
 }

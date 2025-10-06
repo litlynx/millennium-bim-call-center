@@ -3,13 +3,17 @@ import { type UseTextAreaOptions, useTextArea } from './useTextArea';
 
 export interface TextAreaWithDocumentsOptions extends UseTextAreaOptions {
   enableDocuments?: boolean;
+  documentsRequired?: boolean;
 }
 
 export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions = {}) {
-  const { enableDocuments = false, ...textAreaOptions } = options;
+  const { enableDocuments = false, documentsRequired = false, ...textAreaOptions } = options;
 
   const textArea = useTextArea(textAreaOptions);
   const dropzone = useDocumentDropzone();
+  const hasFileErrors = dropzone.errors.length > 0;
+  const documentsMissing = documentsRequired && dropzone.files.length === 0;
+  const filesAreValid = !hasFileErrors && !documentsMissing;
 
   return {
     // Text area properties and methods
@@ -25,6 +29,8 @@ export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions =
       onDragLeave: dropzone.onDragLeave,
       onClick: dropzone.onClick,
       onFileChange: dropzone.onFileChange,
+      onPaste: dropzone.onPaste,
+      onRemoveFile: dropzone.removeFile,
       acceptedFileExtensions: dropzone.acceptedFileExtensions
     },
     validateAll: () => {
@@ -40,7 +46,7 @@ export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions =
       }
 
       if (enableDocuments) {
-        const filesValid = dropzone.validateFiles();
+        const filesValid = dropzone.validateFiles({ required: documentsRequired });
         if (!filesValid) {
           isAllValid = false;
           // Add file-specific errors
@@ -55,7 +61,7 @@ export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions =
       if (!isAllValid) {
         console.warn('Validation failed:', {
           textValid,
-          filesValid: enableDocuments ? dropzone.validateFiles() : true,
+          filesValid: enableDocuments ? dropzone.errors.length === 0 && !documentsMissing : true,
           enableDocuments,
           errors: validationErrors,
           textError: textArea.error,
@@ -67,14 +73,15 @@ export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions =
     },
     // Enable documents flag
     enableDocuments,
+    documentsRequired,
     // Additional validation helpers
-    hasFileErrors: dropzone.errors.length > 0,
-    isValid: textArea.isValid && (enableDocuments ? dropzone.validateFiles() : true),
+    hasFileErrors: hasFileErrors || documentsMissing,
+    isValid: textArea.isValid && (enableDocuments ? filesAreValid : true),
     // Separate validation methods
     validateText: textArea.validate,
     validateFiles: () => {
       if (!enableDocuments) return true;
-      return dropzone.validateFiles();
+      return dropzone.validateFiles({ required: documentsRequired });
     },
     // Get all current validation errors
     getAllErrors: () => {
@@ -90,12 +97,21 @@ export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions =
         allErrors.push(...dropzone.errors.map((error) => `File: ${error}`));
       }
 
+      if (enableDocuments && documentsMissing) {
+        const requiredMessage = 'File: É necessário anexar pelo menos um ficheiro.';
+        if (!allErrors.includes(requiredMessage)) {
+          allErrors.push(requiredMessage);
+        }
+      }
+
       return allErrors;
     },
     // Check if there are any validation errors
     hasErrors: () => {
       const textHasError = !!textArea.error;
-      const filesHaveError = enableDocuments ? dropzone.errors.length > 0 : false;
+      const filesHaveError = enableDocuments
+        ? dropzone.errors.length > 0 || documentsMissing
+        : false;
       return textHasError || filesHaveError;
     }
   };

@@ -1,10 +1,11 @@
-import DocumentDropzone from '@/components/DocumentDropzone';
-import Icon from '@/components/Icon';
-import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
 import type { FC } from 'react';
 import { useCallback, useState } from 'react';
 import { z } from 'zod';
+import DocumentDropzone from '@/components/DocumentDropzone';
+import type { DocumentFile } from '@/components/DocumentDropzone/hooks/useDocumentDropzone';
+import Icon from '@/components/Icon';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
 
 const IconHeader: FC<{ className?: string; title: string }> = ({ className, title }) => {
   return (
@@ -36,15 +37,11 @@ interface TextAreaProps {
     onDragLeave: (e: React.DragEvent<HTMLDivElement>) => void;
     onClick: () => void;
     onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onPaste?: (e: React.ClipboardEvent<HTMLDivElement>) => void;
+    onRemoveFile: (file: DocumentFile) => void;
     acceptedFileExtensions: string;
   };
-  files?: Array<{
-    name: string;
-    type: string;
-    size: number;
-    blob: Blob;
-    base64: string;
-  }>;
+  files?: DocumentFile[];
   dragActive?: boolean;
   errors?: string[];
 }
