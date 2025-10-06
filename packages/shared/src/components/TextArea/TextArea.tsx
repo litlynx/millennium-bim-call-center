@@ -4,6 +4,7 @@ import { z } from 'zod';
 import Icon from '@/components/Icon';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import DocumentDropzone from '../DocumentDropzone/DocumentDropzone';
 
 const IconHeader: FC<{ className?: string; title: string }> = ({ className, title }) => {
   return (
@@ -128,6 +129,8 @@ export default function TextArea({
         </div>
 
         {validationError && <div className="text-red-500 text-sm mt-1">{validationError}</div>}
+
+        <DocumentDropzone />
       </div>
     </div>
   );

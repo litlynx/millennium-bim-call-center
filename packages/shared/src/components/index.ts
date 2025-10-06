@@ -9,6 +9,7 @@ export type { CardTabItem, CardTabsProps } from './Card/CardTabs';
 export { default as CardTabs } from './Card/CardTabs';
 export { default as CardItemLabel } from './CardItem/CardItemLabel';
 export { default as DatePicker } from './DatePicker/DatePicker';
+export { default as DocumentDropzone } from './DocumentDropzone/DocumentDropzone';
 export type { IconProps, IconType } from './Icon/Icon';
 export { default as Icon } from './Icon/Icon';
 export { default as Input } from './Input/Input';
@@ -24,6 +25,5 @@ export { default as Table } from './Table/Table';
 export { useTextArea } from './TextArea';
 export { default as TextArea } from './TextArea/TextArea';
 export { default as Tooltip } from './Tooltip/TooltipComponent';
-
 // ShadCN UI components
 export * from './ui';
