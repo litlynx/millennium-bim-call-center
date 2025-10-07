@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { useCallback, useState } from 'react';
 import { z } from 'zod';
+import DocumentDropzone from '@/components/DocumentDropzone';
 import Icon from '@/components/Icon';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
@@ -128,6 +129,8 @@ export default function TextArea({
         </div>
 
         {validationError && <div className="text-red-500 text-sm mt-1">{validationError}</div>}
+
+        <DocumentDropzone className="mt-4" />
       </div>
     </div>
   );
