@@ -284,12 +284,12 @@ export const submenuLinks: SubmenuLinkItemProps[] = [
   //   path: '/records/digital-channels/mobile-banking/limits',
   //   parentSubmenuId: 'mobile-banking-submenu'
   // },
-  // {
-  //   id: 'recargas',
-  //   label: 'Recargas',
-  //   path: '/records/digital-channels/mobile-banking/top-ups',
-  //   parentSubmenuId: 'mobile-banking-submenu'
-  // },
+  {
+    id: 'recargas',
+    label: 'Recargas',
+    path: '/records/digital-channels/mobile-banking/recharges',
+    parentSubmenuId: 'mobile-banking-submenu'
+  },
   // {
   //   id: 'erros-da-aplicacao',
   //   label: 'Erros da Aplicação',

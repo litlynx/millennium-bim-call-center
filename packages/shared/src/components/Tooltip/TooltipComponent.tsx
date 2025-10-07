@@ -4,23 +4,25 @@ import { forwardRef } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
-type TooltipVariant = 'white' | 'purple';
+type TooltipVariant = 'white' | 'purple' | 'dark';
 type TooltipSide = 'top' | 'right' | 'bottom' | 'left';
 type TooltipAlign = 'start' | 'center' | 'end';
 
 interface TooltipProps {
-  title: string;
+  title?: string;
   content: React.ReactNode;
   children: React.ReactNode;
   variant?: TooltipVariant;
   side?: TooltipSide;
   align?: TooltipAlign;
   button?: string;
+  simple?: boolean;
 }
 
 const variantStyles: Record<TooltipVariant, string> = {
   white: 'bg-white text-gray-800',
-  purple: 'bg-[#8B39A0] text-white'
+  purple: 'bg-[#8B39A0] text-white',
+  dark: 'bg-gray-700 text-gray-100'
 };
 
 const TriggerWrapper = forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(
@@ -40,7 +42,8 @@ const TooltipComponent: React.FC<TooltipProps> = ({
   variant = 'white',
   side = 'top',
   align = 'center',
-  button
+  button,
+  simple
 }) => {
   return (
     <TooltipProvider delayDuration={100}>
@@ -48,10 +51,15 @@ const TooltipComponent: React.FC<TooltipProps> = ({
         <TooltipTrigger asChild>
           <TriggerWrapper>{children}</TriggerWrapper>
         </TooltipTrigger>
-        <TooltipContent side={side} align={align} className={variantStyles[variant]}>
+        <TooltipContent
+          side={side}
+          align={align}
+          className={cn(variantStyles[variant], simple ? 'p-0 px-2 rounded-lg' : '')}
+        >
           <p
             className={cn(
-              'font-semibold border-b-2 mb-3 text-base',
+              'font-semibold text-base',
+              simple === true ? '' : 'border-b-2 mb-3',
               variant === 'white' ? 'text-gray-800 border-primary-500' : 'text-white border-white'
             )}
           >
@@ -70,12 +78,14 @@ const TooltipComponent: React.FC<TooltipProps> = ({
             </div>
           )}
 
-          <TooltipArrow
-            className={cn(
-              '-translate-y-[2px] w-[1.5625rem] h-[0.875rem]',
-              variant === 'white' ? 'fill-white' : 'fill-[#8B39A0]'
-            )}
-          />
+          {!simple && (
+            <TooltipArrow
+              className={cn(
+                '-translate-y-[2px] w-[1.5625rem] h-[0.875rem]',
+                variant === 'white' ? 'fill-white' : 'fill-[#8B39A0]'
+              )}
+            />
+          )}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

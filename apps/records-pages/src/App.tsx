@@ -4,6 +4,7 @@ import Spinner from './components';
 
 const Accesses = lazy(() => import('./DigitalChannels/MobileBanking/pages/Accesses'));
 const CancelsBlocked = lazy(() => import('./DigitalChannels/MobileBanking/pages/CancelsBlocked'));
+const Recharges = lazy(() => import('./DigitalChannels/MobileBanking/pages/Recharges'));
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
           path="digital-channels/mobile-banking/cancels-blocked"
           element={<CancelsBlocked />}
         />
+        <Route path="digital-channels/mobile-banking/recharges" element={<Recharges />} />
       </Routes>
     </Suspense>
   );
