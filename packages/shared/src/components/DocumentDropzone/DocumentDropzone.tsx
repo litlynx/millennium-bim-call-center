@@ -82,7 +82,7 @@ export default function DocumentDropzone({
               <p className="font-bold">Anexar documento ou imagem</p>
               <span className="text-sm">Arraste ou cole o ficheiro a carregar</span>
               <span className="text-xs text-gray-400">
-                Apenas ficheiros JPEG, PNG e DOCX, até 4MB no total
+                Apenas ficheiros JPEG, PNG, DOCX, PDF e TXT  até 4MB no total
               </span>
             </div>
           </div>
