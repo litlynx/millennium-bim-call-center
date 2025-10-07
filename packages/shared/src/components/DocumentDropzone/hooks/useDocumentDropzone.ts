@@ -22,7 +22,7 @@ const fileSchema = z.object({
     .number()
     .max(
       FILE_UPLOAD_MAX_SIZE,
-      `File size should not exceed ${FILE_UPLOAD_MAX_SIZE / (1024 * 1024)} MB`
+      `O tamanho do ficheiro não deve exceder ${FILE_UPLOAD_MAX_SIZE / (1024 * 1024)} MB`
     )
 });
 
