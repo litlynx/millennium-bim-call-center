@@ -108,14 +108,14 @@ export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions =
       }
 
       if (enableDocuments && documentsMissing) {
-        const requiredMessage = 'File: É necessário anexar pelo menos um ficheiro.';
+        const requiredMessage = 'Ficheiros: É necessário anexar pelo menos um ficheiro.';
         if (!allErrors.includes(requiredMessage)) {
           allErrors.push(requiredMessage);
         }
       }
 
       if (enableDocuments && uploadsInProgress) {
-        allErrors.push('File: Existem ficheiros ainda a serem carregados.');
+        allErrors.push('Ficheiros: Existem ficheiros ainda a serem carregados.');
       }
 
       return allErrors;
