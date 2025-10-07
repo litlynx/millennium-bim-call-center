@@ -48,7 +48,7 @@ module.exports = {
           200: '#E5E7EB', // used
           300: '#D9D9D9', // used scroll-bar bg
           400: '#ABACAD', // used checkbox border
-          450: '#888d93',
+          450: '#767676', // used DocumentDropzone
           500: '#7C7F86', // used
           600: '#5E5E5E', // used
           700: '#374151',

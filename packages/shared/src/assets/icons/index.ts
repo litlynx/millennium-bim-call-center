@@ -20,6 +20,7 @@ export * from './ContactIcon';
 export * from './ContactsIcon';
 export * from './CrossRibbonIcon';
 export * from './DangerIcon';
+export * from './DeleteRedIcon';
 export * from './DialPadIcon';
 export * from './DocFileIcon';
 export * from './DocumentationIcon';
