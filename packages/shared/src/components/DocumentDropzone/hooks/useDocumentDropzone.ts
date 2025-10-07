@@ -1,5 +1,5 @@
 import type { ClipboardEvent } from 'react';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
 
 export const ACCEPTED_FILE_EXTENSIONS = '.png,.jpeg,.jpg,.pdf,.docx,.txt';
@@ -78,6 +78,11 @@ export function useDocumentDropzone() {
   const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const filesRef = useRef<DocumentFile[]>([]);
+
+  useEffect(() => {
+    filesRef.current = files;
+  }, [files]);
 
   const removeFile = useCallback((fileToRemove: DocumentFile) => {
     setFiles((prev) => prev.filter((file) => file.id !== fileToRemove.id));
@@ -122,54 +127,77 @@ export function useDocumentDropzone() {
       const candidateFiles = Array.from(fileList);
       const validationErrors: string[] = [];
       const filesToProcess: Array<{ file: File; id: string }> = [];
+      const newFiles: DocumentFile[] = [];
+      const existingIds = new Set(filesRef.current.map((file) => file.id));
 
-      setFiles((prev) => {
-        const existingIds = new Set(prev.map((file) => file.id));
-        const nextState = [...prev];
+      for (const file of candidateFiles) {
+        const result = fileSchema.safeParse({
+          name: file.name,
+          type: file.type,
+          size: file.size
+        });
 
-        for (const file of candidateFiles) {
-          const result = fileSchema.safeParse({
-            name: file.name,
-            type: file.type,
-            size: file.size
-          });
-          if (!result.success) {
-            validationErrors.push(
-              `${file.name}: ${result.error.errors.map((e) => e.message).join(', ')}`
-            );
-            continue;
-          }
-
-          const id = createFileId(file);
-
-          if (existingIds.has(id)) {
-            validationErrors.push(`${file.name}: Este ficheiro já foi anexado.`);
-            continue;
-          }
-
-          existingIds.add(id);
-          filesToProcess.push({ file, id });
-          nextState.push({
-            id,
-            name: file.name,
-            type: file.type,
-            size: file.size,
-            lastModified: file.lastModified,
-            blob: file,
-            base64: undefined,
-            progress: 0,
-            status: 'uploading',
-            error: null
-          });
+        if (!result.success) {
+          validationErrors.push(
+            `${file.name}: ${result.error.errors.map((e) => e.message).join(', ')}`
+          );
+          continue;
         }
 
-        return nextState;
-      });
+        const id = createFileId(file);
+
+        if (existingIds.has(id)) {
+          validationErrors.push(`${file.name}: Este ficheiro já foi anexado.`);
+          continue;
+        }
+
+        existingIds.add(id);
+        filesToProcess.push({ file, id });
+        newFiles.push({
+          id,
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          lastModified: file.lastModified,
+          blob: file,
+          base64: undefined,
+          progress: 0,
+          status: 'uploading',
+          error: null
+        });
+      }
 
       if (validationErrors.length > 0) {
         setErrors((prev) => {
           const combined = [...prev, ...validationErrors];
           return Array.from(new Set(combined));
+        });
+      }
+
+      if (newFiles.length > 0) {
+        setFiles((prev) => {
+          if (prev.length === 0) {
+            const nextState = [...newFiles];
+            filesRef.current = nextState;
+            return nextState;
+          }
+
+          const currentIds = new Set(prev.map((file) => file.id));
+          const additions = newFiles.filter((file) => {
+            if (currentIds.has(file.id)) {
+              return false;
+            }
+            currentIds.add(file.id);
+            return true;
+          });
+
+          if (additions.length === 0) {
+            return prev;
+          }
+
+          const nextState = [...prev, ...additions];
+          filesRef.current = nextState;
+          return nextState;
         });
       }
 

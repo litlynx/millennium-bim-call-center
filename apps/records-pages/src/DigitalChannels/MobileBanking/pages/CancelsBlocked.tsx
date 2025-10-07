@@ -118,7 +118,7 @@ const CancelsBlocked: React.FC = () => {
 
   const textAreaWithDocs = useTextAreaWithDocuments({
     required: true,
-    maxLength: 200,
+    maxLength: 2000,
     initialValue: '',
     enableDocuments: true
   });
