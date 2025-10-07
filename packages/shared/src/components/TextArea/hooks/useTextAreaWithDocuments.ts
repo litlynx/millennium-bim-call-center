@@ -35,6 +35,7 @@ export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions =
       onRemoveFile: dropzone.removeFile,
       acceptedFileExtensions: dropzone.acceptedFileExtensions
     },
+    revalidateTotalSize: () => dropzone.revalidateTotalSize(dropzone.files),
     validateAll: () => {
       let isAllValid = true;
       const validationErrors: string[] = [];

@@ -12,6 +12,7 @@ export const ACCEPTED_MIME_TYPES = [
   'text/plain'
 ] as const;
 const FILE_UPLOAD_MAX_SIZE = 4 * 1024 * 1024; // 4MB
+const TOTAL_SIZE_ERROR_MESSAGE = `O tamanho total dos ficheiros não deve exceder ${FILE_UPLOAD_MAX_SIZE / (1024 * 1024)} MB`;
 
 const fileSchema = z.object({
   name: z.string(),
@@ -25,6 +26,8 @@ const fileSchema = z.object({
       `O tamanho do ficheiro não deve exceder ${FILE_UPLOAD_MAX_SIZE / (1024 * 1024)} MB`
     )
 });
+
+const totalSizeSchema = z.number().max(FILE_UPLOAD_MAX_SIZE, TOTAL_SIZE_ERROR_MESSAGE);
 
 export type DocumentFileStatus = 'uploading' | 'completed' | 'error';
 
@@ -84,9 +87,45 @@ export function useDocumentDropzone() {
     filesRef.current = files;
   }, [files]);
 
+  const revalidateTotalSize = useCallback((currentFiles: DocumentFile[]) => {
+    setErrors((prevErrors) => {
+      const totalValidation = totalSizeSchema.safeParse(
+        currentFiles.reduce((sum, file) => sum + file.size, 0)
+      );
+
+      if (!totalValidation.success) {
+        if (prevErrors.includes(TOTAL_SIZE_ERROR_MESSAGE)) {
+          return prevErrors;
+        }
+        return [...prevErrors, TOTAL_SIZE_ERROR_MESSAGE];
+      }
+
+      return prevErrors.filter((error) => error !== TOTAL_SIZE_ERROR_MESSAGE);
+    });
+  }, []);
+
   const removeFile = useCallback((fileToRemove: DocumentFile) => {
-    setFiles((prev) => prev.filter((file) => file.id !== fileToRemove.id));
-    setErrors((prev) => prev.filter((error) => !error.startsWith(fileToRemove.name)));
+    setFiles((prev) => {
+      const nextFiles = prev.filter((file) => file.id !== fileToRemove.id);
+
+      setErrors((prevErrors) => {
+        const filteredErrors = prevErrors.filter((error) => !error.startsWith(fileToRemove.name));
+        const totalValidation = totalSizeSchema.safeParse(
+          nextFiles.reduce((sum, file) => sum + file.size, 0)
+        );
+
+        if (!totalValidation.success) {
+          if (filteredErrors.includes(TOTAL_SIZE_ERROR_MESSAGE)) {
+            return filteredErrors;
+          }
+          return [...filteredErrors, TOTAL_SIZE_ERROR_MESSAGE];
+        }
+
+        return filteredErrors.filter((error) => error !== TOTAL_SIZE_ERROR_MESSAGE);
+      });
+
+      return nextFiles;
+    });
   }, []);
 
   const updateFile = useCallback((id: string, updates: Partial<DocumentFile>) => {
@@ -129,6 +168,7 @@ export function useDocumentDropzone() {
       const filesToProcess: Array<{ file: File; id: string }> = [];
       const newFiles: DocumentFile[] = [];
       const existingIds = new Set(filesRef.current.map((file) => file.id));
+      let pendingTotalSize = filesRef.current.reduce((sum, file) => sum + file.size, 0);
 
       for (const file of candidateFiles) {
         const result = fileSchema.safeParse({
@@ -151,7 +191,17 @@ export function useDocumentDropzone() {
           continue;
         }
 
+        const totalResult = totalSizeSchema.safeParse(pendingTotalSize + file.size);
+        if (!totalResult.success) {
+          const message = `${file.name}: ${totalResult.error.errors
+            .map((e) => e.message)
+            .join(', ')}`;
+          validationErrors.push(message);
+          continue;
+        }
+
         existingIds.add(id);
+        pendingTotalSize += file.size;
         filesToProcess.push({ file, id });
         newFiles.push({
           id,
@@ -313,16 +363,43 @@ export function useDocumentDropzone() {
         }
       }
 
+      const totalValidation = totalSizeSchema.safeParse(
+        files.reduce((sum, file) => sum + file.size, 0)
+      );
+      if (!totalValidation.success && !validationErrors.includes(TOTAL_SIZE_ERROR_MESSAGE)) {
+        validationErrors.push(TOTAL_SIZE_ERROR_MESSAGE);
+      }
+
+      // Only preserve errors from the error state if they're still relevant
+      // Filter out old rejection errors for files that are no longer in the current file list
+      const currentFileNames = new Set(files.map((f) => f.name));
       if (errors.length > 0) {
         for (const error of errors) {
-          if (!validationErrors.includes(error)) {
-            validationErrors.push(error);
+          // Skip if error is already in validationErrors
+          if (validationErrors.includes(error)) {
+            continue;
+          }
+
+          // Check if error is a file-specific error (starts with filename)
+          const isFileError = error.includes(':');
+          if (isFileError) {
+            // Extract filename from error message (format: "filename: error message")
+            const fileName = error.split(':')[0].trim();
+            // Only include error if the file is still in the current list
+            if (currentFileNames.has(fileName)) {
+              validationErrors.push(error);
+            }
+            // Skip errors for rejected/removed files
+          } else {
+            // Non-file-specific errors (like total size) are handled above
+            // Don't carry them forward from the error state
           }
         }
       }
 
-      setErrors(validationErrors);
-      return validationErrors.length === 0;
+      const uniqueValidationErrors = Array.from(new Set(validationErrors));
+      setErrors(uniqueValidationErrors);
+      return uniqueValidationErrors.length === 0;
     },
     [errors, files]
   );
@@ -341,6 +418,7 @@ export function useDocumentDropzone() {
     validateFiles,
     removeFile,
     onPaste,
-    processFiles
+    processFiles,
+    revalidateTotalSize
   };
 }
