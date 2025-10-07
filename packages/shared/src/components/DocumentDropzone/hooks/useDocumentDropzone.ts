@@ -26,62 +26,161 @@ const fileSchema = z.object({
     )
 });
 
+export type DocumentFileStatus = 'uploading' | 'completed' | 'error';
+
 export type DocumentFile = {
+  id: string;
   name: string;
   type: string;
   size: number;
+  lastModified?: number;
   blob: Blob;
-  base64: Base64URLString;
+  base64?: Base64URLString;
+  progress: number;
+  status: DocumentFileStatus;
+  error?: string | null;
 };
 
-function fileToBase64(file: File): Promise<string> {
+const createFileId = (file: { name: string; size: number; lastModified?: number }) =>
+  `${file.name}-${file.size}-${file.lastModified ?? 'nlm'}`;
+
+function fileToBase64(
+  file: File,
+  onProgress?: (progress: number) => void
+): Promise<Base64URLString> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
+
+    reader.onprogress = (event) => {
+      if (event.lengthComputable) {
+        const progress = Math.round((event.loaded / event.total) * 100);
+        onProgress?.(progress);
+      } else {
+        onProgress?.(50);
+      }
+    };
+
+    reader.onload = () => {
+      onProgress?.(100);
+      resolve(reader.result as Base64URLString);
+    };
+
+    reader.onerror = () => {
+      reject(new Error('Failed to read file'));
+    };
+
     reader.readAsDataURL(file);
   });
 }
 
 export function useDocumentDropzone() {
-  const removeFile = useCallback((fileToRemove: DocumentFile) => {
-    setFiles((prev) => prev.filter((file) => file.name !== fileToRemove.name));
-  }, []);
   const [files, setFiles] = useState<DocumentFile[]>([]);
   const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const processFiles = useCallback(async (fileList: FileList | File[]) => {
-    const newErrors: string[] = [];
-    const validFiles: File[] = [];
-    for (const file of Array.from(fileList)) {
-      const result = fileSchema.safeParse({ name: file.name, type: file.type, size: file.size });
-      if (result.success) {
-        validFiles.push(file);
-      } else {
-        newErrors.push(`${file.name}: ${result.error.errors.map((e) => e.message).join(', ')}`);
-      }
-    }
-    setErrors(newErrors);
-    const processed = await Promise.all(
-      validFiles.map(async (file) => ({
-        name: file.name,
-        type: file.type,
-        size: file.size,
-        blob: file,
-        base64: await fileToBase64(file)
-      }))
-    );
-    setFiles((prev) => {
-      // Filter out duplicates based on name and size
-      const existingFileKeys = new Set(prev.map((f) => `${f.name}-${f.size}`));
-      const uniqueNewFiles = processed.filter(
-        (file) => !existingFileKeys.has(`${file.name}-${file.size}`)
-      );
-      return [...prev, ...uniqueNewFiles];
-    });
+  const removeFile = useCallback((fileToRemove: DocumentFile) => {
+    setFiles((prev) => prev.filter((file) => file.id !== fileToRemove.id));
+    setErrors((prev) => prev.filter((error) => !error.startsWith(fileToRemove.name)));
   }, []);
+
+  const updateFile = useCallback((id: string, updates: Partial<DocumentFile>) => {
+    setFiles((prev) => prev.map((file) => (file.id === id ? { ...file, ...updates } : file)));
+  }, []);
+
+  const processSingleFile = useCallback(
+    async (file: File, id: string) => {
+      try {
+        const base64 = await fileToBase64(file, (progress) => {
+          updateFile(id, {
+            progress,
+            status: progress >= 100 ? 'completed' : 'uploading'
+          });
+        });
+
+        updateFile(id, {
+          base64,
+          progress: 100,
+          status: 'completed',
+          error: null
+        });
+      } catch (error) {
+        console.error('Error processing file', error);
+        updateFile(id, {
+          progress: 0,
+          status: 'error',
+          error: 'Erro ao carregar ficheiro.'
+        });
+        setErrors((prev) => [...prev, `${file.name}: Erro ao carregar ficheiro.`]);
+      }
+    },
+    [updateFile]
+  );
+
+  const processFiles = useCallback(
+    async (fileList: FileList | File[]) => {
+      const candidateFiles = Array.from(fileList);
+      const validationErrors: string[] = [];
+      const filesToProcess: Array<{ file: File; id: string }> = [];
+
+      setFiles((prev) => {
+        const existingIds = new Set(prev.map((file) => file.id));
+        const nextState = [...prev];
+
+        for (const file of candidateFiles) {
+          const result = fileSchema.safeParse({
+            name: file.name,
+            type: file.type,
+            size: file.size
+          });
+          if (!result.success) {
+            validationErrors.push(
+              `${file.name}: ${result.error.errors.map((e) => e.message).join(', ')}`
+            );
+            continue;
+          }
+
+          const id = createFileId(file);
+
+          if (existingIds.has(id)) {
+            validationErrors.push(`${file.name}: Este ficheiro já foi anexado.`);
+            continue;
+          }
+
+          existingIds.add(id);
+          filesToProcess.push({ file, id });
+          nextState.push({
+            id,
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            lastModified: file.lastModified,
+            blob: file,
+            base64: undefined,
+            progress: 0,
+            status: 'uploading',
+            error: null
+          });
+        }
+
+        return nextState;
+      });
+
+      if (validationErrors.length > 0) {
+        setErrors((prev) => {
+          const combined = [...prev, ...validationErrors];
+          return Array.from(new Set(combined));
+        });
+      }
+
+      if (filesToProcess.length === 0) {
+        return;
+      }
+
+      await Promise.all(filesToProcess.map(({ file, id }) => processSingleFile(file, id)));
+    },
+    [processSingleFile]
+  );
 
   const onDrop = useCallback(
     async (e: React.DragEvent<HTMLDivElement>) => {
@@ -164,6 +263,15 @@ export function useDocumentDropzone() {
       }
 
       for (const file of files) {
+        if (file.status === 'error') {
+          validationErrors.push(`${file.name}: ${file.error ?? 'Erro ao carregar ficheiro.'}`);
+          continue;
+        }
+
+        if (file.status !== 'completed') {
+          validationErrors.push(`${file.name}: Upload em progresso.`);
+        }
+
         const result = fileSchema.safeParse({
           name: file.name,
           type: file.type,
@@ -177,9 +285,11 @@ export function useDocumentDropzone() {
         }
       }
 
-      for (const error of errors) {
-        if (!validationErrors.includes(error)) {
-          validationErrors.push(error);
+      if (errors.length > 0) {
+        for (const error of errors) {
+          if (!validationErrors.includes(error)) {
+            validationErrors.push(error);
+          }
         }
       }
 

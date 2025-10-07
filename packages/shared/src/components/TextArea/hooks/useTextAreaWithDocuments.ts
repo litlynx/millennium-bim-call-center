@@ -11,9 +11,11 @@ export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions =
 
   const textArea = useTextArea(textAreaOptions);
   const dropzone = useDocumentDropzone();
-  const hasFileErrors = dropzone.errors.length > 0;
+  const uploadsInProgress = dropzone.files.some((file) => file.status === 'uploading');
+  const fileFailures = dropzone.files.filter((file) => file.status === 'error');
+  const hasDropzoneErrors = dropzone.errors.length > 0 || fileFailures.length > 0;
   const documentsMissing = documentsRequired && dropzone.files.length === 0;
-  const filesAreValid = !hasFileErrors && !documentsMissing;
+  const filesAreValid = !hasDropzoneErrors && !documentsMissing && !uploadsInProgress;
 
   return {
     // Text area properties and methods
@@ -61,7 +63,7 @@ export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions =
       if (!isAllValid) {
         console.warn('Validation failed:', {
           textValid,
-          filesValid: enableDocuments ? dropzone.errors.length === 0 && !documentsMissing : true,
+          filesValid: enableDocuments ? filesAreValid : true,
           enableDocuments,
           errors: validationErrors,
           textError: textArea.error,
@@ -75,7 +77,7 @@ export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions =
     enableDocuments,
     documentsRequired,
     // Additional validation helpers
-    hasFileErrors: hasFileErrors || documentsMissing,
+    hasFileErrors: hasDropzoneErrors || documentsMissing || uploadsInProgress,
     isValid: textArea.isValid && (enableDocuments ? filesAreValid : true),
     // Separate validation methods
     validateText: textArea.validate,
@@ -97,11 +99,22 @@ export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions =
         allErrors.push(...dropzone.errors.map((error) => `File: ${error}`));
       }
 
+      if (enableDocuments && fileFailures.length > 0) {
+        for (const failedFile of fileFailures) {
+          const message = failedFile.error ?? 'Erro ao carregar ficheiro.';
+          allErrors.push(`File: ${failedFile.name} - ${message}`);
+        }
+      }
+
       if (enableDocuments && documentsMissing) {
         const requiredMessage = 'File: É necessário anexar pelo menos um ficheiro.';
         if (!allErrors.includes(requiredMessage)) {
           allErrors.push(requiredMessage);
         }
+      }
+
+      if (enableDocuments && uploadsInProgress) {
+        allErrors.push('File: Existem ficheiros ainda a serem carregados.');
       }
 
       return allErrors;
@@ -110,7 +123,10 @@ export function useTextAreaWithDocuments(options: TextAreaWithDocumentsOptions =
     hasErrors: () => {
       const textHasError = !!textArea.error;
       const filesHaveError = enableDocuments
-        ? dropzone.errors.length > 0 || documentsMissing
+        ? dropzone.errors.length > 0 ||
+          documentsMissing ||
+          uploadsInProgress ||
+          fileFailures.length > 0
         : false;
       return textHasError || filesHaveError;
     }
