@@ -1,4 +1,4 @@
-import { Icon, Popover, Table } from 'shared/components';
+import { Icon, Table, Tooltip } from 'shared/components';
 
 const headersTableTvPackets = [
   { key: 'operatorName', label: 'Operadora' },
@@ -45,44 +45,26 @@ export function TvPacketsTable({ data }: TvPacketsTableProps) {
       {
         content: (
           <div className="flex items-center gap-2">
-            <span>{row.sendState}</span>
-
-            <Popover
-              title="Detalhes"
-              content={
-                <div>
-                  <p>
-                    <span className="font-semibold">Operadora: </span>
-                    <span>{row.operatorName}</span>
-                  </p>
-                  <p>
-                    <span className="font-semibold">Referência: </span>
-                    <span>{row.reference}</span>
-                  </p>
-                  <p>
-                    <span className="font-semibold">Data/Hora: </span>
-                    <span>
-                      {row.date} {row.time}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold">Canal: </span>
-                    <span>{row.channel}</span>
-                  </p>
-                  {row.error && (
-                    <p>
-                      <span className="font-semibold">Erro: </span>
-                      <span>{row.error}</span>
-                    </p>
-                  )}
-                </div>
-              }
-              side="right"
-              variant="purple"
-              button="Fechar"
-            >
-              <Icon type="eye" className="p-0 h-[11px] w-[18px] cursor-pointer" />
-            </Popover>
+            <Tooltip content={row.sendState} variant="dark" simple={true}>
+              <Icon
+                type={
+                  row.sendState === 'Falha no envio'
+                    ? 'exclamation'
+                    : row.sendState === 'Reenviar recarga'
+                      ? 'resend'
+                      : row.sendState === 'Enviada com sucesso'
+                        ? 'check'
+                        : 'eye'
+                }
+                className={`p-0 h-[18px] w-[18px] ${
+                  row.sendState === 'Falha no envio'
+                    ? '[&>svg>g>path]:stroke-red-500'
+                    : row.sendState === 'Reenviar recarga'
+                      ? 'cursor-pointer'
+                      : ''
+                }`}
+              />
+            </Tooltip>
           </div>
         )
       }

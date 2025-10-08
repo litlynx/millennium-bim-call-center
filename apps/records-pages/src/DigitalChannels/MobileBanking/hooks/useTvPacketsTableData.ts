@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { z } from 'zod';
 
 export interface TvPacketsRow {
@@ -101,10 +101,24 @@ export function useTvPacketsTableData({ tvPacketsRows }: UseTvPacketsTableDataPr
 
   const availablePhones = useMemo(() => {
     const uniquePhones = new Set(
-      tvPacketsRows.map((row) => normalizePhone(row.reference)).filter((phone) => phone !== '')
+      tvPacketsRows
+        .map((row) => normalizePhone(row.reference))
+        .filter((phone) => phone !== '' && phone !== 'Get_recharge_code')
     );
     return Array.from(uniquePhones).sort();
   }, [tvPacketsRows, normalizePhone]);
+
+  useEffect(() => {
+    if (availableOperators.length === 1 && operator === 'Todas operadoras') {
+      setOperator(availableOperators[0]);
+    }
+  }, [availableOperators, operator]);
+
+  useEffect(() => {
+    if (availablePhones.length === 1 && selectedPhone === 'Todos telemóveis') {
+      setSelectedPhone(availablePhones[0]);
+    }
+  }, [availablePhones, selectedPhone]);
 
   const filteredTvPacketsRows = useMemo(() => {
     return tvPacketsRows.filter((row) => {

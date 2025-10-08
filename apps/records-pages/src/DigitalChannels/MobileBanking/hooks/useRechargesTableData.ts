@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { z } from 'zod';
-import type { RechargesRow } from '../components/recharges/RechargesTable';
+import type { RechargesRow } from '../components/refills/RefillsTable';
 
 export type DateRange = {
   start: Date | null;
@@ -103,6 +103,18 @@ export function useRechargesTableData({ rechargesRows }: UseRechargesTableDataPr
     );
     return Array.from(uniquePhones).sort();
   }, [rechargesRows, normalizePhone]);
+
+  useEffect(() => {
+    if (availableOperators.length === 1 && operator === 'Todas operadoras') {
+      setOperator(availableOperators[0]);
+    }
+  }, [availableOperators, operator]);
+
+  useEffect(() => {
+    if (availablePhones.length === 1 && selectedPhone === 'Todos telemóveis') {
+      setSelectedPhone(availablePhones[0]);
+    }
+  }, [availablePhones, selectedPhone]);
 
   const filteredRechargesRows = useMemo(() => {
     return rechargesRows.filter((row) => {

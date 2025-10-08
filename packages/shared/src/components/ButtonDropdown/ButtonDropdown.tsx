@@ -2,13 +2,26 @@ import React from 'react';
 import Icon from '@/components/Icon';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 
 type ButtonDropdownProps = {
   button: React.ReactNode;
   content: React.ReactNode;
+  width?: 'small' | 'medium' | 'default' | 'large';
 };
 
-export default function ButtonDropdown({ button, content }: ButtonDropdownProps) {
+const widthClasses = {
+  small: 'w-[110px]',
+  medium: 'w-[155px]',
+  default: 'w-[200px]',
+  large: 'w-[295px]'
+};
+
+export default function ButtonDropdown({
+  button,
+  content,
+  width = 'default'
+}: ButtonDropdownProps) {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
@@ -17,7 +30,10 @@ export default function ButtonDropdown({ button, content }: ButtonDropdownProps)
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="w-[200px] justify-between font-medium text-xs rounded-2xl border border-gray-450 text-gray-450 px-3 py-1 h-fit data-[state=open]:shadow-md data-[state=open]:rounded-b-none data-[state=open]:border-b-0"
+            className={cn(
+              'justify-end font-medium text-xs rounded-2xl border border-gray-450 text-gray-450 px-3 py-1 h-fit data-[state=open]:shadow-md data-[state=open]:rounded-b-none data-[state=open]:border-b-0',
+              widthClasses[width]
+            )}
           >
             {button}
             <Icon
@@ -28,7 +44,10 @@ export default function ButtonDropdown({ button, content }: ButtonDropdownProps)
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="overflow-hidden p-0 pt-1 bg-white text-xs z-0 border border-[#A9ABAD] border-t-0 rounded-t-none w-[200px] relative before:content-[''] before:absolute before:top-[3px] before:left-3 before:w-[calc(100%_-_24px)] before:h-[1px] before:bg-black"
+          className={cn(
+            "overflow-hidden p-0 pt-1 bg-white text-xs z-0 border border-[#A9ABAD] border-t-0 rounded-t-none relative before:content-[''] before:absolute before:top-[3px] before:left-3 before:w-[calc(100%_-_24px)] before:h-[1px] before:bg-black",
+            widthClasses[width]
+          )}
           align="start"
           sideOffset={-1}
         >

@@ -4,7 +4,7 @@ export const mockPrimaryRows = [
     operatorName: 'TMcel',
     sendPhone: '835816811',
     rechargeValue: '500',
-    dateTime: '10/12/2025, 21:30',
+    dateTime: '06/10/2025, 21:30',
     channel: 'Smart IZI',
     sendState: 'Enviada com sucesso'
   },
@@ -13,7 +13,7 @@ export const mockPrimaryRows = [
     operatorName: 'Vodacom',
     sendPhone: 'Get_recharge_code',
     rechargeValue: '500',
-    dateTime: '10/12/2025, 19:30',
+    dateTime: '07/10/2025, 19:30',
     channel: 'Smart IZI',
     sendState: 'Reenviar recarga'
   },
@@ -22,7 +22,7 @@ export const mockPrimaryRows = [
     operatorName: 'Movitel',
     sendPhone: '835816811',
     rechargeValue: '500',
-    dateTime: '10/12/2025, 19:30',
+    dateTime: '08/10/2025, 19:30',
     channel: 'IZI',
     sendState: 'Enviada com sucesso'
   }

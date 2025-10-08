@@ -17,7 +17,7 @@ export interface RechargesRow {
   dateTime: string;
   channel: string;
   sendState: string;
-  error: string;
+  error?: string;
 }
 
 interface RechargesTableProps {
@@ -40,8 +40,6 @@ export function RechargesTable({ data }: RechargesTableProps) {
       {
         content: (
           <div className="flex items-center gap-2">
-            <span>{row.sendState}</span>
-
             <Tooltip content={row.sendState} variant="dark" simple={true}>
               <Icon
                 type={
@@ -53,7 +51,13 @@ export function RechargesTable({ data }: RechargesTableProps) {
                         ? 'check'
                         : 'eye'
                 }
-                className="p-0 h-[18px] w-[18px] cursor-pointer"
+                className={`p-0 h-[18px] w-[18px] ${
+                  row.sendState === 'Falha no envio'
+                    ? '[&>svg>g>path]:stroke-primary-500'
+                    : row.sendState === 'Reenviar recarga'
+                      ? 'cursor-pointer'
+                      : ''
+                }`}
               />
             </Tooltip>
           </div>

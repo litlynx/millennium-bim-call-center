@@ -287,7 +287,7 @@ export const submenuLinks: SubmenuLinkItemProps[] = [
   {
     id: 'recargas',
     label: 'Recargas',
-    path: '/records/digital-channels/mobile-banking/recharges',
+    path: '/records/digital-channels/mobile-banking/refills',
     parentSubmenuId: 'mobile-banking-submenu'
   },
   // {

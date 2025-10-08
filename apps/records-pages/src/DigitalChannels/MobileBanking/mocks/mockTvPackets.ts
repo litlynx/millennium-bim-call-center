@@ -3,17 +3,17 @@ export const mockPrimaryRows = [
     id: 'row-1',
     operatorName: 'ZAP',
     reference: '241231434351',
-    date: '10/12/2025',
+    date: '6/10/2025',
     time: '21:30',
     rechargeValue: '500',
     channel: 'Smart IZI',
-    sendState: 'Reenviar recarga'
+    sendState: 'Enviada com sucesso'
   },
   {
     id: 'row-2',
     operatorName: 'ZAP',
     reference: '241231434100',
-    date: '10/12/2025',
+    date: '7/10/2025',
     time: '21:30',
     rechargeValue: '500',
     channel: 'Smart IZI',
@@ -23,10 +23,10 @@ export const mockPrimaryRows = [
     id: 'row-3',
     operatorName: 'ZAP',
     reference: '241231434100',
-    date: '10/12/2025',
+    date: '8/10/2025',
     time: '21:30',
     rechargeValue: '500',
     channel: 'IZI',
-    sendState: 'Reenviar recarga'
+    sendState: 'Enviada com sucesso'
   }
 ];

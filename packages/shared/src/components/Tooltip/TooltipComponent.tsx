@@ -54,17 +54,21 @@ const TooltipComponent: React.FC<TooltipProps> = ({
         <TooltipContent
           side={side}
           align={align}
-          className={cn(variantStyles[variant], simple ? 'p-0 px-2 rounded-lg' : '')}
+          className={cn(
+            variantStyles[variant],
+            simple ? 'py-1 px-3 rounded-md text-[10px] font-semibold' : ''
+          )}
         >
-          <p
-            className={cn(
-              'font-semibold text-base',
-              simple === true ? '' : 'border-b-2 mb-3',
-              variant === 'white' ? 'text-gray-800 border-primary-500' : 'text-white border-white'
-            )}
-          >
-            {title}
-          </p>
+          {!simple && title && (
+            <p
+              className={cn(
+                'font-semibold text-base border-b-2 mb-3',
+                variant === 'white' ? 'text-gray-800 border-primary-500' : 'text-white border-white'
+              )}
+            >
+              {title}
+            </p>
+          )}
           {content}
 
           {button && (

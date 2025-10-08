@@ -1,7 +1,7 @@
 export const mockPrimaryRows = [
   {
     id: 'row-1',
-    date: '10/12/2025',
+    date: '6/10/2025',
     time: '21:30',
     sendPhone: '835816811',
     counterNumber: '0994 4734 27843 8348',
@@ -10,7 +10,7 @@ export const mockPrimaryRows = [
   },
   {
     id: 'row-2',
-    date: '10/12/2025',
+    date: '7/10/2025',
     time: '21:30',
     sendPhone: '835816811',
     counterNumber: '0994 4734 27843 8348',
@@ -19,7 +19,7 @@ export const mockPrimaryRows = [
   },
   {
     id: 'row-3',
-    date: '10/12/2025',
+    date: '8/10/2025',
     time: '21:30',
     sendPhone: '835816811',
     counterNumber: '0994 4734 27843 8348',

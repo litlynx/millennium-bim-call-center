@@ -5,24 +5,23 @@ import {
   Button,
   ButtonDropdown,
   DatePicker,
-  Input,
   PageHeader,
   ScriptDetail,
   TextArea,
   useTextArea
 } from 'shared/components';
 import { useUserStore } from 'shared/stores';
-import { CredelecTable } from '../components/recharges/CredelecTable';
-import { RechargesTable } from '../components/recharges/RechargesTable';
-import { TvPacketsTable } from '../components/recharges/TvPacketsTable';
+import { CredelecTable } from '../components/refills/CredelecTable';
+import { RechargesTable } from '../components/refills/RefillsTable';
+import { TvPacketsTable } from '../components/refills/TvPacketsTable';
 import { useCredelecTableData } from '../hooks/useCredelecTableData';
 import { useRechargesTableData } from '../hooks/useRechargesTableData';
 import { useTvPacketsTableData } from '../hooks/useTvPacketsTableData';
 import { mockPrimaryRows as mockCredelec } from '../mocks/mockCredelec';
-import { mockPrimaryRows as mockRecharges } from '../mocks/mockRecharges';
+import { mockPrimaryRows as mockRecharges } from '../mocks/mockRefills';
 import { mockPrimaryRows as mockTvPackets } from '../mocks/mockTvPackets';
 
-export const CANCELS_BLOCKED_QUERY_KEY = 'recharges';
+export const CANCELS_BLOCKED_QUERY_KEY = 'refills';
 const TITLE = 'Smart IZI - Recargas';
 
 export interface OperatorStateMock {
@@ -39,21 +38,21 @@ export const operatorStateMocks: OperatorStateMock[] = [
   }
 ];
 
-const Recharges: React.FC = () => {
+type TableType = 'refills' | 'credelec' | 'tvpackets';
+
+const Refills: React.FC = () => {
   const navigate = useNavigate();
-  const [activeTable, setActiveTable] = React.useState<'recharges' | 'credelec' | 'tvpackets'>(
-    'recharges'
-  );
+  const [activeTable, setActiveTable] = React.useState<TableType>('refills');
 
   const renderFilters = () => {
     switch (activeTable) {
-      case 'recharges':
+      case 'refills':
         return (
-          <div className="flex justify-between gap-7">
-            {/* Filtro Operadora */}
+          <div className="flex justify-start gap-7">
             <div className="flex flex-col gap-[0.625rem]">
               <p className="uppercase font-semibold text-xs text-gray-800">Operadora</p>
               <ButtonDropdown
+                width="medium"
                 button={rechargesOperator}
                 content={
                   <ul className="flex flex-col">
@@ -77,10 +76,10 @@ const Recharges: React.FC = () => {
               />
             </div>
 
-            {/* Filtro Telemóvel */}
             <div className="flex flex-col gap-[0.625rem]">
-              <p className="uppercase font-semibold text-xs text-gray-800">Telemóvel</p>
+              <p className="uppercase font-semibold text-xs text-gray-800">Telemóvel do mobile</p>
               <ButtonDropdown
+                width="medium"
                 button={rechargesPhone}
                 content={
                   <ul className="flex flex-col">
@@ -104,20 +103,22 @@ const Recharges: React.FC = () => {
               />
             </div>
 
-            {/* Filtro Número de Destino */}
             <div className="flex flex-col gap-[0.625rem]">
               <p className="uppercase font-semibold text-xs text-gray-800">Número de Destino</p>
-              <Input
-                value={destinationNumber}
-                onChange={(e) => setDestinationNumber(e.target.value)}
-                placeholder="Digite o número"
-              />
+              <div className="relative">
+                <input
+                  value={destinationNumber}
+                  onChange={(e) => setDestinationNumber(e.target.value)}
+                  placeholder="Digite o número"
+                  className="w-[155px] justify-between font-medium text-xs rounded-2xl border border-gray-450 text-gray-450 px-3 py-1 h-fit bg-white"
+                />
+              </div>
             </div>
 
-            {/* Filtro Data */}
             <div className="flex flex-col gap-[0.625rem]">
               <p className="uppercase font-semibold text-xs text-gray-800">Data</p>
               <DatePicker
+                defaultPreset="last7Days"
                 onChange={(range: { startDate: Date | null; endDate: Date | null }) =>
                   setRechargesDateRange({ start: range.startDate, end: range.endDate })
                 }
@@ -127,11 +128,11 @@ const Recharges: React.FC = () => {
         );
       case 'credelec':
         return (
-          <div className="flex justify-between gap-7">
-            {/* Filtro Telemóvel */}
+          <div className="flex justify-start gap-7">
             <div className="flex flex-col gap-[0.625rem]">
-              <p className="uppercase font-semibold text-xs text-gray-800">Telemóvel</p>
+              <p className="uppercase font-semibold text-xs text-gray-800">Telemóvel do mobile</p>
               <ButtonDropdown
+                width="medium"
                 button={credelecPhone}
                 content={
                   <ul className="flex flex-col">
@@ -155,10 +156,10 @@ const Recharges: React.FC = () => {
               />
             </div>
 
-            {/* Filtro Data */}
             <div className="flex flex-col gap-[0.625rem]">
               <p className="uppercase font-semibold text-xs text-gray-800">Data</p>
               <DatePicker
+                defaultPreset="last7Days"
                 onChange={(range: { startDate: Date | null; endDate: Date | null }) =>
                   setCredelecDateRange({ start: range.startDate, end: range.endDate })
                 }
@@ -168,11 +169,11 @@ const Recharges: React.FC = () => {
         );
       case 'tvpackets':
         return (
-          <div className="flex justify-between gap-7">
-            {/* Filtro Operadora */}
+          <div className="flex justify-start gap-7">
             <div className="flex flex-col gap-[0.625rem]">
               <p className="uppercase font-semibold text-xs text-gray-800">Operadora</p>
               <ButtonDropdown
+                width="medium"
                 button={tvOperator}
                 content={
                   <ul className="flex flex-col">
@@ -196,10 +197,10 @@ const Recharges: React.FC = () => {
               />
             </div>
 
-            {/* Filtro Telemóvel */}
             <div className="flex flex-col gap-[0.625rem]">
-              <p className="uppercase font-semibold text-xs text-gray-800">Telemóvel</p>
+              <p className="uppercase font-semibold text-xs text-gray-800">Telemóvel do mobile</p>
               <ButtonDropdown
+                width="medium"
                 button={tvPhone}
                 content={
                   <ul className="flex flex-col">
@@ -223,10 +224,10 @@ const Recharges: React.FC = () => {
               />
             </div>
 
-            {/* Filtro Data */}
             <div className="flex flex-col gap-[0.625rem]">
               <p className="uppercase font-semibold text-xs text-gray-800">Data</p>
               <DatePicker
+                defaultPreset="last7Days"
                 onChange={(range: { startDate: Date | null; endDate: Date | null }) =>
                   setTvDateRange({ start: range.startDate, end: range.endDate })
                 }
@@ -239,7 +240,7 @@ const Recharges: React.FC = () => {
 
   const renderTable = () => {
     switch (activeTable) {
-      case 'recharges':
+      case 'refills':
         return <RechargesTable data={filteredRechargesRows} />;
       case 'credelec':
         return <CredelecTable data={filteredCredelecRows} />;
@@ -330,31 +331,57 @@ const Recharges: React.FC = () => {
         <div className="mt-3 flex flex-1 min-h-0 flex-col rounded-[1.25rem] bg-white overflow-hidden">
           <div className="overflow-y-auto px-9 py-6">
             <div className="flex flex-col gap-6">
-              {/* Botões de navegação entre tabelas */}
-              <div className="flex gap-4">
-                <Button variant="mono" onClick={() => setActiveTable('recharges')}>
-                  Recargas Móveis
+              <div className="flex gap-4" role="radiogroup">
+                <Button
+                  variant="mono"
+                  className={
+                    activeTable === 'refills' ? 'bg-gray-700 text-white hover:bg-gray-700' : ''
+                  }
+                  onClick={() => setActiveTable('refills')}
+                  aria-pressed={activeTable === 'refills'}
+                >
+                  Recargas
                 </Button>
-                <Button variant="mono" onClick={() => setActiveTable('credelec')}>
+                <Button
+                  variant="mono"
+                  className={
+                    activeTable === 'credelec' ? 'bg-gray-700 text-white hover:bg-gray-700' : ''
+                  }
+                  onClick={() => setActiveTable('credelec')}
+                  aria-pressed={activeTable === 'credelec'}
+                >
                   Credelec
                 </Button>
-                <Button variant="mono" onClick={() => setActiveTable('tvpackets')}>
-                  TV Packets
+                <Button
+                  variant="mono"
+                  className={
+                    activeTable === 'tvpackets' ? 'bg-gray-700 text-white hover:bg-gray-700' : ''
+                  }
+                  onClick={() => setActiveTable('tvpackets')}
+                  aria-pressed={activeTable === 'tvpackets'}
+                >
+                  Pacotes de TV
                 </Button>
               </div>
 
-              <div className="mt-6">{renderFilters()}</div>
+              <div>{renderFilters()}</div>
 
               <div>{renderTable()}</div>
             </div>
 
             <div className="pt-6">
-              <TextArea title="Registo" placeholder="" {...textArea.textAreaProps} />
+              <TextArea
+                title="Registo"
+                placeholder="Motivo da Chamada"
+                {...textArea.textAreaProps}
+              />
 
-              <Button variant="outline" onClick={handleSendEmail}>
-                Encaminhar
-              </Button>
-              <Button onClick={handleSubmit}>Fechar</Button>
+              <div className="mt-[2.6875rem] flex justify-end gap-3">
+                <Button variant="outline" onClick={handleSendEmail}>
+                  Encaminhar
+                </Button>
+                <Button onClick={handleSubmit}>Fechar</Button>
+              </div>
             </div>
           </div>
         </div>
@@ -365,4 +392,4 @@ const Recharges: React.FC = () => {
   );
 };
 
-export default Recharges;
+export default Refills;

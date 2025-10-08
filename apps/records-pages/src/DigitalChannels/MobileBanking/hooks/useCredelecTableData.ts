@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { z } from 'zod';
 
 export interface CredelecRow {
@@ -79,10 +79,18 @@ export function useCredelecTableData({ credelecRows }: UseCredelecTableDataProps
 
   const availablePhones = useMemo(() => {
     const uniquePhones = new Set(
-      credelecRows.map((row) => normalizePhone(row.sendPhone)).filter((phone) => phone !== '')
+      credelecRows
+        .map((row) => normalizePhone(row.sendPhone))
+        .filter((phone) => phone !== '' && phone !== 'Get_recharge_code')
     );
     return Array.from(uniquePhones).sort();
   }, [credelecRows, normalizePhone]);
+
+  useEffect(() => {
+    if (availablePhones.length === 1 && selectedPhone === 'Todos telemóveis') {
+      setSelectedPhone(availablePhones[0]);
+    }
+  }, [availablePhones, selectedPhone]);
 
   const filteredCredelecRows = useMemo(() => {
     return credelecRows.filter((row) => {
