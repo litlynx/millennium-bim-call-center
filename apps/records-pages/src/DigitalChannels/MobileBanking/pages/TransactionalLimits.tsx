@@ -46,7 +46,7 @@ const TransactionalLimits: React.FC = () => {
 
   const textArea = useTextArea({
     required: true,
-    maxLength: 200,
+    maxLength: 2000,
     initialValue: ''
   });
 
