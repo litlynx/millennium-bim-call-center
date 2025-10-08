@@ -278,12 +278,12 @@ export const submenuLinks: SubmenuLinkItemProps[] = [
     path: '/records/digital-channels/mobile-banking/cancels-blocked',
     parentSubmenuId: 'mobile-banking-submenu'
   },
-  // {
-  //   id: 'limites-transaccionais',
-  //   label: 'Limites Transaccionais',
-  //   path: '/records/digital-channels/mobile-banking/limits',
-  //   parentSubmenuId: 'mobile-banking-submenu'
-  // },
+  {
+    id: 'limites-transaccionais',
+    label: 'Limites Transaccionais',
+    path: '/records/digital-channels/mobile-banking/transactional-limits',
+    parentSubmenuId: 'mobile-banking-submenu'
+  },
   // {
   //   id: 'recargas',
   //   label: 'Recargas',

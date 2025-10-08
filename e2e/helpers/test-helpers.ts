@@ -99,6 +99,20 @@ export async function navigateToRoute(
 }
 
 /**
+ * Navigate to the Transaction Limits page
+ *
+ * @param page - Playwright Page instance
+ */
+export async function navigateToTransactionalLimits(page: Page): Promise<void> {
+  await navigateToRoute(
+    page,
+    '/records/digital-channels/mobile-banking/transactional-limits',
+    'text=Smart IZI - Limites Transaccionais',
+    20000
+  );
+}
+
+/**
  * Navigate to the Application Errors page
  *
  * @param page - Playwright Page instance
