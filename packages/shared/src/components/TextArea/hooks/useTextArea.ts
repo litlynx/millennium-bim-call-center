@@ -2,7 +2,7 @@
 import { useCallback, useState } from 'react';
 import { z } from 'zod';
 
-interface UseTextAreaOptions {
+export interface UseTextAreaOptions {
   maxLength?: number;
   required?: boolean;
   initialValue?: string;
