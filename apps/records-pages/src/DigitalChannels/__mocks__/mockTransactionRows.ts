@@ -29,6 +29,26 @@ export const mockTransactionRows = {
       date: '02-08-2025',
       hour: '11:24:12',
       stateTransaction: 'Processado'
+    },
+    {
+      id: 'row-4',
+      contact: '825816811',
+      channel: 'Smart IZI',
+      typeTransaction: 'Recarga Movitel Online',
+      amount: '123,00 MZN',
+      date: '02-08-2025',
+      hour: '11:24:12',
+      stateTransaction: 'Erro'
+    },
+    {
+      id: 'row-5',
+      contact: '825816811',
+      channel: 'Smart IZI',
+      typeTransaction: 'Transferência e-Mola',
+      amount: '123,00 MZN',
+      date: '02-08-2025',
+      hour: '11:24:12',
+      stateTransaction: 'Processado'
     }
   ]
 };
