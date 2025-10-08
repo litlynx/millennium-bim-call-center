@@ -23,7 +23,7 @@ interface TableCellData {
   className?: string;
 }
 
-interface TableRowData {
+export interface TableRowData {
   id: string;
   cells: TableCellData[];
   className?: string;
