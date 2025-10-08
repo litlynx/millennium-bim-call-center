@@ -114,7 +114,10 @@ const TransactionalLimits: React.FC = () => {
         <title>Limites Transaccionais</title>
       </Helmet>
 
-      <div className="flex min-h-0 flex-col overflow-hidden">
+      <div
+        className="flex min-h-0 flex-col overflow-hidden"
+        data-testid="transactional-limits-page-data"
+      >
         <PageHeader
           type="channelAndService"
           channelCategory="Canais Digitais"
@@ -127,7 +130,11 @@ const TransactionalLimits: React.FC = () => {
             <div className="flex flex-col gap-10">
               {!isOperatorStateDataError &&
                 data?.operatorStateData.map((item: OperatorStatusTransactionalLimitType) => (
-                  <div key={item.id} className="flex gap-4 overflow-auto pb-2">
+                  <div
+                    key={item.id}
+                    className="flex gap-4 overflow-auto pb-2"
+                    data-testid="operator-state-table-component"
+                  >
                     <div className="flex flex-col gap-2 min-w-[150px]">
                       <p className="text-gray-800 uppercase font-semibold text-xs">Operadora</p>
                       <span className="text-xs font-medium text-gray-600">{item.operatorName}</span>
@@ -169,12 +176,14 @@ const TransactionalLimits: React.FC = () => {
                 </div>
               )}
 
-              <Table data={formatedTransationalLimitsData} headers={transactionalLimitsHeaders} />
+              <div data-testid="transactional-limits-table-component">
+                <Table data={formatedTransationalLimitsData} headers={transactionalLimitsHeaders} />
+              </div>
 
               {isLoading && <div>A carregar dados...</div>}
             </div>
 
-            <div className="pt-6">
+            <div className="pt-6" data-testid="transactional-limits-footer-section">
               <TextArea
                 title="Registo"
                 placeholder="Motivo da Chamada"
