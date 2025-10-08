@@ -12,7 +12,7 @@ import {
   PageHeader,
   ScriptDetail,
   TextArea,
-  useTextArea
+  useTextAreaWithDocuments
 } from 'shared/components';
 import { useUserStore } from 'shared/stores';
 import type { CancelsBlockedInterface } from 'src/api/CancelsBlocked/interfaces';
@@ -116,22 +116,24 @@ const CancelsBlocked: React.FC = () => {
     accountNumber: useUserStore((u) => u.getAccountNumber())
   };
 
-  const textArea = useTextArea({
+  const textAreaWithDocs = useTextAreaWithDocuments({
     required: true,
-    maxLength: 200,
-    initialValue: ''
+    maxLength: 2000,
+    initialValue: '',
+    enableDocuments: true
   });
 
   const handleSubmit = () => {
-    const isValid = textArea.validate();
+    const isValid = textAreaWithDocs.validateAll();
 
     if (isValid) {
       console.log('Form submitted successfully!');
-      console.log('Text content:', textArea.value);
+      console.log('Text content:', textAreaWithDocs.value);
+      console.log('Uploaded files:', textAreaWithDocs.files);
 
       navigate('/vision-360');
     } else {
-      console.log('Form validation failed:', textArea.error);
+      console.log('Form validation failed:', textAreaWithDocs.error);
     }
   };
 
@@ -266,7 +268,12 @@ const CancelsBlocked: React.FC = () => {
                 <TextArea
                   title="Registo"
                   placeholder="Motivo da Chamada"
-                  {...textArea.textAreaProps}
+                  enableDocuments={textAreaWithDocs.enableDocuments}
+                  dropzoneProps={textAreaWithDocs.dropzoneProps}
+                  files={textAreaWithDocs.files}
+                  dragActive={textAreaWithDocs.dragActive}
+                  errors={textAreaWithDocs.errors}
+                  {...textAreaWithDocs.textAreaProps}
                 />
                 <Button className="mt-[2.6875rem] ml-auto block" onClick={handleSubmit}>
                   Fechar
