@@ -18,7 +18,8 @@ import type {
   TransactionalLimitInterface
 } from 'src/api/TransactionalLimit/interfaces';
 import { GET } from 'src/api/TransactionalLimit/route';
-import { StateBadge } from 'src/DigitalChannels/MobileBanking/components/cancelsBlocked/StateBadge';
+import { MobileStateBadge } from 'src/DigitalChannels/MobileBanking/components/transactionalLimits/MobileStateBadge';
+import { Pin2StateBadge } from 'src/DigitalChannels/MobileBanking/components/transactionalLimits/Pin2StateBadge';
 
 export const TRANSACTIONAL_LIMITS_QUERY_KEY = 'transactional-limits';
 const TITLE = 'Smart IZI - Limites Transaccionais';
@@ -144,14 +145,14 @@ const TransactionalLimits: React.FC = () => {
                       <p className="text-gray-800 uppercase font-semibold text-xs">
                         Estado do Contracto
                       </p>
-                      <StateBadge state={item.contractState} />
+                      <MobileStateBadge state={item.contractState} />
                     </div>
 
                     <div className="flex flex-col gap-2 min-w-[210px]">
                       <p className="text-gray-800 uppercase font-semibold text-xs">
                         Estado do PIN2
                       </p>
-                      <StateBadge state={item.pin2State} />
+                      <Pin2StateBadge state={item.pin2State} />
                     </div>
                   </div>
                 ))}
