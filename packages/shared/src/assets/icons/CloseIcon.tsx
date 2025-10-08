@@ -1,6 +1,6 @@
 export const CloseIcon = () => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
       <path
         d="M1 17.1279L17.1277 1.00023"
         stroke="#2E3641"
