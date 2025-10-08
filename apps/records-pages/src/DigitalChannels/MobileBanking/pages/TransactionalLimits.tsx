@@ -125,14 +125,14 @@ const TransactionalLimits: React.FC = () => {
           user={user}
         />
 
-        <div className="mt-3 flex flex-1 min-h-0 flex-col rounded-[1.25rem] bg-white overflow-hidden">
-          <div className="overflow-y-auto px-9 py-6">
+        <div className="mt-3 flex flex-col flex-1 min-h-0 rounded-[1.25rem] bg-white overflow-hidden">
+          <div className="overflow-y-auto px-9 py-6 flex flex-col justify-between h-full">
             <div className="flex flex-col gap-10">
               {!isOperatorStateDataError &&
                 data?.operatorStateData.map((item: OperatorStatusTransactionalLimitType) => (
                   <div
                     key={item.id}
-                    className="flex gap-4 overflow-auto pb-2"
+                    className="flex gap-4 overflow-auto pb-2 min-h-fit"
                     data-testid="operator-state-table-component"
                   >
                     <div className="flex flex-col gap-2 min-w-[150px]">
