@@ -2,7 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import type React from 'react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Button, PageHeader, ScriptDetail, TextArea, useTextArea } from 'shared/components';
+import { useNavigate } from 'react-router';
+import {
+  Button,
+  PageHeader,
+  ScriptDetail,
+  TextArea,
+  useTextAreaWithDocuments
+} from 'shared/components';
 import { useUserStore } from 'shared/stores';
 import type { AccessesInterface } from 'src/api/Accesses/interfaces';
 import { GET } from 'src/api/Accesses/route';
@@ -28,6 +35,7 @@ function useAccesses() {
 const Accesses: React.FC = () => {
   const { data, isLoading } = useAccesses();
   const [primaryRows] = useState(mockPrimaryRows);
+  const navigate = useNavigate();
 
   const user = {
     customerName: useUserStore((u) => u.getCustomerName()),
@@ -35,20 +43,24 @@ const Accesses: React.FC = () => {
     accountNumber: useUserStore((u) => u.getAccountNumber())
   };
 
-  const textArea = useTextArea({
+  const textAreaWithDocs = useTextAreaWithDocuments({
     required: true,
     maxLength: 2000,
-    initialValue: ''
+    initialValue: '',
+    enableDocuments: true
   });
 
   const handleSubmit = () => {
-    const isValid = textArea.validate();
+    const isValid = textAreaWithDocs.validateAll();
 
     if (isValid) {
       console.log('Form submitted successfully!');
-      console.log('Text content:', textArea.value);
+      console.log('Text content:', textAreaWithDocs.value);
+      console.log('Uploaded files:', textAreaWithDocs.files);
+
+      navigate('/vision-360');
     } else {
-      console.log('Form validation failed:', textArea.error);
+      console.log('Form validation failed:', textAreaWithDocs.error);
     }
   };
 
@@ -61,11 +73,13 @@ const Accesses: React.FC = () => {
   }
 
   const handleSendEmail = () => {
-    if (textArea.value.trim() === '') {
+    if (textAreaWithDocs.value.trim() === '') {
       console.log('Cannot send email: Text area is empty.');
       return;
     }
-    console.log('Sending email to bocanaisremotos@bim.co.mz', textArea.value);
+    console.log('Sending email to bocanaisremotos@bim.co.mz');
+    console.log('Email content:', textAreaWithDocs.value);
+    console.log('Email attachments:', textAreaWithDocs.files);
   };
 
   return (
@@ -94,7 +108,12 @@ const Accesses: React.FC = () => {
               <TextArea
                 title="Registo"
                 placeholder="Motivo da Chamada"
-                {...textArea.textAreaProps}
+                enableDocuments={textAreaWithDocs.enableDocuments}
+                dropzoneProps={textAreaWithDocs.dropzoneProps}
+                files={textAreaWithDocs.files}
+                dragActive={textAreaWithDocs.dragActive}
+                errors={textAreaWithDocs.errors}
+                {...textAreaWithDocs.textAreaProps}
               />
               <div className="mt-[2.6875rem] flex justify-end gap-3">
                 <Button variant="outline" onClick={handleSendEmail}>

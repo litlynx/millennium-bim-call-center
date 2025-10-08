@@ -30,7 +30,7 @@ module.exports = {
       colors: {
         primary: {
           50: '#FDF5FF', //used
-          100: '#ffb3d2',
+          100: '#f8d9d9', // used
           200: '#ff80b3',
           300: '#ff4d94',
           400: '#ff1a75',
@@ -48,7 +48,7 @@ module.exports = {
           200: '#E5E7EB', // used
           300: '#D9D9D9', // used scroll-bar bg
           400: '#ABACAD', // used checkbox border
-          450: '#888d93',
+          450: '#767676', // used DocumentDropzone
           500: '#7C7F86', // used
           600: '#5E5E5E', // used
           700: '#374151',
@@ -60,6 +60,9 @@ module.exports = {
           400: '#8CC63F',
           500: '#87D100',
           DEFAULT: '#25B917'
+        },
+        red: {
+          DEFAULT: '#D10003'
         },
         blue: {
           DEFAULT: '#0052B4'
