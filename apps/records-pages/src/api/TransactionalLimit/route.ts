@@ -8,9 +8,7 @@ export async function GET(): Promise<TransactionalLimitInterface> {
   const [operatorStateRes, transactionalLimitsRes] = await Promise.all([
     GetTransactionalLimitOperatorStateTable(),
     GetTransactionalLimitTable()
-  ]).catch((error) => {
-    throw new Error(error);
-  });
+  ]);
 
   const operatorStateData = await operatorStateRes.json();
   const transactionalLimitsData = await transactionalLimitsRes.json();
