@@ -1,4 +1,5 @@
 import { expect, type Page, test } from '@playwright/test';
+import { setupConsoleLogging } from '../helpers/test-helpers';
 
 const loggedConsoleMessages = new Set<string>();
 
@@ -17,34 +18,7 @@ const navigateToVision360 = async (page: Page) => {
 
 test.describe('Page Vision360', () => {
   test.beforeEach(async ({ page }) => {
-    page.on('console', (message) => {
-      const type = message.type();
-      if (type !== 'error' && type !== 'warning') {
-        return;
-      }
-
-      const key = `${type}|${message.text()}`;
-      if (loggedConsoleMessages.has(key)) {
-        return;
-      }
-      loggedConsoleMessages.add(key);
-
-      const location = message.location();
-      const locationInfo = location.url
-        ? ` @ ${location.url}:${location.lineNumber}:${location.columnNumber}`
-        : '';
-      console.log(`[console:${type}] ${message.text()}${locationInfo}`);
-    });
-
-    page.on('pageerror', (error) => {
-      console.error(`[pageerror] ${error.message}`);
-    });
-
-    page.on('requestfailed', (request) => {
-      console.error(
-        `[requestfailed] ${request.method()} ${request.url()} :: ${request.failure()?.errorText ?? 'unknown error'}`
-      );
-    });
+    setupConsoleLogging(page, loggedConsoleMessages);
   });
 
   test('page displays all cards', async ({ page }) => {

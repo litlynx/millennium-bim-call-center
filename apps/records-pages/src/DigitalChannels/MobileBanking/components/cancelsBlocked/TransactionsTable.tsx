@@ -39,7 +39,7 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
       { content: row.hour },
       {
         content: (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between gap-2">
             <span>{row.stateTransaction}</span>
 
             <Popover

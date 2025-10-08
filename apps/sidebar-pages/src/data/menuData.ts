@@ -290,12 +290,12 @@ export const submenuLinks: SubmenuLinkItemProps[] = [
   //   path: '/records/digital-channels/mobile-banking/top-ups',
   //   parentSubmenuId: 'mobile-banking-submenu'
   // },
-  // {
-  //   id: 'erros-da-aplicacao',
-  //   label: 'Erros da Aplicação',
-  //   path: '/records/digital-channels/mobile-banking/errors',
-  //   parentSubmenuId: 'mobile-banking-submenu'
-  // },
+  {
+    id: 'application-errors',
+    label: 'Erros da Aplicação',
+    path: '/records/digital-channels/mobile-banking/application-errors',
+    parentSubmenuId: 'mobile-banking-submenu'
+  },
   // {
   //   id: 'duvidas-de-instalacao-app-smart-izi',
   //   label: 'Dúvidas de Instalação App - Smart IZI',

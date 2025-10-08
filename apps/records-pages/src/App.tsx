@@ -7,6 +7,9 @@ const CancelsBlocked = lazy(() => import('./DigitalChannels/MobileBanking/pages/
 const TransactionalLimits = lazy(
   () => import('./DigitalChannels/MobileBanking/pages/TransactionalLimits')
 );
+const ApplicationErrors = lazy(
+  () => import('./DigitalChannels/MobileBanking/pages/ApplicationErrors')
+);
 
 export default function App() {
   return (
@@ -20,6 +23,10 @@ export default function App() {
         <Route
           path="digital-channels/mobile-banking/transactional-limits"
           element={<TransactionalLimits />}
+        />
+        <Route
+          path="digital-channels/mobile-banking/application-errors"
+          element={<ApplicationErrors />}
         />
       </Routes>
     </Suspense>
