@@ -6,6 +6,9 @@ import { defineConfig, devices } from '@playwright/test';
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
+  // Global setup hook - runs before all tests
+  globalSetup: './global-setup.ts',
+
   // Diretório onde os testes estão localizados (será sobrescrito pelos MFEs)
   testDir: './tests',
 
@@ -71,19 +74,34 @@ export default defineConfig({
   // Configuração do web server para testes
   webServer: {
     // Comando para iniciar os serviços (usa o script preview do projeto)
-    command: 'cd .. && bun run build && bun run preview:serve',
+    // Nota: Requer que o build já tenha sido feito previamente
+    command: 'cd .. && bun run preview:serve',
 
+    // Verificar múltiplas URLs para garantir que todos os serviços estão prontos
     url: 'http://localhost:8080/',
 
     // Reutilizar servidor em desenvolvimento
     reuseExistingServer: !process.env.CI,
 
-    // Timeout para o servidor iniciar
-    timeout: 120 * 1000
+    // Timeout para o servidor iniciar (reduzido pois não fazemos build)
+    timeout: 60 * 1000,
+
+    // Variáveis de ambiente necessárias para o servidor
+    env: {
+      SHELL_PREVIEW_PORT: '8080',
+      SHARED_PREVIEW_PORT: '8081',
+      HEADER_PAGES_PREVIEW_PORT: '8082',
+      SIDEBAR_PAGES_PREVIEW_PORT: '8083',
+      RECORDS_PAGES_PREVIEW_PORT: '8084',
+      DOCUMENTATION_PAGES_PREVIEW_PORT: '8085',
+      SHARED_HOST_BASE_URL: 'http://localhost:8081/',
+      HEADER_PAGES_HOST_BASE_URL: 'http://localhost:8082/',
+      SIDEBAR_PAGES_HOST_BASE_URL: 'http://localhost:8083/',
+      RECORDS_PAGES_HOST_BASE_URL: 'http://localhost:8084/',
+      DOCUMENTATION_PAGES_HOST_BASE_URL: 'http://localhost:8085/'
+    }
   },
 
   // Pastas de output
   outputDir: 'test-results/'
 });
-
-//TODO adicionar forma de não fazer build localmente
