@@ -1,5 +1,10 @@
 import type { z } from 'zod';
 
+export type ErrorResponse = Response & {
+  error: string;
+  issues?: z.ZodIssue[];
+};
+
 export function getValidationErrorResponse<DTOType>(
   dto: DTOType,
   validator: z.ZodObject<z.ZodRawShape, 'strip', z.ZodTypeAny, DTOType, DTOType>

@@ -30,7 +30,7 @@ module.exports = {
       colors: {
         primary: {
           50: '#FDF5FF', //used
-          100: '#ffb3d2',
+          100: '#f8d9d9', // used
           200: '#ff80b3',
           300: '#ff4d94',
           400: '#ff1a75',
@@ -60,6 +60,9 @@ module.exports = {
           400: '#8CC63F',
           500: '#87D100',
           DEFAULT: '#25B917'
+        },
+        red: {
+          DEFAULT: '#D10003'
         },
         blue: {
           DEFAULT: '#0052B4'

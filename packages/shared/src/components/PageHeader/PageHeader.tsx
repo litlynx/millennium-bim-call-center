@@ -1,4 +1,5 @@
 import type { FC, ReactNode } from 'react';
+import AuthenticationBadge from '../AuthenticationBadge/AuthenticationBadge';
 
 interface PageHeaderComponentProps {
   leftBlock: ReactNode;
@@ -28,11 +29,12 @@ interface BasePageHeaderTemplateProps {
   type: TemplateType;
 }
 
-// Props for 'channelAndService' template
 interface ChannelAndServiceProps extends BasePageHeaderTemplateProps {
   type: 'channelAndService';
   channelCategory: string;
   serviceTitle: string;
+  isUserAuthenticated?: boolean;
+  badgeVariant?: 'default' | 'filled';
   user: {
     customerName: string;
     cif: string;
@@ -40,7 +42,6 @@ interface ChannelAndServiceProps extends BasePageHeaderTemplateProps {
   };
 }
 
-// Union type for all possible template props
 type PageHeaderProps = ChannelAndServiceProps;
 
 export default function PageHeader(props: PageHeaderProps) {
@@ -56,15 +57,17 @@ export default function PageHeader(props: PageHeaderProps) {
           }
           rightBlock={
             <>
+              <p>
+                <AuthenticationBadge isAuthenticated={props.isUserAuthenticated ?? false} />
+              </p>
               <p className="font-medium">{props.user.customerName}</p>
-              <p className="font-medium">CIF: {props.user.cif}</p>
-              <p className="font-medium">Nº Conta: {props.user.accountNumber}</p>
+              <p className="font-medium">
+                <span>CIF: {props.user.cif}</span>|<span>Nº Conta: {props.user.accountNumber}</span>
+              </p>
             </>
           }
         />
       );
   }
 }
-
-// Export types for use in other components
 export type { ChannelAndServiceProps, PageHeaderProps };

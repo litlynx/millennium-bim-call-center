@@ -1,31 +1,41 @@
-import { ContextMenuTrigger } from '@radix-ui/react-context-menu';
-import type React from 'react';
-import Icon, { type IconType } from '@/components/Icon';
-import { ContextMenu, ContextMenuContent, ContextMenuItem } from '@/components/ui/context-menu';
-import { ProgressBar } from '@/components/ui/progress-bar';
+import type { ChangeEvent, ClipboardEvent, DragEvent, MouseEvent, RefObject } from 'react';
 
-const mockFiles = [
-  {
-    id: 1,
-    name: 'Prints ICBS do Cliente.png',
-    size: '321KB',
-    progress: 50
-  },
-  {
-    id: 2,
-    name: 'Bilhete_de_ Id.Pdf',
-    size: '2MB',
-    progress: 90
-  }
-];
+import Icon, { type IconType } from '@/components/Icon';
+import { ProgressBar } from '@/components/ui/progress-bar';
+import { cn } from '@/lib/utils';
+import type { DocumentFile } from './hooks/useDocumentDropzone';
 
 interface DocumentDropzoneProps {
   className?: string;
+  files?: DocumentFile[];
+  dragActive?: boolean;
+  errors?: string[];
+  inputRef: RefObject<HTMLInputElement>;
+  onDrop: (event: DragEvent<HTMLDivElement>) => void;
+  onDragOver: (event: DragEvent<HTMLDivElement>) => void;
+  onDragLeave: (event: DragEvent<HTMLDivElement>) => void;
+  onClick: () => void;
+  onFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onRemoveFile: (file: DocumentFile) => void;
+  acceptedFileExtensions: string;
+  onPaste?: (event: ClipboardEvent<HTMLDivElement>) => void;
 }
 
-const DocumentDropzone: React.FC<DocumentDropzoneProps> = ({
-  className
-}: DocumentDropzoneProps) => {
+export default function DocumentDropzone({
+  className,
+  files = [],
+  dragActive = false,
+  errors = [],
+  inputRef,
+  onDrop,
+  onDragOver,
+  onDragLeave,
+  onClick,
+  onFileChange,
+  acceptedFileExtensions,
+  onRemoveFile,
+  onPaste
+}: DocumentDropzoneProps) {
   function getFileIconType(fileName: string): IconType {
     const extension = fileName.split('.').pop()?.toLowerCase();
     if (!extension) return 'docFile';
@@ -39,59 +49,128 @@ const DocumentDropzone: React.FC<DocumentDropzoneProps> = ({
     return 'docFile';
   }
 
+  function formatFileSize(bytes: number): string {
+    const KB = 1024;
+    const MB = KB * 1024;
+
+    if (bytes < MB) {
+      const sizeKB = bytes / KB;
+      return `${sizeKB.toFixed(2)} KB`;
+    }
+
+    const sizeMB = bytes / MB;
+    return `${sizeMB.toFixed(2)} MB`;
+  }
+
+  const handleRemoveClick = (event: MouseEvent<HTMLButtonElement>, file: DocumentFile) => {
+    event.preventDefault();
+    event.stopPropagation();
+    onRemoveFile(file);
+  };
+
   return (
     <>
-      <ContextMenu>
-        <ContextMenuTrigger
-          className={`flex flex-col gap-6 rounded-lg border-2 border-dashed border-gray-400 p-8 2xl:flex-row 2xl:gap-8 ${className}`}
+      <button
+        type="button"
+        onClick={onClick}
+        className="flex w-full items-center gap-6 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+      >
+        <div
+          className={cn(
+            `flex flex-col gap-6 rounded-lg border-2 border-dashed p-8 2xl:flex-row 2xl:gap-8 w-full`,
+            dragActive ? 'border-primary-500 bg-primary-50' : 'border-gray-400 bg-white',
+            className
+          )}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onPaste={onPaste}
         >
-          <div className="flex space-x-6">
-            <Icon type="upload" className="p-0" />
+          <input
+            ref={inputRef}
+            type="file"
+            multiple
+            accept={acceptedFileExtensions}
+            className="hidden"
+            onChange={onFileChange}
+          />
 
-            <div className="flex flex-col gap-2">
-              <p className="font-bold">Anexar documento ou imagem</p>
-              <span className="text-sm">Arraste ou cole o ficheiro a carregar</span>
-              <span className="text-xs text-gray-400">
-                Apenas ficheiros JPEG, PNG e DOCX, até 4MB no total
-              </span>
-            </div>
+          <Icon type="upload" className="p-0" />
+
+          <div className="flex flex-col gap-2 text-left">
+            <p className="font-bold">Anexar documento ou imagem</p>
+            <span className="text-sm">Arraste ou cole o ficheiro a carregar</span>
+            <span className="text-xs text-gray-400">
+              Apenas ficheiros JPEG, PNG, DOCX, PDF e TXT até 4MB no total
+            </span>
           </div>
 
           <div className="flex flex-col gap-4">
-            {mockFiles.map((file) => (
-              <div key={file.id} className="flex gap-6">
-                <div className="flex flex-col gap-3 lg:min-w-80">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Icon className="w-4 h-4 p-0" type={getFileIconType(file.name)} />
-                      <p className="text-sm">{file.name}</p>
-                      <span className="text-gray-400 font-light text-xs">({file.size})</span>
+            {files.map((file) => {
+              const sizeLabel = formatFileSize(file.size);
+              const isUploading = file.status === 'uploading';
+              const isError = file.status === 'error';
+              const progressValue = Math.min(100, Math.max(0, file.progress));
+
+              return (
+                <div key={file.id} className="flex gap-6">
+                  <div className="flex w-full flex-col gap-3 lg:min-w-80">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 pr-2">
+                        <Icon className="w-4 h-4 p-0" type={getFileIconType(file.name)} />
+                        <div className="flex w-full flex-row items-center justify-between gap-2">
+                          <p className="text-sm font-medium text-left text-gray-700">{file.name}</p>
+                          <span className="text-nowrap text-gray-400 font-light text-xs">
+                            ({sizeLabel})
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        {isUploading && (
+                          <span className="text-xs text-gray-500">{file.progress}%</span>
+                        )}
+                        {isError && (
+                          <span className="text-xs text-red-500">
+                            {file.error ?? 'Erro ao carregar ficheiro.'}
+                          </span>
+                        )}
+                        <button
+                          type="button"
+                          onClick={(event) => handleRemoveClick(event, file)}
+                          onMouseDown={(event) => event.stopPropagation()}
+                          className="inline-flex items-center justify-center rounded p-0.5 text-primary-500 hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-200"
+                          aria-label={`Remover ${file.name}`}
+                        >
+                          <Icon
+                            className="w-3 h-3 p-0 color-primary-500"
+                            type="deleteRed"
+                            size="sm"
+                          />
+                        </button>
+                      </div>
                     </div>
 
-                    <Icon
-                      className="w-3 h-3 p-0 cursor-pointer color-primary-500"
-                      type="deleteRed"
-                      size="sm"
-                    />
+                    <ProgressBar value={progressValue} className={isError ? 'bg-red-100' : ''} />
                   </div>
-
-                  <ProgressBar value={file.progress} />
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
-        </ContextMenuTrigger>
-
-        <ContextMenuContent className="w-fit bg-white">
-          <ContextMenuItem inset>Colar</ContextMenuItem>
-        </ContextMenuContent>
-      </ContextMenu>
-
-      <div className="text-red-500 text-sm mt-1">
-        Ocorreu um erro ao anexar um arquivo. Tente novamente
-      </div>
+        </div>
+      </button>
+      {errors.length > 0 && (
+        <div className="mt-4">
+          <div className="font-medium mb-2 text-red-500">Erros de Upload:</div>
+          <ul className="space-y-1">
+            {errors.map((error) => (
+              <li key={error} className="text-sm text-red-600">
+                {error}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </>
   );
-};
-
-export default DocumentDropzone;
+}

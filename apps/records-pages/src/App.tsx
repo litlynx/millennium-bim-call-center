@@ -6,6 +6,13 @@ const Accesses = lazy(() => import('./DigitalChannels/MobileBanking/pages/Access
 const CancelsBlocked = lazy(() => import('./DigitalChannels/MobileBanking/pages/CancelsBlocked'));
 const Refills = lazy(() => import('./DigitalChannels/MobileBanking/pages/Refills'));
 
+const TransactionalLimits = lazy(
+  () => import('./DigitalChannels/MobileBanking/pages/TransactionalLimits')
+);
+const ApplicationErrors = lazy(
+  () => import('./DigitalChannels/MobileBanking/pages/ApplicationErrors')
+);
+
 export default function App() {
   return (
     <Suspense fallback={<Spinner />}>
@@ -15,7 +22,17 @@ export default function App() {
           path="digital-channels/mobile-banking/cancels-blocked"
           element={<CancelsBlocked />}
         />
+
         <Route path="digital-channels/mobile-banking/refills" element={<Refills />} />
+
+        <Route
+          path="digital-channels/mobile-banking/transactional-limits"
+          element={<TransactionalLimits />}
+        />
+        <Route
+          path="digital-channels/mobile-banking/application-errors"
+          element={<ApplicationErrors />}
+        />
       </Routes>
     </Suspense>
   );

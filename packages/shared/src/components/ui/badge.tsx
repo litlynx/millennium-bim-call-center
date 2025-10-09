@@ -14,7 +14,9 @@ const badgeVariants = cva(
         inactive:
           'border-transparent bg-red-500 text-white shadow hover:bg-red-500/80 rounded-[11px]',
         blocked:
-          'border-transparent bg-orange-500 text-white shadow hover:bg-orange-500/80 rounded-[11px]'
+          'border-transparent bg-orange-500 text-white shadow hover:bg-orange-500/80 rounded-[11px]',
+        white: 'border-transparent bg-white rounded-[11px] text-green',
+        empty: 'border-none bg-transparent text-gray-500 px-0 font-bold'
       }
     },
     defaultVariants: {
@@ -27,8 +29,12 @@ export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, ...props }: BadgeProps) {
-  return <span className={cn(badgeVariants({ variant }), className)} {...props} />;
+function Badge({ className, variant, children, ...props }: BadgeProps) {
+  return (
+     <span className={cn(badgeVariants({ variant }), className)} {...props}>
+      {variant === 'empty' ? '–' : children}
+    </span>
+  );
 }
 
 export { Badge, badgeVariants };
