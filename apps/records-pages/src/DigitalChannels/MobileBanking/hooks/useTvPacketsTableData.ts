@@ -101,9 +101,7 @@ export function useTvPacketsTableData({ tvPacketsRows }: UseTvPacketsTableDataPr
 
   const availablePhones = useMemo(() => {
     const uniquePhones = new Set(
-      tvPacketsRows
-        .map((row) => normalizePhone(row.reference))
-        .filter((phone) => phone !== '' && phone !== 'Get_recharge_code')
+      tvPacketsRows.map((row) => normalizePhone(row.reference)).filter((phone) => phone !== '')
     );
     return Array.from(uniquePhones).sort();
   }, [tvPacketsRows, normalizePhone]);

@@ -7,11 +7,11 @@ export type DateRange = {
   end: Date | null;
 };
 
-interface UseRechargesTableDataProps {
+interface UseRefillsTableDataProps {
   rechargesRows: RechargesRow[];
 }
 
-export function useRechargesTableData({ rechargesRows }: UseRechargesTableDataProps) {
+export function useRefillsTableData({ rechargesRows }: UseRefillsTableDataProps) {
   const [dateRange, setDateRange] = useState<DateRange>({ start: null, end: null });
   const [operator, setOperator] = useState<string>('Todas operadoras');
   const [selectedPhone, setSelectedPhone] = useState<string>('Todos telemóveis');
@@ -97,9 +97,7 @@ export function useRechargesTableData({ rechargesRows }: UseRechargesTableDataPr
 
   const availablePhones = useMemo(() => {
     const uniquePhones = new Set(
-      rechargesRows
-        .map((row) => normalizePhone(row.sendPhone))
-        .filter((phone) => phone !== '' && phone !== 'Get_recharge_code')
+      rechargesRows.map((row) => normalizePhone(row.sendPhone)).filter((phone) => phone !== '')
     );
     return Array.from(uniquePhones).sort();
   }, [rechargesRows, normalizePhone]);

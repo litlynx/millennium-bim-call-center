@@ -15,7 +15,7 @@ import { CredelecTable } from '../components/refills/CredelecTable';
 import { RechargesTable } from '../components/refills/RefillsTable';
 import { TvPacketsTable } from '../components/refills/TvPacketsTable';
 import { useCredelecTableData } from '../hooks/useCredelecTableData';
-import { useRechargesTableData } from '../hooks/useRechargesTableData';
+import { useRefillsTableData } from '../hooks/useRefillsTableData';
 import { useTvPacketsTableData } from '../hooks/useTvPacketsTableData';
 import { mockPrimaryRows as mockCredelec } from '../mocks/mockCredelec';
 import { mockPrimaryRows as mockRecharges } from '../mocks/mockRefills';
@@ -272,7 +272,7 @@ const Refills: React.FC = () => {
     setSelectedPhone: setRechargesPhone,
     destinationNumber,
     setDestinationNumber
-  } = useRechargesTableData({ rechargesRows: mockRecharges });
+  } = useRefillsTableData({ rechargesRows: mockRecharges });
 
   const {
     filteredCredelecRows,

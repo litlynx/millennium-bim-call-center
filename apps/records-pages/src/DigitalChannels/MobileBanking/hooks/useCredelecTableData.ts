@@ -79,9 +79,7 @@ export function useCredelecTableData({ credelecRows }: UseCredelecTableDataProps
 
   const availablePhones = useMemo(() => {
     const uniquePhones = new Set(
-      credelecRows
-        .map((row) => normalizePhone(row.sendPhone))
-        .filter((phone) => phone !== '' && phone !== 'Get_recharge_code')
+      credelecRows.map((row) => normalizePhone(row.sendPhone)).filter((phone) => phone !== '')
     );
     return Array.from(uniquePhones).sort();
   }, [credelecRows, normalizePhone]);
