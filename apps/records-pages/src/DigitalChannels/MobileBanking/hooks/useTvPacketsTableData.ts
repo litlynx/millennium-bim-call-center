@@ -5,6 +5,7 @@ export interface TvPacketsRow {
   id: string;
   operatorName: string;
   reference: string;
+  contact: string;
   date: string;
   time: string;
   rechargeValue: string;
@@ -99,9 +100,9 @@ export function useTvPacketsTableData({ tvPacketsRows }: UseTvPacketsTableDataPr
     return Array.from(uniqueOperators).sort();
   }, [tvPacketsRows, normalizeString]);
 
-  const availablePhones = useMemo(() => {
+  const availableContacts = useMemo(() => {
     const uniquePhones = new Set(
-      tvPacketsRows.map((row) => normalizePhone(row.reference)).filter((phone) => phone !== '')
+      tvPacketsRows.map((row) => normalizePhone(row.contact)).filter((phone) => phone !== '')
     );
     return Array.from(uniquePhones).sort();
   }, [tvPacketsRows, normalizePhone]);
@@ -113,16 +114,16 @@ export function useTvPacketsTableData({ tvPacketsRows }: UseTvPacketsTableDataPr
   }, [availableOperators, operator]);
 
   useEffect(() => {
-    if (availablePhones.length === 1 && selectedPhone === 'Todos telemóveis') {
-      setSelectedPhone(availablePhones[0]);
+    if (availableContacts.length === 1 && selectedPhone === 'Todos telemóveis') {
+      setSelectedPhone(availableContacts[0]);
     }
-  }, [availablePhones, selectedPhone]);
+  }, [availableContacts, selectedPhone]);
 
   const filteredTvPacketsRows = useMemo(() => {
     return tvPacketsRows.filter((row) => {
       const rowDate = parseTvPacketsDate(row.date);
       const rowOperator = normalizeString(row.operatorName);
-      const rowPhone = normalizePhone(row.reference);
+      const rowPhone = normalizePhone(row.contact);
 
       const matchDate =
         (!dateRange.start || rowDate >= dateRange.start) &&
@@ -148,7 +149,7 @@ export function useTvPacketsTableData({ tvPacketsRows }: UseTvPacketsTableDataPr
   return {
     filteredTvPacketsRows,
     availableOperators,
-    availablePhones,
+    availableContacts,
     dateRange,
     setDateRange,
     operator,

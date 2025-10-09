@@ -7,10 +7,12 @@ import {
   DatePicker,
   PageHeader,
   ScriptDetail,
+  ScrollArea,
   TextArea,
-  useTextArea
+  useTextAreaWithDocuments
 } from 'shared/components';
 import { useUserStore } from 'shared/stores';
+import SuccessModal from 'src/DigitalChannels/MobileBanking/components/refills/SuccessModal';
 import { CredelecTable } from '../components/refills/CredelecTable';
 import { RechargesTable } from '../components/refills/RefillsTable';
 import { TvPacketsTable } from '../components/refills/TvPacketsTable';
@@ -43,6 +45,7 @@ type TableType = 'refills' | 'credelec' | 'tvpackets';
 const Refills: React.FC = () => {
   const navigate = useNavigate();
   const [activeTable, setActiveTable] = React.useState<TableType>('refills');
+  const [showSuccessModal, setShowSuccessModal] = React.useState(false);
 
   const renderFilters = () => {
     switch (activeTable) {
@@ -255,16 +258,17 @@ const Refills: React.FC = () => {
     accountNumber: useUserStore((u) => u.getAccountNumber())
   };
 
-  const textArea = useTextArea({
+  const textAreaWithDocs = useTextAreaWithDocuments({
     required: true,
     maxLength: 200,
-    initialValue: ''
+    initialValue: '',
+    enableDocuments: true
   });
 
   const {
     filteredRechargesRows,
     availableOperators: rechargesOperators,
-    availablePhones: rechargesPhones,
+    availableContacts: rechargesPhones,
     setDateRange: setRechargesDateRange,
     operator: rechargesOperator,
     setOperator: setRechargesOperator,
@@ -276,7 +280,7 @@ const Refills: React.FC = () => {
 
   const {
     filteredCredelecRows,
-    availablePhones: credelecPhones,
+    availableContacts: credelecPhones,
     setDateRange: setCredelecDateRange,
     selectedPhone: credelecPhone,
     setSelectedPhone: setCredelecPhone
@@ -285,7 +289,7 @@ const Refills: React.FC = () => {
   const {
     filteredTvPacketsRows,
     availableOperators: tvOperators,
-    availablePhones: tvPhones,
+    availableContacts: tvPhones,
     setDateRange: setTvDateRange,
     operator: tvOperator,
     setOperator: setTvOperator,
@@ -294,101 +298,124 @@ const Refills: React.FC = () => {
   } = useTvPacketsTableData({ tvPacketsRows: mockTvPackets });
 
   const handleSendEmail = () => {
-    if (textArea.value.trim() === '') {
+    if (textAreaWithDocs.value.trim() === '') {
       console.log('Cannot send email: Text area is empty.');
       return;
     }
-    console.log('Sending email to ngsm@millenniumbim.co.mz', textArea.value);
+    setShowSuccessModal(true);
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      navigate('/vision-360');
+    }, 2000);
+
+    console.log('Sending email to ngsm@millenniumbim.co.mz', textAreaWithDocs.value);
   };
 
   const handleSubmit = () => {
-    const isValid = textArea.validate();
+    const isValid = textAreaWithDocs.validate();
 
     if (isValid) {
       console.log('Form submitted successfully!');
-      console.log('Text content:', textArea.value);
+      console.log('Text content:', textAreaWithDocs.value);
 
       navigate('/vision-360');
     } else {
-      console.log('Form validation failed:', textArea.error);
+      console.log('Form validation failed:', textAreaWithDocs.error);
     }
   };
 
   return (
-    <div className="grid h-full min-h-0 grid-cols-2 gap-4 overflow-hidden w-full">
-      <Helmet>
-        <title>Recargas</title>
-      </Helmet>
+    <>
+      <div className="grid h-full min-h-0 grid-cols-2 gap-4 overflow-hidden w-full">
+        <Helmet>
+          <title>Recargas</title>
+        </Helmet>
 
-      <div className="flex min-h-0 flex-col overflow-hidden">
-        <PageHeader
-          type="channelAndService"
-          channelCategory="Canais Digitais"
-          serviceTitle={TITLE}
-          user={user}
-        />
+        <div className="flex min-h-0 flex-col overflow-hidden">
+          <PageHeader
+            type="channelAndService"
+            channelCategory="Canais Digitais"
+            serviceTitle={TITLE}
+            user={user}
+          />
 
-        <div className="mt-3 flex flex-1 min-h-0 flex-col rounded-[1.25rem] bg-white overflow-hidden">
-          <div className="overflow-y-auto px-9 py-6">
-            <div className="flex flex-col gap-6">
-              <div className="flex gap-4" role="radiogroup">
-                <Button
-                  variant="mono"
-                  className={
-                    activeTable === 'refills' ? 'bg-gray-700 text-white hover:bg-gray-700' : ''
-                  }
-                  onClick={() => setActiveTable('refills')}
-                  aria-pressed={activeTable === 'refills'}
-                >
-                  Recargas
-                </Button>
-                <Button
-                  variant="mono"
-                  className={
-                    activeTable === 'credelec' ? 'bg-gray-700 text-white hover:bg-gray-700' : ''
-                  }
-                  onClick={() => setActiveTable('credelec')}
-                  aria-pressed={activeTable === 'credelec'}
-                >
-                  Credelec
-                </Button>
-                <Button
-                  variant="mono"
-                  className={
-                    activeTable === 'tvpackets' ? 'bg-gray-700 text-white hover:bg-gray-700' : ''
-                  }
-                  onClick={() => setActiveTable('tvpackets')}
-                  aria-pressed={activeTable === 'tvpackets'}
-                >
-                  Pacotes de TV
-                </Button>
+          <div className="mt-3 flex flex-1 min-h-0 flex-col rounded-[1.25rem] bg-white overflow-hidden">
+            <div className="overflow-y-auto px-9 py-6">
+              <div className="flex flex-col gap-6">
+                <div className="flex gap-4">
+                  <Button
+                    variant="mono"
+                    className={
+                      activeTable === 'refills' ? 'bg-gray-700 text-white hover:bg-gray-700' : ''
+                    }
+                    onClick={() => setActiveTable('refills')}
+                    aria-pressed={activeTable === 'refills'}
+                  >
+                    Recargas
+                  </Button>
+                  <Button
+                    variant="mono"
+                    className={
+                      activeTable === 'credelec' ? 'bg-gray-700 text-white hover:bg-gray-700' : ''
+                    }
+                    onClick={() => setActiveTable('credelec')}
+                    aria-pressed={activeTable === 'credelec'}
+                  >
+                    Credelec
+                  </Button>
+                  <Button
+                    variant="mono"
+                    className={
+                      activeTable === 'tvpackets' ? 'bg-gray-700 text-white hover:bg-gray-700' : ''
+                    }
+                    onClick={() => setActiveTable('tvpackets')}
+                    aria-pressed={activeTable === 'tvpackets'}
+                  >
+                    Pacotes de TV
+                  </Button>
+                </div>
+
+                <div className="min-h-[200px]">
+                  <ScrollArea className="h-full">
+                    {renderFilters()}
+                    {renderTable()}
+                  </ScrollArea>
+                </div>
               </div>
 
-              <div>{renderFilters()}</div>
+              <div className="pt-6">
+                <TextArea
+                  title="Registo"
+                  placeholder="Motivo da Chamada"
+                  enableDocuments={textAreaWithDocs.enableDocuments}
+                  dropzoneProps={textAreaWithDocs.dropzoneProps}
+                  files={textAreaWithDocs.files}
+                  dragActive={textAreaWithDocs.dragActive}
+                  errors={textAreaWithDocs.errors}
+                  {...textAreaWithDocs.textAreaProps}
+                />
 
-              <div>{renderTable()}</div>
-            </div>
-
-            <div className="pt-6">
-              <TextArea
-                title="Registo"
-                placeholder="Motivo da Chamada"
-                {...textArea.textAreaProps}
-              />
-
-              <div className="mt-[2.6875rem] flex justify-end gap-3">
-                <Button variant="outline" onClick={handleSendEmail}>
-                  Encaminhar
-                </Button>
-                <Button onClick={handleSubmit}>Fechar</Button>
+                <div className="mt-[2.6875rem] flex justify-end gap-3">
+                  <Button variant="outline" onClick={handleSendEmail}>
+                    Encaminhar
+                  </Button>
+                  <Button onClick={handleSubmit}>Fechar</Button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <ScriptDetail title="Script" />
-    </div>
+        <ScriptDetail title="Script" />
+      </div>
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onOpenChange={(open) => {
+          if (!open) setShowSuccessModal(false);
+        }}
+        message={'Encaminhado com sucesso'}
+      />
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ export interface CredelecRow {
   id: string;
   date: string;
   time: string;
+  contact: string;
   sendPhone: string;
   counterNumber: string;
   rechargeValue: string;
@@ -77,23 +78,23 @@ export function useCredelecTableData({ credelecRows }: UseCredelecTableDataProps
     return new Date(year, month - 1, day);
   }, []);
 
-  const availablePhones = useMemo(() => {
+  const availableContacts = useMemo(() => {
     const uniquePhones = new Set(
-      credelecRows.map((row) => normalizePhone(row.sendPhone)).filter((phone) => phone !== '')
+      credelecRows.map((row) => normalizePhone(row.contact)).filter((phone) => phone !== '')
     );
     return Array.from(uniquePhones).sort();
   }, [credelecRows, normalizePhone]);
 
   useEffect(() => {
-    if (availablePhones.length === 1 && selectedPhone === 'Todos telemóveis') {
-      setSelectedPhone(availablePhones[0]);
+    if (availableContacts.length === 1 && selectedPhone === 'Todos telemóveis') {
+      setSelectedPhone(availableContacts[0]);
     }
-  }, [availablePhones, selectedPhone]);
+  }, [availableContacts, selectedPhone]);
 
   const filteredCredelecRows = useMemo(() => {
     return credelecRows.filter((row) => {
       const rowDate = parseCredelecDate(row.date);
-      const rowPhone = normalizePhone(row.sendPhone);
+      const rowPhone = normalizePhone(row.contact);
 
       const matchDate =
         (!dateRange.start || rowDate >= dateRange.start) &&
@@ -108,7 +109,7 @@ export function useCredelecTableData({ credelecRows }: UseCredelecTableDataProps
 
   return {
     filteredCredelecRows,
-    availablePhones,
+    availableContacts,
     dateRange,
     setDateRange,
     selectedPhone,

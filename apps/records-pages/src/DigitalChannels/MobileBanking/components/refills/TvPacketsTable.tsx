@@ -26,6 +26,26 @@ interface TvPacketsTableProps {
   data: TvPacketsRow[];
 }
 
+const getIconProps = (sendState: string) => {
+  switch (sendState) {
+    case 'Falha no envio':
+      return {
+        type: 'exclamation' as const,
+        className: 'p-0 h-[18px] w-[18px] [&>svg>g>path]:stroke-red-500'
+      };
+    case 'Reenviar recarga':
+      return {
+        type: 'resend' as const,
+        className: 'p-0 h-[18px] w-[18px] cursor-pointer'
+      };
+    default:
+      return {
+        type: 'check' as const,
+        className: 'p-0 h-[18px] w-[18px]'
+      };
+  }
+};
+
 export function TvPacketsTable({ data }: TvPacketsTableProps) {
   const sortedData = [...data].sort((a, b) => {
     const dateA = new Date(`${a.date.split('/').reverse().join('-')}T${a.time}`);
@@ -33,43 +53,30 @@ export function TvPacketsTable({ data }: TvPacketsTableProps) {
     return Number(dateB) - Number(dateA);
   });
 
-  const tableData = sortedData.map((row: TvPacketsRow) => ({
-    ...row,
-    cells: [
-      { content: row.operatorName },
-      { content: row.reference },
-      { content: row.date },
-      { content: row.time },
-      { content: row.rechargeValue },
-      { content: row.channel },
-      {
-        content: (
-          <div className="flex items-center gap-2">
-            <Tooltip content={row.sendState} variant="dark" simple={true}>
-              <Icon
-                type={
-                  row.sendState === 'Falha no envio'
-                    ? 'exclamation'
-                    : row.sendState === 'Reenviar recarga'
-                      ? 'resend'
-                      : row.sendState === 'Enviada com sucesso'
-                        ? 'check'
-                        : 'eye'
-                }
-                className={`p-0 h-[18px] w-[18px] ${
-                  row.sendState === 'Falha no envio'
-                    ? '[&>svg>g>path]:stroke-red-500'
-                    : row.sendState === 'Reenviar recarga'
-                      ? 'cursor-pointer'
-                      : ''
-                }`}
-              />
-            </Tooltip>
-          </div>
-        )
-      }
-    ]
-  }));
+  const tableData = sortedData.map((row: TvPacketsRow) => {
+    const iconProps = getIconProps(row.sendState);
+
+    return {
+      ...row,
+      cells: [
+        { content: row.operatorName },
+        { content: row.reference },
+        { content: row.date },
+        { content: row.time },
+        { content: row.rechargeValue },
+        { content: row.channel },
+        {
+          content: (
+            <div className="flex items-center gap-2">
+              <Tooltip content={row.sendState} variant="dark" simple={true}>
+                <Icon type={iconProps.type} className={iconProps.className} />
+              </Tooltip>
+            </div>
+          )
+        }
+      ]
+    };
+  });
 
   return <Table headers={headersTableTvPackets} data={tableData} />;
 }

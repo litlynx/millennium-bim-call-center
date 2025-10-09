@@ -87,18 +87,12 @@ export function useRefillsTableData({ rechargesRows }: UseRefillsTableDataProps)
   }, []);
 
   const availableOperators = useMemo(() => {
-    const uniqueOperators = new Set(
-      rechargesRows
-        .map((row) => normalizeString(row.operatorName))
-        .filter((operator) => operator !== '')
-    );
+    const uniqueOperators = new Set(rechargesRows.map((row) => normalizeString(row.operatorName)));
     return Array.from(uniqueOperators).sort();
   }, [rechargesRows, normalizeString]);
 
-  const availablePhones = useMemo(() => {
-    const uniquePhones = new Set(
-      rechargesRows.map((row) => normalizePhone(row.sendPhone)).filter((phone) => phone !== '')
-    );
+  const availableContacts = useMemo(() => {
+    const uniquePhones = new Set(rechargesRows.map((row) => normalizePhone(row.contact)));
     return Array.from(uniquePhones).sort();
   }, [rechargesRows, normalizePhone]);
 
@@ -109,16 +103,16 @@ export function useRefillsTableData({ rechargesRows }: UseRefillsTableDataProps)
   }, [availableOperators, operator]);
 
   useEffect(() => {
-    if (availablePhones.length === 1 && selectedPhone === 'Todos telemóveis') {
-      setSelectedPhone(availablePhones[0]);
+    if (availableContacts.length === 1 && selectedPhone === 'Todos telemóveis') {
+      setSelectedPhone(availableContacts[0]);
     }
-  }, [availablePhones, selectedPhone]);
+  }, [availableContacts, selectedPhone]);
 
   const filteredRechargesRows = useMemo(() => {
     return rechargesRows.filter((row) => {
       const rowDate = parseRechargeDate(row.dateTime);
       const rowOperator = normalizeString(row.operatorName);
-      const rowPhone = normalizePhone(row.sendPhone);
+      const rowPhone = normalizePhone(row.contact);
       const rowDestination = normalizePhone(row.sendPhone);
 
       const matchDate =
@@ -149,7 +143,7 @@ export function useRefillsTableData({ rechargesRows }: UseRefillsTableDataProps)
   return {
     filteredRechargesRows,
     availableOperators,
-    availablePhones,
+    availableContacts,
     dateRange,
     setDateRange,
     operator,

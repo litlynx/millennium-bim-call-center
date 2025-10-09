@@ -2,6 +2,7 @@ export const mockPrimaryRows = [
   {
     id: 'row-1',
     operatorName: 'ZAP',
+    contact: '835816811',
     reference: '241231434351',
     date: '6/10/2025',
     time: '21:30',
@@ -12,6 +13,7 @@ export const mockPrimaryRows = [
   {
     id: 'row-2',
     operatorName: 'ZAP',
+    contact: '835816811',
     reference: '241231434100',
     date: '7/10/2025',
     time: '21:30',
@@ -22,6 +24,7 @@ export const mockPrimaryRows = [
   {
     id: 'row-3',
     operatorName: 'ZAP',
+    contact: '835816811',
     reference: '241231434100',
     date: '8/10/2025',
     time: '21:30',
