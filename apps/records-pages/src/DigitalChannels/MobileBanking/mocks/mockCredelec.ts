@@ -28,15 +28,5 @@ export const mockPrimaryRows = [
     counterNumber: '0994 4734 27843 8348',
     rechargeValue: '500',
     sendState: 'Reenviar recarga'
-  },
-  {
-    id: 'row-4',
-    date: '8/10/2025',
-    time: '21:30',
-    contact: '835816812',
-    sendPhone: '835816811',
-    counterNumber: '0994 4734 27843 8348',
-    rechargeValue: '500',
-    sendState: 'Reenviar recarga'
   }
 ];
