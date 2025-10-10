@@ -28,4 +28,6 @@ export {
   DialogTitle,
   DialogTrigger
 } from './dialog';
+export { ScrollArea, ScrollBar } from './scroll-area';
 export { Separator } from './separator';
+

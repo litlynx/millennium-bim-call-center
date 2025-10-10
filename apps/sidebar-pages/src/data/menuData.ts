@@ -284,18 +284,19 @@ export const submenuLinks: SubmenuLinkItemProps[] = [
     path: '/records/digital-channels/mobile-banking/transactional-limits',
     parentSubmenuId: 'mobile-banking-submenu'
   },
-  // {
-  //   id: 'recargas',
-  //   label: 'Recargas',
-  //   path: '/records/digital-channels/mobile-banking/top-ups',
-  //   parentSubmenuId: 'mobile-banking-submenu'
-  // },
+  {
+    id: 'recargas',
+    label: 'Recargas',
+    path: '/records/digital-channels/mobile-banking/refills',
+    parentSubmenuId: 'mobile-banking-submenu'
+  },
   {
     id: 'application-errors',
     label: 'Erros da Aplicação',
     path: '/records/digital-channels/mobile-banking/application-errors',
     parentSubmenuId: 'mobile-banking-submenu'
   },
+
   // {
   //   id: 'duvidas-de-instalacao-app-smart-izi',
   //   label: 'Dúvidas de Instalação App - Smart IZI',

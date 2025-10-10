@@ -2,7 +2,7 @@ import type * as React from 'react';
 import { cn } from '@/lib/utils';
 
 export interface ButtonProps {
-  variant?: 'solid' | 'outline' | 'light';
+  variant?: 'solid' | 'outline' | 'light' | 'mono';
   size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
   onClick?: () => void;
@@ -22,7 +22,8 @@ const Button: React.FC<ButtonProps> = ({
   const variantClasses = {
     solid: 'bg-primary-500 hover:bg-white text-white hover:text-primary-600 w-fit',
     outline: 'bg-white hover:bg-primary-500 text-primary-500 hover:text-white',
-    light: 'border-0 bg-primary-50 hover:bg-primary-500 text-primary-500 hover:text-white'
+    light: 'border-0 bg-primary-50 hover:bg-primary-500 text-primary-500 hover:text-white',
+    mono: 'border-0 bg-gray-100 hover:bg-gray-700 text-gray-700 hover:text-gray-100'
   };
   const sizeClasses = {
     sm: 'text-sm',
