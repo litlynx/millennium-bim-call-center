@@ -99,6 +99,20 @@ export async function navigateToRoute(
 }
 
 /**
+ * Navigate to the Refills page
+ *
+ * @param page - Playwright Page instance
+ */
+export async function navigateToRefills(page: Page): Promise<void> {
+  await navigateToRoute(
+    page,
+    '/records/digital-channels/mobile-banking/refills',
+    'text=Smart IZI - Recargas',
+    20000
+  );
+}
+
+/**
  * Navigate to the Transaction Limits page
  *
  * @param page - Playwright Page instance
