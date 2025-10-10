@@ -64,8 +64,9 @@ export const useTextArea = ({
     setIsValid(true);
   }, [initialValue]);
 
-  const wordCount = value.trim() === '' ? 0 : value.trim().split(/\s+/).length;
-  const charCount = value.length;
+  const safeValue = String(value || '');
+  const wordCount = safeValue.trim() === '' ? 0 : safeValue.trim().split(/\s+/).length;
+  const charCount = safeValue.length;
 
   const clear = useCallback(() => {
     // Use handleChange to ensure validation and state updates happen correctly
