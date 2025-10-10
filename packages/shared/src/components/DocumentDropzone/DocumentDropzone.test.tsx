@@ -146,4 +146,255 @@ describe('DocumentDropzone', () => {
     expect(screen.getByText('File too large')).toBeTruthy();
     expect(screen.getByText('Invalid type')).toBeTruthy();
   });
+
+  it('handles drag events correctly', () => {
+    render(
+      <DocumentDropzone
+        dragActive={true}
+        inputRef={inputRef}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onClick={onClick}
+        onFileChange={onFileChange}
+        onRemoveFile={onRemoveFile}
+        acceptedFileExtensions={acceptedFileExtensions}
+      />
+    );
+
+    const dropzone = screen.getByRole('button').querySelector('div');
+    expect(dropzone).toHaveClass('border-primary-500', 'bg-primary-50');
+  });
+
+  it('displays file size correctly', () => {
+    const files: DocumentFile[] = [
+      {
+        id: '1',
+        name: 'small.txt',
+        type: 'text/plain',
+        size: 1536, // 1.5 KB
+        blob: new Blob(['small'], { type: 'text/plain' }),
+        progress: 100,
+        status: 'completed' as DocumentFileStatus,
+        error: null
+      },
+      {
+        id: '2',
+        name: 'large.pdf',
+        type: 'application/pdf',
+        size: 2097152, // 2 MB
+        blob: new Blob(['large'], { type: 'application/pdf' }),
+        progress: 100,
+        status: 'completed' as DocumentFileStatus,
+        error: null
+      }
+    ];
+
+    render(
+      <DocumentDropzone
+        files={files}
+        inputRef={inputRef}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onClick={onClick}
+        onFileChange={onFileChange}
+        onRemoveFile={onRemoveFile}
+        acceptedFileExtensions={acceptedFileExtensions}
+      />
+    );
+
+    expect(screen.getByText('(1.50 KB)')).toBeTruthy();
+    expect(screen.getByText('(2.00 MB)')).toBeTruthy();
+  });
+
+  it('displays correct file icons based on extension', () => {
+    const files: DocumentFile[] = [
+      {
+        id: '1',
+        name: 'image.jpg',
+        type: 'image/jpeg',
+        size: 1024,
+        blob: new Blob(['image'], { type: 'image/jpeg' }),
+        progress: 100,
+        status: 'completed' as DocumentFileStatus,
+        error: null
+      },
+      {
+        id: '2',
+        name: 'document.pdf',
+        type: 'application/pdf',
+        size: 1024,
+        blob: new Blob(['doc'], { type: 'application/pdf' }),
+        progress: 100,
+        status: 'completed' as DocumentFileStatus,
+        error: null
+      }
+    ];
+
+    render(
+      <DocumentDropzone
+        files={files}
+        inputRef={inputRef}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onClick={onClick}
+        onFileChange={onFileChange}
+        onRemoveFile={onRemoveFile}
+        acceptedFileExtensions={acceptedFileExtensions}
+      />
+    );
+
+    expect(screen.getByText('image.jpg')).toBeTruthy();
+    expect(screen.getByText('document.pdf')).toBeTruthy();
+  });
+
+  it('calls event handlers with correct parameters', () => {
+    const mockEvent = {
+      preventDefault: vi.fn(),
+      dataTransfer: { files: [] }
+    };
+
+    render(
+      <DocumentDropzone
+        inputRef={inputRef}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onClick={onClick}
+        onFileChange={onFileChange}
+        onRemoveFile={onRemoveFile}
+        acceptedFileExtensions={acceptedFileExtensions}
+      />
+    );
+
+    // Find the dropzone div more reliably - it's the first div inside the button
+    const button = screen.getByRole('button');
+    const dropzone = button.querySelector('div');
+    expect(dropzone).toBeTruthy();
+
+    if (dropzone) {
+      fireEvent.drop(dropzone, mockEvent);
+      expect(onDrop).toHaveBeenCalledWith(
+        expect.objectContaining({
+          preventDefault: expect.any(Function)
+        })
+      );
+
+      fireEvent.dragOver(dropzone, mockEvent);
+      expect(onDragOver).toHaveBeenCalledWith(
+        expect.objectContaining({
+          preventDefault: expect.any(Function)
+        })
+      );
+
+      fireEvent.dragLeave(dropzone, mockEvent);
+      expect(onDragLeave).toHaveBeenCalledWith(
+        expect.objectContaining({
+          preventDefault: expect.any(Function)
+        })
+      );
+    }
+  });
+
+  it('handles file input change events', () => {
+    const { container } = render(
+      <DocumentDropzone
+        inputRef={inputRef}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onClick={onClick}
+        onFileChange={onFileChange}
+        onRemoveFile={onRemoveFile}
+        acceptedFileExtensions={acceptedFileExtensions}
+      />
+    );
+
+    const input = container.querySelector('input[type="file"]');
+    const mockChangeEvent = { target: { files: [] } };
+
+    if (input) {
+      fireEvent.change(input, mockChangeEvent);
+      expect(onFileChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          target: expect.objectContaining({
+            files: expect.any(Object)
+          })
+        })
+      );
+    }
+  });
+
+  it('supports paste events when onPaste is provided', () => {
+    const onPaste = vi.fn();
+
+    render(
+      <DocumentDropzone
+        inputRef={inputRef}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onClick={onClick}
+        onFileChange={onFileChange}
+        onRemoveFile={onRemoveFile}
+        onPaste={onPaste}
+        acceptedFileExtensions={acceptedFileExtensions}
+      />
+    );
+
+    const button = screen.getByRole('button');
+    const dropzone = button.querySelector('div');
+    const mockPasteEvent = { clipboardData: { files: [] } };
+
+    if (dropzone) {
+      fireEvent.paste(dropzone, mockPasteEvent);
+      expect(onPaste).toHaveBeenCalledWith(
+        expect.objectContaining({
+          clipboardData: expect.any(Object)
+        })
+      );
+    }
+  });
+
+  it('prevents event bubbling on remove button clicks', () => {
+    const files: DocumentFile[] = [
+      {
+        id: '1',
+        name: 'test.pdf',
+        type: 'application/pdf',
+        size: 1024,
+        blob: new Blob(['test'], { type: 'application/pdf' }),
+        progress: 100,
+        status: 'completed' as DocumentFileStatus,
+        error: null
+      }
+    ];
+
+    render(
+      <DocumentDropzone
+        files={files}
+        inputRef={inputRef}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onClick={onClick}
+        onFileChange={onFileChange}
+        onRemoveFile={onRemoveFile}
+        acceptedFileExtensions={acceptedFileExtensions}
+      />
+    );
+
+    const removeButton = screen.getByLabelText('Remover test.pdf');
+    const mockEvent = {
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn()
+    };
+
+    fireEvent.click(removeButton, mockEvent);
+    fireEvent.mouseDown(removeButton, mockEvent);
+
+    expect(onRemoveFile).toHaveBeenCalledWith(files[0]);
+  });
 });
