@@ -1,4 +1,4 @@
-export const mockPrimaryRows = [
+export const mockTvPackets = [
   {
     id: 'row-1',
     operatorName: 'ZAP',

@@ -1,4 +1,4 @@
-export const mockPrimaryRows = [
+export const mockCredelec = [
   {
     id: 'row-1',
     date: '6/10/2025',

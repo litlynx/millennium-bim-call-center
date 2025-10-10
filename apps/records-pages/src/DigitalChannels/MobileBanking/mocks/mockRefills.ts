@@ -1,4 +1,4 @@
-export const mockPrimaryRows = [
+export const mockRefills = [
   {
     id: 'row-1',
     operatorName: 'TMcel',

@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router';
@@ -12,6 +13,8 @@ import {
   useTextAreaWithDocuments
 } from 'shared/components';
 import { useUserStore } from 'shared/stores';
+import type { RefillsInterface } from 'src/api/Refills/interfaces';
+import { GET } from 'src/api/Refills/route';
 import SuccessModal from 'src/DigitalChannels/MobileBanking/components/refills/SuccessModal';
 import { CredelecTable } from '../components/refills/CredelecTable';
 import { RechargesTable } from '../components/refills/RefillsTable';
@@ -19,12 +22,27 @@ import { TvPacketsTable } from '../components/refills/TvPacketsTable';
 import { useCredelecTableData } from '../hooks/useCredelecTableData';
 import { useRefillsTableData } from '../hooks/useRefillsTableData';
 import { useTvPacketsTableData } from '../hooks/useTvPacketsTableData';
-import { mockPrimaryRows as mockCredelec } from '../mocks/mockCredelec';
-import { mockPrimaryRows as mockRecharges } from '../mocks/mockRefills';
-import { mockPrimaryRows as mockTvPackets } from '../mocks/mockTvPackets';
+import { mockCredelec } from '../mocks/mockCredelec';
+import { mockRefills } from '../mocks/mockRefills';
+import { mockTvPackets } from '../mocks/mockTvPackets';
 
-export const CANCELS_BLOCKED_QUERY_KEY = 'refills';
+//TODO apagar os mocks
+
+export const REFILLS_QUERY_KEY = 'refills';
 const TITLE = 'Smart IZI - Recargas';
+
+async function fetchRefills(): Promise<RefillsInterface> {
+  return await GET();
+}
+
+function useRefills() {
+  return useQuery({
+    queryKey: [REFILLS_QUERY_KEY],
+    queryFn: fetchRefills,
+    staleTime: 5 * 60 * 1000,
+    retry: 3
+  });
+}
 
 export interface OperatorStateMock {
   operator: string;
@@ -46,6 +64,16 @@ const Refills: React.FC = () => {
   const navigate = useNavigate();
   const [activeTable, setActiveTable] = React.useState<TableType>('refills');
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
+  const { data, isLoading } = useRefills();
+  //TODO usar o data.credelecTable por ex para extrair os dados
+  //Ver como lidar com erros que vem da API
+  //Se esta a carregar ifloading
+  //ifDataIsAvailable
+  //ifDataIsEmpty
+  //ifData.HasErrors
+  //fazer a nivel de serviço ou de frontend
+
+  console.log(data, isLoading);
 
   const renderFilters = () => {
     switch (activeTable) {
@@ -276,7 +304,7 @@ const Refills: React.FC = () => {
     setSelectedPhone: setRechargesPhone,
     destinationNumber,
     setDestinationNumber
-  } = useRefillsTableData({ rechargesRows: mockRecharges });
+  } = useRefillsTableData({ rechargesRows: mockRefills });
 
   const {
     filteredCredelecRows,
