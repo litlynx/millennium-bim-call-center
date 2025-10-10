@@ -51,7 +51,7 @@ const Refills: React.FC = () => {
     switch (activeTable) {
       case 'refills':
         return (
-          <div className="flex justify-start gap-7">
+          <div className="flex justify-start gap-7" data-testid="recharge-filters-refills">
             <div className="flex flex-col gap-[0.625rem]">
               <p className="uppercase font-semibold text-xs text-gray-800">Operadora</p>
               <ButtonDropdown
@@ -131,7 +131,7 @@ const Refills: React.FC = () => {
         );
       case 'credelec':
         return (
-          <div className="flex justify-start gap-7">
+          <div className="flex justify-start gap-7" data-testid="credelec-filters-refills">
             <div className="flex flex-col gap-[0.625rem]">
               <p className="uppercase font-semibold text-xs text-gray-800">Telemóvel do mobile</p>
               <ButtonDropdown
@@ -172,7 +172,7 @@ const Refills: React.FC = () => {
         );
       case 'tvpackets':
         return (
-          <div className="flex justify-start gap-7">
+          <div className="flex justify-start gap-7" data-testid="tv-filters-refills">
             <div className="flex flex-col gap-[0.625rem]">
               <p className="uppercase font-semibold text-xs text-gray-800">Operadora</p>
               <ButtonDropdown
@@ -260,7 +260,7 @@ const Refills: React.FC = () => {
 
   const textAreaWithDocs = useTextAreaWithDocuments({
     required: true,
-    maxLength: 200,
+    maxLength: 2000,
     initialValue: '',
     enableDocuments: true
   });
