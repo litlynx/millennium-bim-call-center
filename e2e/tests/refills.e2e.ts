@@ -227,7 +227,7 @@ test.describe('Page Refills', () => {
         await textarea.fill(testText);
 
         // Check character count display
-        const charCount = page.locator(`${testText.length}\\/2000`);
+        const charCount = page.locator(`text=/${testText.length}\\/2000/`);
         await expect(charCount).toBeVisible();
       });
 
