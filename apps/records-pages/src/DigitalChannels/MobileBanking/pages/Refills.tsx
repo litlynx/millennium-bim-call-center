@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router';
@@ -12,6 +13,8 @@ import {
   useTextAreaWithDocuments
 } from 'shared/components';
 import { useUserStore } from 'shared/stores';
+import type { RefillsInterface } from 'src/api/Refills/interfaces';
+import { GET } from 'src/api/Refills/route';
 import SuccessModal from 'src/DigitalChannels/MobileBanking/components/refills/SuccessModal';
 import { CredelecTable } from '../components/refills/CredelecTable';
 import { RechargesTable } from '../components/refills/RefillsTable';
@@ -19,12 +22,22 @@ import { TvPacketsTable } from '../components/refills/TvPacketsTable';
 import { useCredelecTableData } from '../hooks/useCredelecTableData';
 import { useRefillsTableData } from '../hooks/useRefillsTableData';
 import { useTvPacketsTableData } from '../hooks/useTvPacketsTableData';
-import { mockPrimaryRows as mockCredelec } from '../mocks/mockCredelec';
-import { mockPrimaryRows as mockRecharges } from '../mocks/mockRefills';
-import { mockPrimaryRows as mockTvPackets } from '../mocks/mockTvPackets';
 
-export const CANCELS_BLOCKED_QUERY_KEY = 'refills';
+export const REFILLS_QUERY_KEY = 'refills';
 const TITLE = 'Smart IZI - Recargas';
+
+async function fetchRefills(): Promise<RefillsInterface> {
+  return await GET();
+}
+
+function useRefills() {
+  return useQuery({
+    queryKey: [REFILLS_QUERY_KEY],
+    queryFn: fetchRefills,
+    staleTime: 5 * 60 * 1000,
+    retry: 3
+  });
+}
 
 export interface OperatorStateMock {
   operator: string;
@@ -46,6 +59,10 @@ const Refills: React.FC = () => {
   const navigate = useNavigate();
   const [activeTable, setActiveTable] = React.useState<TableType>('refills');
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
+  const { data, isLoading } = useRefills();
+  const isRefillsTableError = data?.refillsTable && 'error' in data.refillsTable;
+  const isCredelecTableError = data?.credelecTable && 'error' in data.credelecTable;
+  const isTvPacketsTableError = data?.tvPacketsTable && 'error' in data.tvPacketsTable;
 
   const renderFilters = () => {
     switch (activeTable) {
@@ -244,10 +261,31 @@ const Refills: React.FC = () => {
   const renderTable = () => {
     switch (activeTable) {
       case 'refills':
+        if (isRefillsTableError) {
+          return (
+            <div className="py-2 text-current text-gray-500">
+              Erro ao carregar tabela de recargas
+            </div>
+          );
+        }
         return <RechargesTable data={filteredRechargesRows} />;
+
       case 'credelec':
+        if (isCredelecTableError) {
+          return (
+            <div className="py-2 text-current text-gray-500">Erro ao carregar tabela credelec</div>
+          );
+        }
         return <CredelecTable data={filteredCredelecRows} />;
+
       case 'tvpackets':
+        if (isTvPacketsTableError) {
+          return (
+            <div className="py-2 text-current text-gray-500">
+              Erro ao carregar tabela pacotes TV
+            </div>
+          );
+        }
         return <TvPacketsTable data={filteredTvPacketsRows} />;
     }
   };
@@ -276,7 +314,9 @@ const Refills: React.FC = () => {
     setSelectedPhone: setRechargesPhone,
     destinationNumber,
     setDestinationNumber
-  } = useRefillsTableData({ rechargesRows: mockRecharges });
+  } = useRefillsTableData({
+    rechargesRows: !data?.refillsTable || isRefillsTableError ? [] : data.refillsTable
+  });
 
   const {
     filteredCredelecRows,
@@ -284,7 +324,9 @@ const Refills: React.FC = () => {
     setDateRange: setCredelecDateRange,
     selectedPhone: credelecPhone,
     setSelectedPhone: setCredelecPhone
-  } = useCredelecTableData({ credelecRows: mockCredelec });
+  } = useCredelecTableData({
+    credelecRows: !data?.credelecTable || isCredelecTableError ? [] : data.credelecTable
+  });
 
   const {
     filteredTvPacketsRows,
@@ -295,7 +337,9 @@ const Refills: React.FC = () => {
     setOperator: setTvOperator,
     selectedPhone: tvPhone,
     setSelectedPhone: setTvPhone
-  } = useTvPacketsTableData({ tvPacketsRows: mockTvPackets });
+  } = useTvPacketsTableData({
+    tvPacketsRows: !data?.tvPacketsTable || isTvPacketsTableError ? [] : data.tvPacketsTable
+  });
 
   const handleSendEmail = () => {
     if (textAreaWithDocs.value.trim() === '') {
@@ -340,8 +384,8 @@ const Refills: React.FC = () => {
           />
 
           <div className="mt-3 flex flex-1 min-h-0 flex-col rounded-[1.25rem] bg-white overflow-hidden">
-            <div className="overflow-y-auto px-9 py-6">
-              <div className="flex flex-col gap-6">
+            <div className="overflow-y-auto px-9 py-6 flex flex-col justify-between h-full">
+              <div className="flex flex-col gap-10">
                 <div className="flex gap-4">
                   <Button
                     variant="mono"
@@ -379,6 +423,17 @@ const Refills: React.FC = () => {
                   <ScrollArea className="h-full">
                     {renderFilters()}
                     {renderTable()}
+                    {isLoading && (
+                      <div className="py-2 text-current text-gray-500">A carregar dados...</div>
+                    )}
+                    {!data?.refillsTable &&
+                      !data?.credelecTable &&
+                      !data?.tvPacketsTable &&
+                      !isLoading && (
+                        <div className="mt-3 rounded-[1.25rem] bg-white py-6 px-9">
+                          <div className="text-gray-500">Dados não disponíveis</div>
+                        </div>
+                      )}
                   </ScrollArea>
                 </div>
               </div>

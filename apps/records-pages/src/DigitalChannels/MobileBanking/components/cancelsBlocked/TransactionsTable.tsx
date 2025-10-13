@@ -1,3 +1,4 @@
+import { compareDesc, parse } from 'date-fns';
 import { Icon, Popover, Table } from 'shared/components';
 
 const headersTableTransactions = [
@@ -27,7 +28,11 @@ interface TransactionsTableProps {
 }
 
 export function TransactionsTable({ data }: TransactionsTableProps) {
-  const sortedData = [...data].sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)));
+  const sortedData = [...data].sort((a, b) => {
+    const dateA = parse(a.date, 'dd-MM-yyyy', new Date());
+    const dateB = parse(b.date, 'dd-MM-yyyy', new Date());
+    return compareDesc(dateA, dateB);
+  });
 
   const tableData = sortedData.map((row: TransactionRow) => ({
     ...row,
