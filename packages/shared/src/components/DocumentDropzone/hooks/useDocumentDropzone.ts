@@ -11,8 +11,8 @@ export const ACCEPTED_MIME_TYPES = [
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'text/plain'
 ] as const;
-const FILE_UPLOAD_MAX_SIZE = 5 * 1024 * 1024; // 5MB
-const MAX_FILES_COUNT = 5;
+export const FILE_UPLOAD_MAX_SIZE = 5 * 1024 * 1024; // 5MB
+export const MAX_FILES_COUNT = 5;
 const MAX_FILES_ERROR_MESSAGE = `Não é possível anexar mais de ${MAX_FILES_COUNT} ficheiros.`;
 
 const fileSchema = z.object({
