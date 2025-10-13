@@ -64,8 +64,6 @@ const Refills: React.FC = () => {
   const isCredelecTableError = data?.credelecTable && 'error' in data.credelecTable;
   const isTvPacketsTableError = data?.tvPacketsTable && 'error' in data.tvPacketsTable;
 
-  console.log(data, isLoading);
-
   const renderFilters = () => {
     switch (activeTable) {
       case 'refills':
