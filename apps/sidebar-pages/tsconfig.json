@@ -1,14 +1,18 @@
 {
-  "include": [
-    "./**/*",
-    "**/*",
-    "package.json",
-    "../__mocks__",
-    "../../packages/shared/src/__mocks__/shared",
-    "../../packages/shared/src/__mocks__/react-router.ts",
-    "../../packages/@config/bun-test-config/__mocks__/shared-modules.ts"
+  "include": ["./**/*", "**/*", "package.json"],
+  "exclude": [
+    "build",
+    "dist",
+    "coverage",
+    "node_modules",
+    "rspack/**/*",
+    "**/*.test.tsx",
+    "**/*.test.ts",
+    "**/__mocks__/**/*",
+    "../../packages/shared/src/**/*",
+    "../../packages/@config/bun-test-config/**/*",
+    "../../packages/@config/rspack-config/**/*"
   ],
-  "exclude": ["build", "dist", "coverage", "node_modules", "rspack/**/*"],
   "extends": "@config/tsconfig",
   "compilerOptions": {
     "types": ["bun-types", "jest", "node", "@testing-library/jest-dom"],

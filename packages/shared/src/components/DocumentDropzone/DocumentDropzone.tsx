@@ -4,6 +4,7 @@ import Icon, { type IconType } from '@/components/Icon';
 import { ProgressBar } from '@/components/ui/progress-bar';
 import { cn } from '@/lib/utils';
 import type { DocumentFile } from './hooks/useDocumentDropzone';
+import { FILE_UPLOAD_MAX_SIZE, MAX_FILES_COUNT } from './hooks/useDocumentDropzone';
 
 interface DocumentDropzoneProps {
   className?: string;
@@ -101,7 +102,8 @@ export default function DocumentDropzone({
             <p className="font-bold">Anexar documento ou imagem</p>
             <span className="text-sm">Arraste ou cole o ficheiro a carregar</span>
             <span className="text-xs text-gray-400">
-              Apenas ficheiros JPEG, PNG, DOCX, PDF e TXT até 4MB no total
+              Apenas ficheiros JPEG, PNG, DOCX, PDF e TXT até {FILE_UPLOAD_MAX_SIZE / (1024 * 1024)}{' '}
+              MB por ficheiro e máximo de {MAX_FILES_COUNT} ficheiros.
             </span>
           </div>
 
