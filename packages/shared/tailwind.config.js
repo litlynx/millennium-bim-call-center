@@ -51,7 +51,7 @@ module.exports = {
           450: '#767676', // used DocumentDropzone
           500: '#7C7F86', // used
           600: '#5E5E5E', // used
-          700: '#374151',
+          700: '#2D3641', // used mono buttons bg
           800: '#2E3641', // font color primary
           900: '#111827',
           DEFAULT: '#7C7F86'

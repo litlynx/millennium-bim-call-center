@@ -64,6 +64,7 @@ const Textarea = React.forwardRef<
   return (
     <div className="relative">
     <textarea
+      data-testid="text-area"
       className={cn(
         "flex min-h-[60px] w-full rounded-t-xl border-b border-black bg-gray-100 pl-3 pr-6 py-2 text-base shadow-sm placeholder:text-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
         className

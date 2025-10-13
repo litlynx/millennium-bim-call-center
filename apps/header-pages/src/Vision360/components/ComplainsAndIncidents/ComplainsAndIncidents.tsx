@@ -1,3 +1,4 @@
+import { compareDesc, parse } from 'date-fns';
 import type React from 'react';
 import { useNavigate } from 'react-router';
 import { type CardTabItem, CardTabs, Icon } from 'shared/components';
@@ -6,18 +7,19 @@ import IncidentItem from 'src/Vision360/components/ComplainsAndIncidents/compone
 import data from './mock-data/mock-data.json';
 
 const { claims, incidents } = data;
-
 const sortClaims = (items: typeof claims) => {
   return [...items].sort((a, b) => {
-    const toDate = (dateStr: string) => new Date(dateStr.split('/').reverse().join('-'));
-    return toDate(b.registerDate).getTime() - toDate(a.registerDate).getTime();
+    const dateA = parse(a.registerDate, 'dd/MM/yyyy', new Date());
+    const dateB = parse(b.registerDate, 'dd/MM/yyyy', new Date());
+    return compareDesc(dateA, dateB);
   });
 };
 
 const sortIncidents = (items: typeof incidents) => {
   return [...items].sort((a, b) => {
-    const toDate = (dateStr: string) => new Date(dateStr.split('-').reverse().join('-'));
-    return toDate(b.date).getTime() - toDate(a.date).getTime();
+    const dateA = parse(a.date, 'dd-MM-yyyy', new Date());
+    const dateB = parse(b.date, 'dd-MM-yyyy', new Date());
+    return compareDesc(dateA, dateB);
   });
 };
 

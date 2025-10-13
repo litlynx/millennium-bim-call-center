@@ -5,16 +5,50 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
+export type DatePreset = 'last7Days' | 'last30Days' | 'none';
+
 interface DatePickerProps {
   onChange?: (range: { startDate: Date | null; endDate: Date | null }) => void;
+  defaultPreset?: DatePreset;
 }
 
-export default function DatePicker({ onChange }: DatePickerProps) {
-  const [range, setRange] = React.useState<DateRange | undefined>(undefined);
+function getDateRangeFromPreset(preset: DatePreset): DateRange | undefined {
+  if (preset === 'none') return undefined;
+  const startDate = new Date();
+  const endDate = new Date();
+  switch (preset) {
+    case 'last7Days':
+      startDate.setDate(endDate.getDate() - 7);
+      break;
+    case 'last30Days':
+      startDate.setDate(endDate.getDate() - 30);
+      break;
+    default:
+      return undefined;
+  }
+  return { from: startDate, to: endDate };
+}
+
+export default function DatePicker({ onChange, defaultPreset = 'none' }: DatePickerProps) {
+  const [range, setRange] = React.useState<DateRange | undefined>(
+    getDateRangeFromPreset(defaultPreset)
+  );
 
   function formatDate(date: Date) {
     return date.toLocaleDateString('pt-BR').replace(/\//g, '-');
   }
+
+  React.useEffect(() => {
+    if (defaultPreset !== 'none' && onChange) {
+      const defaultRange = getDateRangeFromPreset(defaultPreset);
+      if (defaultRange?.from && defaultRange?.to) {
+        onChange({
+          startDate: defaultRange.from,
+          endDate: defaultRange.to
+        });
+      }
+    }
+  }, [defaultPreset]);
 
   return (
     <div className="flex flex-col gap-3">

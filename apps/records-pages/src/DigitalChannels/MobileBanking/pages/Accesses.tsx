@@ -108,12 +108,16 @@ const Accesses: React.FC = () => {
               <TextArea
                 title="Registo"
                 placeholder="Motivo da Chamada"
+                value={textAreaWithDocs.value}
+                onChange={textAreaWithDocs.setValue}
+                onValidationChange={textAreaWithDocs.onValidationChange}
+                onClear={textAreaWithDocs.clear}
+                maxLength={textAreaWithDocs.maxLength}
                 enableDocuments={textAreaWithDocs.enableDocuments}
                 dropzoneProps={textAreaWithDocs.dropzoneProps}
                 files={textAreaWithDocs.files}
                 dragActive={textAreaWithDocs.dragActive}
                 errors={textAreaWithDocs.errors}
-                {...textAreaWithDocs.textAreaProps}
               />
               <div className="mt-[2.6875rem] flex justify-end gap-3">
                 <Button variant="outline" onClick={handleSendEmail}>

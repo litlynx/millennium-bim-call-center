@@ -1,3 +1,4 @@
+import { compareDesc, parse } from 'date-fns';
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { CardTabs, Icon } from 'shared/components';
@@ -14,14 +15,17 @@ const sortByDateTimeDesc = (
   a: CardAccordionItemContactsProps,
   b: CardAccordionItemContactsProps
 ): number => {
-  const dateTimeA = new Date(
-    `${a.header.date.split('-').reverse().join('-')} ${a.header.time.replace('h', ':')}`
+  const dateTimeA = parse(
+    `${a.header.date} ${a.header.time.replace('h', ':')}`,
+    'dd-MM-yyyy HH:mm',
+    new Date()
   );
-  const dateTimeB = new Date(
-    `${b.header.date.split('-').reverse().join('-')} ${b.header.time.replace('h', ':')}`
+  const dateTimeB = parse(
+    `${b.header.date} ${b.header.time.replace('h', ':')}`,
+    'dd-MM-yyyy HH:mm',
+    new Date()
   );
-
-  return dateTimeB.getTime() - dateTimeA.getTime();
+  return compareDesc(dateTimeA, dateTimeB);
 };
 
 const LastContact: React.FC = () => {

@@ -8,8 +8,7 @@ import { mockPrimaryRows } from '../../DigitalChannels/__mocks__/mockPrimaryRows
 import { getValidationErrorResponse } from '../errors';
 
 const mockScripts = {
-  data: 'script',
-  status: 200
+  data: 'script'
 };
 
 export async function GetAccessesTable(): Promise<Response> {
