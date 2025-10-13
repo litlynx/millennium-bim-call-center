@@ -1,3 +1,4 @@
+import { compareDesc, parse } from 'date-fns';
 import { Icon, Table, Tooltip } from 'shared/components';
 
 const headersTableRefills = [
@@ -46,9 +47,11 @@ const getIconProps = (sendState: string) => {
 };
 
 export function RechargesTable({ data }: RechargesTableProps) {
-  const sortedData = [...data].sort(
-    (a, b) => Number(new Date(b.dateTime)) - Number(new Date(a.dateTime))
-  );
+  const sortedData = [...data].sort((a, b) => {
+    const dateA = parse(a.dateTime, 'dd/MM/yyyy, HH:mm', new Date());
+    const dateB = parse(b.dateTime, 'dd/MM/yyyy, HH:mm', new Date());
+    return compareDesc(dateA, dateB);
+  });
 
   const tableData = sortedData.map((row: RechargesRow) => {
     const iconProps = getIconProps(row.sendState);

@@ -22,11 +22,6 @@ import { TvPacketsTable } from '../components/refills/TvPacketsTable';
 import { useCredelecTableData } from '../hooks/useCredelecTableData';
 import { useRefillsTableData } from '../hooks/useRefillsTableData';
 import { useTvPacketsTableData } from '../hooks/useTvPacketsTableData';
-import { mockCredelec } from '../mocks/mockCredelec';
-import { mockRefills } from '../mocks/mockRefills';
-import { mockTvPackets } from '../mocks/mockTvPackets';
-
-//TODO apagar os mocks
 
 export const REFILLS_QUERY_KEY = 'refills';
 const TITLE = 'Smart IZI - Recargas';
@@ -65,13 +60,9 @@ const Refills: React.FC = () => {
   const [activeTable, setActiveTable] = React.useState<TableType>('refills');
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
   const { data, isLoading } = useRefills();
-  //TODO usar o data.credelecTable por ex para extrair os dados
-  //Ver como lidar com erros que vem da API
-  //Se esta a carregar ifloading
-  //ifDataIsAvailable
-  //ifDataIsEmpty
-  //ifData.HasErrors
-  //fazer a nivel de serviço ou de frontend
+  const isRefillsTableError = data?.refillsTable && 'error' in data.refillsTable;
+  const isCredelecTableError = data?.credelecTable && 'error' in data.credelecTable;
+  const isTvPacketsTableError = data?.tvPacketsTable && 'error' in data.tvPacketsTable;
 
   console.log(data, isLoading);
 
@@ -272,10 +263,31 @@ const Refills: React.FC = () => {
   const renderTable = () => {
     switch (activeTable) {
       case 'refills':
+        if (isRefillsTableError) {
+          return (
+            <div className="py-2 text-current text-gray-500">
+              Erro ao carregar tabela de recargas
+            </div>
+          );
+        }
         return <RechargesTable data={filteredRechargesRows} />;
+
       case 'credelec':
+        if (isCredelecTableError) {
+          return (
+            <div className="py-2 text-current text-gray-500">Erro ao carregar tabela credelec</div>
+          );
+        }
         return <CredelecTable data={filteredCredelecRows} />;
+
       case 'tvpackets':
+        if (isTvPacketsTableError) {
+          return (
+            <div className="py-2 text-current text-gray-500">
+              Erro ao carregar tabela pacotes TV
+            </div>
+          );
+        }
         return <TvPacketsTable data={filteredTvPacketsRows} />;
     }
   };
@@ -304,7 +316,9 @@ const Refills: React.FC = () => {
     setSelectedPhone: setRechargesPhone,
     destinationNumber,
     setDestinationNumber
-  } = useRefillsTableData({ rechargesRows: mockRefills });
+  } = useRefillsTableData({
+    rechargesRows: !data?.refillsTable || isRefillsTableError ? [] : data.refillsTable
+  });
 
   const {
     filteredCredelecRows,
@@ -312,7 +326,9 @@ const Refills: React.FC = () => {
     setDateRange: setCredelecDateRange,
     selectedPhone: credelecPhone,
     setSelectedPhone: setCredelecPhone
-  } = useCredelecTableData({ credelecRows: mockCredelec });
+  } = useCredelecTableData({
+    credelecRows: !data?.credelecTable || isCredelecTableError ? [] : data.credelecTable
+  });
 
   const {
     filteredTvPacketsRows,
@@ -323,7 +339,9 @@ const Refills: React.FC = () => {
     setOperator: setTvOperator,
     selectedPhone: tvPhone,
     setSelectedPhone: setTvPhone
-  } = useTvPacketsTableData({ tvPacketsRows: mockTvPackets });
+  } = useTvPacketsTableData({
+    tvPacketsRows: !data?.tvPacketsTable || isTvPacketsTableError ? [] : data.tvPacketsTable
+  });
 
   const handleSendEmail = () => {
     if (textAreaWithDocs.value.trim() === '') {
@@ -407,6 +425,17 @@ const Refills: React.FC = () => {
                   <ScrollArea className="h-full">
                     {renderFilters()}
                     {renderTable()}
+                    {isLoading && (
+                      <div className="py-2 text-current text-gray-500">A carregar dados...</div>
+                    )}
+                    {!data?.refillsTable &&
+                      !data?.credelecTable &&
+                      !data?.tvPacketsTable &&
+                      !isLoading && (
+                        <div className="mt-3 rounded-[1.25rem] bg-white py-6 px-9">
+                          <div className="text-gray-500">Dados não disponíveis</div>
+                        </div>
+                      )}
                   </ScrollArea>
                 </div>
               </div>

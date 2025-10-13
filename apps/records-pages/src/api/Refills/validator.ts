@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
 export const TableCredelecDTO = z.object({
+  id: z.string(),
   date: z.string(),
   time: z.string(),
+  contact: z.string(),
   sendPhone: z.string(),
   counterNumber: z.string(),
   rechargeValue: z.string(),
@@ -11,6 +13,7 @@ export const TableCredelecDTO = z.object({
 export type TableCredelecTypeDTO = z.infer<typeof TableCredelecDTO>;
 
 export const TableRefillsDTO = z.object({
+  id: z.string(),
   operatorName: z.string(),
   contact: z.string(),
   sendPhone: z.string(),
@@ -22,7 +25,9 @@ export const TableRefillsDTO = z.object({
 export type TableRefillsTypeDTO = z.infer<typeof TableRefillsDTO>;
 
 export const TableTvPacketsDTO = z.object({
+  id: z.string(),
   operatorName: z.string(),
+  contact: z.string(),
   reference: z.string(),
   date: z.string(),
   time: z.string(),
@@ -30,6 +35,7 @@ export const TableTvPacketsDTO = z.object({
   channel: z.string(),
   sendState: z.string()
 });
+
 export type TableTvPacketsTypeDTO = z.infer<typeof TableTvPacketsDTO>;
 
 export const ScriptsSectionDTO = z.string();

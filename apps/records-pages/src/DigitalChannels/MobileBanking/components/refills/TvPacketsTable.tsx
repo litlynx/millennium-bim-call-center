@@ -1,3 +1,4 @@
+import { compareDesc, parse } from 'date-fns';
 import { Icon, Table, Tooltip } from 'shared/components';
 
 const headersTableTvPackets = [
@@ -48,9 +49,9 @@ const getIconProps = (sendState: string) => {
 
 export function TvPacketsTable({ data }: TvPacketsTableProps) {
   const sortedData = [...data].sort((a, b) => {
-    const dateA = new Date(`${a.date.split('/').reverse().join('-')}T${a.time}`);
-    const dateB = new Date(`${b.date.split('/').reverse().join('-')}T${b.time}`);
-    return Number(dateB) - Number(dateA);
+    const dateA = parse(`${a.date} ${a.time}`, 'dd/MM/yyyy HH:mm', new Date());
+    const dateB = parse(`${b.date} ${b.time}`, 'dd/MM/yyyy HH:mm', new Date());
+    return compareDesc(dateA, dateB);
   });
 
   const tableData = sortedData.map((row: TvPacketsRow) => {
