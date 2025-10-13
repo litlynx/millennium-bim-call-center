@@ -11,8 +11,9 @@ export const ACCEPTED_MIME_TYPES = [
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'text/plain'
 ] as const;
-const FILE_UPLOAD_MAX_SIZE = 4 * 1024 * 1024; // 4MB
-const TOTAL_SIZE_ERROR_MESSAGE = `O tamanho total dos ficheiros não deve exceder ${FILE_UPLOAD_MAX_SIZE / (1024 * 1024)} MB`;
+const FILE_UPLOAD_MAX_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FILES_COUNT = 5;
+const MAX_FILES_ERROR_MESSAGE = `Não é possível anexar mais de ${MAX_FILES_COUNT} ficheiros.`;
 
 const fileSchema = z.object({
   name: z.string(),
@@ -26,8 +27,6 @@ const fileSchema = z.object({
       `O tamanho do ficheiro não deve exceder ${FILE_UPLOAD_MAX_SIZE / (1024 * 1024)} MB`
     )
 });
-
-const totalSizeSchema = z.number().max(FILE_UPLOAD_MAX_SIZE, TOTAL_SIZE_ERROR_MESSAGE);
 
 export type DocumentFileStatus = 'uploading' | 'completed' | 'error';
 
@@ -87,20 +86,16 @@ export function useDocumentDropzone() {
     filesRef.current = files;
   }, [files]);
 
-  const revalidateTotalSize = useCallback((currentFiles: DocumentFile[]) => {
+  const revalidateFileCount = useCallback((currentFiles: DocumentFile[]) => {
     setErrors((prevErrors) => {
-      const totalValidation = totalSizeSchema.safeParse(
-        currentFiles.reduce((sum, file) => sum + file.size, 0)
-      );
-
-      if (!totalValidation.success) {
-        if (prevErrors.includes(TOTAL_SIZE_ERROR_MESSAGE)) {
+      if (currentFiles.length > MAX_FILES_COUNT) {
+        if (prevErrors.includes(MAX_FILES_ERROR_MESSAGE)) {
           return prevErrors;
         }
-        return [...prevErrors, TOTAL_SIZE_ERROR_MESSAGE];
+        return [...prevErrors, MAX_FILES_ERROR_MESSAGE];
       }
 
-      return prevErrors.filter((error) => error !== TOTAL_SIZE_ERROR_MESSAGE);
+      return prevErrors.filter((error) => error !== MAX_FILES_ERROR_MESSAGE);
     });
   }, []);
 
@@ -110,18 +105,15 @@ export function useDocumentDropzone() {
 
       setErrors((prevErrors) => {
         const filteredErrors = prevErrors.filter((error) => !error.startsWith(fileToRemove.name));
-        const totalValidation = totalSizeSchema.safeParse(
-          nextFiles.reduce((sum, file) => sum + file.size, 0)
-        );
 
-        if (!totalValidation.success) {
-          if (filteredErrors.includes(TOTAL_SIZE_ERROR_MESSAGE)) {
+        if (nextFiles.length > MAX_FILES_COUNT) {
+          if (filteredErrors.includes(MAX_FILES_ERROR_MESSAGE)) {
             return filteredErrors;
           }
-          return [...filteredErrors, TOTAL_SIZE_ERROR_MESSAGE];
+          return [...filteredErrors, MAX_FILES_ERROR_MESSAGE];
         }
 
-        return filteredErrors.filter((error) => error !== TOTAL_SIZE_ERROR_MESSAGE);
+        return filteredErrors.filter((error) => error !== MAX_FILES_ERROR_MESSAGE);
       });
 
       return nextFiles;
@@ -168,7 +160,6 @@ export function useDocumentDropzone() {
       const filesToProcess: Array<{ file: File; id: string }> = [];
       const newFiles: DocumentFile[] = [];
       const existingIds = new Set(filesRef.current.map((file) => file.id));
-      let pendingTotalSize = filesRef.current.reduce((sum, file) => sum + file.size, 0);
 
       for (const file of candidateFiles) {
         const result = fileSchema.safeParse({
@@ -191,17 +182,13 @@ export function useDocumentDropzone() {
           continue;
         }
 
-        const totalResult = totalSizeSchema.safeParse(pendingTotalSize + file.size);
-        if (!totalResult.success) {
-          const message = `${file.name}: ${totalResult.error.errors
-            .map((e) => e.message)
-            .join(', ')}`;
-          validationErrors.push(message);
-          continue;
+        // Check if adding this file would exceed the maximum file count
+        if (filesRef.current.length + filesToProcess.length >= MAX_FILES_COUNT) {
+          validationErrors.push(MAX_FILES_ERROR_MESSAGE);
+          break; // Stop processing more files
         }
 
         existingIds.add(id);
-        pendingTotalSize += file.size;
         filesToProcess.push({ file, id });
         newFiles.push({
           id,
@@ -363,11 +350,9 @@ export function useDocumentDropzone() {
         }
       }
 
-      const totalValidation = totalSizeSchema.safeParse(
-        files.reduce((sum, file) => sum + file.size, 0)
-      );
-      if (!totalValidation.success && !validationErrors.includes(TOTAL_SIZE_ERROR_MESSAGE)) {
-        validationErrors.push(TOTAL_SIZE_ERROR_MESSAGE);
+      // Check if the total number of files exceeds the maximum
+      if (files.length > MAX_FILES_COUNT && !validationErrors.includes(MAX_FILES_ERROR_MESSAGE)) {
+        validationErrors.push(MAX_FILES_ERROR_MESSAGE);
       }
 
       // Only preserve errors from the error state if they're still relevant
@@ -419,6 +404,6 @@ export function useDocumentDropzone() {
     removeFile,
     onPaste,
     processFiles,
-    revalidateTotalSize
+    revalidateFileCount
   };
 }
