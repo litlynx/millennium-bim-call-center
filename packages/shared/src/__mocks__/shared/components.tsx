@@ -1,5 +1,6 @@
 import { mock } from 'bun:test';
 import { randomUUID } from 'node:crypto';
+import type { JSX } from 'react';
 import {
   type ChangeEvent,
   Children,
@@ -73,7 +74,7 @@ const createStubComponent = (displayName: string, element: keyof JSX.IntrinsicEl
         'data-testid': `ui-${toKebabCase(displayName)}`,
         ...props
       },
-      normalizeNode(children)
+      normalizeNode(children as ReactNode)
     )
   );
   Component.displayName = `Mock${displayName}`;
@@ -133,7 +134,7 @@ const getUiStub = (name: string, moduleName?: string): unknown => {
             'data-testid': `ui-${toKebabCase(resolvedName)}`,
             ...props
           },
-          normalizeNode(children)
+          normalizeNode(children as ReactNode)
         )
     );
     Component.displayName = 'MockBreadcrumbLink';

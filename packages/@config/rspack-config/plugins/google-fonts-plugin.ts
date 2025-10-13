@@ -1,6 +1,7 @@
 import type * as rspack from '@rspack/core';
 import type { HtmlTagObject } from 'html-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import type { Compilation } from 'webpack';
 
 export default class InjectGoogleFontsPlugin {
   private href =
@@ -8,7 +9,9 @@ export default class InjectGoogleFontsPlugin {
 
   apply(compiler: rspack.Compiler) {
     compiler.hooks.compilation.tap('InjectGoogleFontsPlugin', (compilation) => {
-      const hooks = (HtmlWebpackPlugin as typeof HtmlWebpackPlugin).getHooks(compilation);
+      const hooks = (HtmlWebpackPlugin as typeof HtmlWebpackPlugin).getHooks(
+        compilation as unknown as Compilation
+      );
 
       hooks.alterAssetTagGroups.tap(
         'InjectGoogleFontsPlugin',

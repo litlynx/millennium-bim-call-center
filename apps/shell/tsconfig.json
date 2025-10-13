@@ -1,6 +1,18 @@
 {
   "include": ["./**/*", "**/*", "package.json"],
-  "exclude": ["build", "dist", "coverage", "node_modules", "rspack/**/*"],
+  "exclude": [
+    "build",
+    "dist",
+    "coverage",
+    "node_modules",
+    "rspack/**/*",
+    "**/*.test.tsx",
+    "**/*.test.ts",
+    "**/__mocks__/**/*",
+    "../../packages/shared/src/**/*",
+    "../../packages/@config/bun-test-config/**/*",
+    "../../packages/@config/rspack-config/**/*"
+  ],
   "extends": "@config/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",

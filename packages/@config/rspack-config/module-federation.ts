@@ -298,51 +298,6 @@ const appsModuleFederationConfig: AppsModuleFederationConfig = {
         shared: `shared@${withLocalhostCacheBust(`${sharedHostBaseUrl}remoteEntry.js`)}`
       }
     }
-  },
-  [Apps['sidebar-pages']]: {
-    devPort: mapPorts[Apps['sidebar-pages']].devPort,
-    analyzerPort: mapPorts[Apps['sidebar-pages']].analyzerPort,
-    baseConfig: {
-      name: 'sidebarPages',
-      filename: 'remoteEntry.js',
-      exposes: {
-        './App': './src/App',
-        './Sidebar': './src/Sidebar'
-      }
-    },
-    remotes: {
-      dev: {
-        // Add cache-busting query so Firefox doesn't serve a cached remoteEntry in dev
-        shared: `shared@http://localhost:${
-          mapPorts[Apps.shared].devPort
-        }/remoteEntry.js?cb=${DEV_BUILD_ID}`
-      },
-      prod: {
-        shared: `shared@${withLocalhostCacheBust(`${sharedHostBaseUrl}remoteEntry.js`)}`
-      }
-    }
-  },
-  [Apps['records-pages']]: {
-    devPort: mapPorts[Apps['records-pages']].devPort,
-    analyzerPort: mapPorts[Apps['records-pages']].analyzerPort,
-    baseConfig: {
-      name: 'recordsPages',
-      filename: 'remoteEntry.js',
-      exposes: {
-        './App': './src/App'
-      }
-    },
-    remotes: {
-      dev: {
-        // Add cache-busting query so Firefox doesn't serve a cached remoteEntry in dev
-        shared: `shared@http://localhost:${
-          mapPorts[Apps.shared].devPort
-        }/remoteEntry.js?cb=${DEV_BUILD_ID}`
-      },
-      prod: {
-        shared: `shared@${withLocalhostCacheBust(`${sharedHostBaseUrl}remoteEntry.js`)}`
-      }
-    }
   }
 };
 
