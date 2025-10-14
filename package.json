@@ -40,6 +40,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.2.4",
     "@commitlint/config-conventional": "^19.8.1",
+    "@swc/helpers": "^0.5.17",
     "commitlint": "^19.8.1",
     "concurrently": "^9.2.1",
     "cross-env": "^10.0.0",
