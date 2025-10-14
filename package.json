@@ -38,9 +38,10 @@
     "preview:serve:win": "concurrently -n shell,shared,header,sidebar,records,docs -c green,magenta,cyan,blue,yellow,red \"cd apps/shell && bunx serve -s dist -l 8080\" \"cd packages/shared && bunx serve -s dist -l 8081\" \"cd apps/header-pages && bunx serve -s dist -l 8082\" \"cd apps/sidebar-pages && bunx serve -s dist -l 8083\" \"cd apps/records-pages && bunx serve -s dist -l 8084\" \"cd apps/documentation-pages && bunx serve -s dist -l 8085\""
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.6",
-    "@commitlint/config-conventional": "^20.0.0",
-    "commitlint": "^20.1.0",
+    "@biomejs/biome": "^2.2.4",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@swc/helpers": "^0.5.17",
+    "commitlint": "^19.8.1",
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "dotenv-cli": "^10.0.0",
