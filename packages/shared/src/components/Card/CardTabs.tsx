@@ -1,8 +1,7 @@
-/** biome-ignore-all lint/correctness/useUniqueElementIds: is is being used statically */
-
 import { ScrollArea } from '@ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs';
 import * as React from 'react';
+import { Activity } from 'react';
 import { cn } from '@/lib/utils';
 import type { CardProps } from './Card';
 import Card from './Card';
@@ -24,9 +23,7 @@ export interface CardTabsProps extends Omit<CardProps, 'children'> {
   enableScrollY?: boolean;
 }
 
-const CardTabs: React.ForwardRefExoticComponent<
-  CardTabsProps & React.RefAttributes<HTMLDivElement>
-> = React.forwardRef<HTMLDivElement, CardTabsProps>(
+const CardTabs = React.forwardRef<HTMLDivElement, CardTabsProps>(
   (
     {
       tabs,
@@ -40,7 +37,9 @@ const CardTabs: React.ForwardRefExoticComponent<
     },
     ref
   ) => {
-    const defaultTab = defaultValue || (tabs.length > 0 ? tabs[0].value : '');
+    const [activeValue, setActiveValue] = React.useState(
+      defaultValue || (tabs.length > 0 ? tabs[0].value : '')
+    );
 
     const contentWrapperClasses = cn(
       'bg-white',
@@ -49,12 +48,6 @@ const CardTabs: React.ForwardRefExoticComponent<
     );
 
     const contentClasses = cn('h-full w-full min-h-0 min-w-0', tabsContentClassName);
-
-    const tabsContents = tabs.map((tab) => (
-      <TabsContent key={tab.value} value={tab.value} className={contentClasses}>
-        <div className={contentWrapperClasses}>{tab.content}</div>
-      </TabsContent>
-    ));
 
     const hasScrollableAxis = enableScrollX || enableScrollY;
 
@@ -66,7 +59,11 @@ const CardTabs: React.ForwardRefExoticComponent<
 
     return (
       <Card ref={ref} {...cardProps} disableScrollArea>
-        <Tabs defaultValue={defaultTab} className="w-full h-full min-h-0 flex flex-col">
+        <Tabs
+          value={activeValue}
+          onValueChange={setActiveValue}
+          className="w-full h-full min-h-0 flex flex-col"
+        >
           <TabsList className={tabsListClassName}>
             {tabs.map((tab) => (
               <TabsTrigger
@@ -86,19 +83,25 @@ const CardTabs: React.ForwardRefExoticComponent<
               viewportClassName={viewportClassName}
               showScrollX={enableScrollX}
               showScrollY={enableScrollY}
-              verticalScrollBarProps={{
-                className:
-                  'w-2 p-0 rounded-full bg-gray-300/35 [&>div]:bg-primary-500 [&>div]:rounded-full mt-4 h-[calc(100%_-_1rem)]'
-              }}
-              horizontalScrollBarProps={{
-                className:
-                  'h-1.5 p-0 rounded-full bg-gray-300/35 [&>div]:bg-primary-500 [&>div]:rounded-full'
-              }}
             >
-              {tabsContents}
+              {tabs.map((tab) => (
+                <TabsContent key={tab.value} value={tab.value} className={contentClasses}>
+                  <Activity mode={activeValue === tab.value ? 'visible' : 'hidden'}>
+                    <div className={contentWrapperClasses}>{tab.content}</div>
+                  </Activity>
+                </TabsContent>
+              ))}
             </ScrollArea>
           ) : (
-            <div className="flex-1 h-full min-h-0 min-w-0 overflow-hidden">{tabsContents}</div>
+            <div className="flex-1 h-full min-h-0 min-w-0 overflow-hidden">
+              {tabs.map((tab) => (
+                <TabsContent key={tab.value} value={tab.value} className={contentClasses}>
+                  <Activity mode={activeValue === tab.value ? 'visible' : 'hidden'}>
+                    <div className={contentWrapperClasses}>{tab.content}</div>
+                  </Activity>
+                </TabsContent>
+              ))}
+            </div>
           )}
         </Tabs>
       </Card>
@@ -107,5 +110,4 @@ const CardTabs: React.ForwardRefExoticComponent<
 );
 
 CardTabs.displayName = 'CardTabs';
-
 export default CardTabs;
