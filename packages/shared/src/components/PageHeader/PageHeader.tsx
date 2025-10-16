@@ -52,7 +52,7 @@ export default function PageHeader(props: PageHeaderProps) {
           leftBlock={
             <>
               <p className="font-semibold uppercase">{props.channelCategory}</p>
-              <h4 className="font-semibold leading-[0.95]">{props.serviceTitle}</h4>
+              <h4 className="font-semibold leading-[0.95] 2xl:pt-4">{props.serviceTitle}</h4>
             </>
           }
           rightBlock={
