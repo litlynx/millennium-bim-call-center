@@ -81,9 +81,9 @@ export default function TextArea({
         setValidationError(null);
         onValidationChange?.(true);
         return true;
-      } catch (error) {
-        if (error instanceof z.ZodError) {
-          const errorMessage = error.errors[0]?.message || 'Invalid input';
+      } catch (err) {
+        if (err instanceof z.ZodError) {
+          const errorMessage = err.issues[0]?.message || 'Invalid input';
           setValidationError(errorMessage);
           onValidationChange?.(false, errorMessage);
           return false;

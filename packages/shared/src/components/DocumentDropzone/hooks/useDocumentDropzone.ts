@@ -17,9 +17,7 @@ const MAX_FILES_ERROR_MESSAGE = `Não é possível anexar mais de ${MAX_FILES_CO
 
 const fileSchema = z.object({
   name: z.string(),
-  type: z.enum(ACCEPTED_MIME_TYPES, {
-    errorMap: () => ({ message: 'Unsupported file type' })
-  }),
+  type: z.enum(ACCEPTED_MIME_TYPES, { message: 'Tipo de ficheiro/documento não suportado' }),
   size: z
     .number()
     .max(
@@ -169,9 +167,9 @@ export function useDocumentDropzone() {
         });
 
         if (!result.success) {
-          validationErrors.push(
-            `${file.name}: ${result.error.errors.map((e) => e.message).join(', ')}`
-          );
+          const issues = result.error?.issues ?? [];
+          const messages = issues.map((e) => e.message).join(', ') || 'Erro ao validar ficheiro.';
+          validationErrors.push(`${file.name}: ${messages}`);
           continue;
         }
 
