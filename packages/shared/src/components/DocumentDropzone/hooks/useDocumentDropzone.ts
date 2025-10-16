@@ -17,9 +17,7 @@ const MAX_FILES_ERROR_MESSAGE = `Não é possível anexar mais de ${MAX_FILES_CO
 
 const fileSchema = z.object({
   name: z.string(),
-  type: z.enum(ACCEPTED_MIME_TYPES, {
-    errorMap: () => ({ message: 'Unsupported file type' })
-  }),
+  type: z.enum(ACCEPTED_MIME_TYPES, { message: 'Tipo de ficheiro/documento não suportado' }),
   size: z
     .number()
     .max(

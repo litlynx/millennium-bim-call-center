@@ -34,7 +34,7 @@ export const useTextArea = ({
         return true;
       } catch (err) {
         if (err instanceof z.ZodError) {
-          const errorMessage = err.errors[0]?.message || 'Invalid input';
+          const errorMessage = err?.issues[0]?.message || 'Invalid input';
           setError(errorMessage);
           setIsValid(false);
           return false;
