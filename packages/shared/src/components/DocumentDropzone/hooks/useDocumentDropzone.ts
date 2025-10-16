@@ -169,9 +169,9 @@ export function useDocumentDropzone() {
         });
 
         if (!result.success) {
-          validationErrors.push(
-            `${file.name}: ${result.error.errors.map((e) => e.message).join(', ')}`
-          );
+          const issues = result.error?.issues ?? [];
+          const messages = issues.map((e) => e.message).join(', ') || 'Erro ao validar ficheiro.';
+          validationErrors.push(`${file.name}: ${messages}`);
           continue;
         }
 
